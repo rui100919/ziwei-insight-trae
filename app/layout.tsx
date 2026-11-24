@@ -46,7 +46,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="zh" data-scroll-behavior="smooth">
       <body className="min-h-dvh bg-paper text-ink antialiased">
-        {/* TRAE_DEPLOY_TEST_20261124_V3 */}
         {/* Plausible 埋点：仅当 NEXT_PUBLIC_PLAUSIBLE_DOMAIN 已配置时注入。
             隐私友好，无需 GDPR 弹窗；出站链接追踪自动内置。 */}
         {plausibleDomain && (
