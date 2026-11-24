@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { demoStore, isDemoMode, type DemoBirthProfile, type DemoReport } from '@/lib/demo';
 import { chartCacheKey } from '@/lib/chart-cache';
-import { getTimezoneOffsetMinutes } from '@/lib/time';
 import { CityPicker } from '@/components/CityPicker';
 import { cityName, type City } from '@/lib/cities';
 import { t, type Lang } from '@/lib/i18n';
@@ -27,7 +26,7 @@ const S: Record<Lang, {
   errChooseProfile: string; errPlaceTimezone: string; defaultProfileLabel: string;
   newReadingEyebrow: string; tabSaved: string; tabNew: string; chooseBirthDetails: string;
   timeUnknownNote: string; profileNameLabel: string; profileNamePlaceholder: string;
-  saveProfileHint: string; freeNote: string; tzLonMismatch: string;
+  saveProfileHint: string; freeNote: string; tzCityMismatch: string;
 }> = {
   zh: {
     errChooseProfile: '请选择一份出生资料', errPlaceTimezone: '请填写出生地和时区',
@@ -37,7 +36,7 @@ const S: Record<Lang, {
     profileNameLabel: '资料名称（选填）', profileNamePlaceholder: '例如：我的命盘 / 孩子',
     saveProfileHint: '保存这份资料，方便下次直接选用',
     freeNote: '每个账号有一次免费解读，生成通常需要一分钟。',
-    tzLonMismatch: '所选时区与经度不匹配，真太阳时可能偏差数小时，建议重新选择出生城市。',
+    tzCityMismatch: '所选时区与出生城市不一致，真太阳时可能偏差数小时，建议重新选择城市。',
   },
   en: {
     errChooseProfile: 'Please choose a birth profile', errPlaceTimezone: 'Please enter birth place and timezone',
@@ -47,7 +46,7 @@ const S: Record<Lang, {
     profileNameLabel: 'Profile name (optional)', profileNamePlaceholder: 'e.g. My Chart / My child',
     saveProfileHint: 'Save these details for next time',
     freeNote: 'One complimentary basic reading per account. Generation usually takes about a minute.',
-    tzLonMismatch: 'Timezone and longitude do not match — the true solar time could be off by hours. Please pick the birth city again.',
+    tzCityMismatch: 'The timezone differs from the birth city you picked — the true solar time could be off by hours. Please pick the city again.',
   },
   es: {
     errChooseProfile: 'Selecciona un perfil de nacimiento', errPlaceTimezone: 'Introduce el lugar de nacimiento y la zona horaria',
@@ -57,7 +56,7 @@ const S: Record<Lang, {
     profileNameLabel: 'Nombre del perfil (opcional)', profileNamePlaceholder: 'p. ej. Mi carta / Mi hijo',
     saveProfileHint: 'Guarda estos datos para usarlos directamente la próxima vez',
     freeNote: 'Cada cuenta tiene una lectura gratuita; la generación suele tardar un minuto.',
-    tzLonMismatch: 'La zona horaria y la longitud no coinciden: el tiempo solar verdadero podría desviarse varias horas. Vuelve a elegir la ciudad de nacimiento.',
+    tzCityMismatch: 'La zona horaria no coincide con la ciudad elegida: el tiempo solar verdadero podría desviarse varias horas. Vuelve a elegir la ciudad.',
   },
   fr: {
     errChooseProfile: 'Choisissez un profil de naissance', errPlaceTimezone: 'Saisissez le lieu de naissance et le fuseau horaire',
@@ -67,7 +66,7 @@ const S: Record<Lang, {
     profileNameLabel: 'Nom du profil (facultatif)', profileNamePlaceholder: 'ex. Mon thème / Mon enfant',
     saveProfileHint: 'Enregistrez ces données pour les réutiliser la prochaine fois',
     freeNote: 'Chaque compte a droit à une lecture gratuite ; la génération prend généralement une minute.',
-    tzLonMismatch: 'Le fuseau horaire et la longitude ne correspondent pas : l’heure solaire vraie peut dériver de plusieurs heures. Choisissez à nouveau la ville de naissance.',
+    tzCityMismatch: 'Le fuseau horaire ne correspond pas à la ville choisie : l’heure solaire vraie peut dériver de plusieurs heures. Choisissez à nouveau la ville.',
   },
   de: {
     errChooseProfile: 'Bitte wähle ein Geburtsprofil', errPlaceTimezone: 'Gib Geburtsort und Zeitzone ein',
@@ -77,7 +76,7 @@ const S: Record<Lang, {
     profileNameLabel: 'Profilname (optional)', profileNamePlaceholder: 'z. B. Mein Horoskop / Mein Kind',
     saveProfileHint: 'Diese Daten speichern, um sie beim nächsten Mal direkt auszuwählen',
     freeNote: 'Jedes Konto erhält eine kostenlose Deutung; die Erstellung dauert in der Regel etwa eine Minute.',
-    tzLonMismatch: 'Zeitzone und Längengrad passen nicht zusammen – die wahre Sonnenzeit kann um Stunden abweichen. Bitte wähle die Geburtsstadt erneut.',
+    tzCityMismatch: 'Die Zeitzone passt nicht zur gewählten Geburtsstadt – die wahre Sonnenzeit kann um Stunden abweichen. Bitte wähle die Stadt erneut.',
   },
   ja: {
     errChooseProfile: '出生プロフィールを選択してください', errPlaceTimezone: '出生地とタイムゾーンを入力してください',
@@ -87,7 +86,7 @@ const S: Record<Lang, {
     profileNameLabel: 'プロフィール名（任意）', profileNamePlaceholder: '例：マイ命盤 / 子ども',
     saveProfileHint: '次回そのまま使えるよう、この情報を保存する',
     freeNote: 'アカウントごとに無料解読を1回利用できます。生成には通常1分ほどかかります。',
-    tzLonMismatch: 'タイムゾーンと経度が一致していません。真太陽時が数時間ずれる可能性があるため、出生都市を選び直してください。',
+    tzCityMismatch: '選択したタイムゾーンが出生都市と一致していません。真太陽時が数時間ずれる可能性があるため、都市を選び直してください。',
   },
 };
 
@@ -118,6 +117,8 @@ export default function NewChartPage() {
   const [timezone, setTimezone] = useState('Asia/Shanghai');
   const [longitude, setLongitude] = useState('');
   const [cityPicked, setCityPicked] = useState(false);
+  // 最近一次从候选里选中的城市时区，用来发现「手动改了时区」的情况。
+  const [pickedCityTz, setPickedCityTz] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [saveAsProfile, setSaveAsProfile] = useState(true);
@@ -192,13 +193,14 @@ export default function NewChartPage() {
   function handleCitySelect(city: City) {
     setLongitude(String(city.lon));
     setTimezone(city.tz);
+    setPickedCityTz(city.tz);
     setBirthPlace(cityName(city, lang));
     setCityPicked(true);
   }
 
   function handlePlaceChange(value: string) {
     setBirthPlace(value);
-    if (cityPicked) { setCityPicked(false); setLongitude(''); }
+    if (cityPicked) { setCityPicked(false); setLongitude(''); setPickedCityTz(''); }
   }
 
   async function submit() {
@@ -360,28 +362,9 @@ export default function NewChartPage() {
   };
   const selectedProfile = profiles.find((p) => p.id === selectedId);
 
-  // 手动改过时区后，经度可能还停在原来那座城市。中央经线 = 偏移/4，
-  // 偏差超过 30°（约 2 小时）说明两者不匹配，纠正量会失真，提示用户重选城市。
-  const tzLonMismatch = useMemo(() => {
-    if (longitude === '' || !timezone) return 0;
-    const lon = Number(longitude);
-    if (!Number.isFinite(lon)) return 0;
-    const [y, m, dd] = (birthDate || '').split('-').map(Number);
-    const hasDate = Number.isInteger(y) && y > 1900 && Number.isInteger(m) && Number.isInteger(dd);
-    try {
-      const offset = getTimezoneOffsetMinutes(
-        timezone,
-        hasDate ? y : 2000,
-        hasDate ? m : 1,
-        hasDate ? dd : 1,
-        12,
-        0,
-      );
-      return Math.abs(lon - offset / 4);
-    } catch {
-      return 0;
-    }
-  }, [longitude, timezone, birthDate]);
+  // 从候选里选了城市后又手动改时区：两者不一致时提示，避免真太阳时偏差数小时。
+  // 注意不能用「经度 vs 中央经线」判断——新疆按北京时间（+8）排盘时，经度天然离 120° 很远。
+  const tzCityMismatch = cityPicked && pickedCityTz !== '' && timezone !== pickedCityTz;
 
   return (
     <main className="page">
@@ -658,8 +641,8 @@ export default function NewChartPage() {
                               </datalist>
                             </div>
                           </div>
-                          {tzLonMismatch > 30 && (
-                            <p className="mt-3 text-[11px] leading-relaxed text-[#8e3527]">{s.tzLonMismatch}</p>
+                          {tzCityMismatch && (
+                            <p className="mt-3 text-[11px] leading-relaxed text-[#8e3527]">{s.tzCityMismatch}</p>
                           )}
                         </div>
                       )}
