@@ -211,6 +211,24 @@ export default function ReportPage() {
     }
   }
 
+  // 打印/导出 PDF 前展开所有折叠宫位：浏览器只打印已展开的 details 正文，
+  // 否则 PDF 里会只剩宫位标题、下面一片空白。
+  useEffect(() => {
+    const opened: HTMLDetailsElement[] = [];
+    const before = () => {
+      document.querySelectorAll<HTMLDetailsElement>('details').forEach((d) => {
+        if (!d.open) { d.open = true; opened.push(d); }
+      });
+    };
+    const after = () => { opened.splice(0).forEach((d) => { d.open = false; }); };
+    window.addEventListener('beforeprint', before);
+    window.addEventListener('afterprint', after);
+    return () => {
+      window.removeEventListener('beforeprint', before);
+      window.removeEventListener('afterprint', after);
+    };
+  }, []);
+
   async function deleteReport() {
     if (!window.confirm(t(lang, 'confirmDelete'))) return;
     // 本地报告（演示 / 未登录访客）只能从浏览器删除，没有服务端记录可删。

@@ -3170,6 +3170,28 @@ footer {
     color: inherit !important;
     text-decoration: none !important;
   }
+
+  /* 打印/导出 PDF：滚动动效元素必须可见，否则未滚动到的章节会整段空白。 */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* 折叠的宫位在打印时展开，避免只印出标题、正文留白。 */
+  .report .palace .body {
+    display: block !important;
+  }
+  .report .palace .pm {
+    display: none !important;
+  }
+  /* 交互元素不进入 PDF。 */
+  .locked,
+  .unlock-actions,
+  .toc,
+  .edit,
+  .cover-actions,
+  button {
+    display: none !important;
+  }
 }
 
 /* ---------------- 减弱动态 ---------------- */
