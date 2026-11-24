@@ -473,6 +473,17 @@ export default function ReportPage() {
             </section>
           )}
 
+          {/* 开篇说明：整份报告只在这里讲一次"如何看待它" */}
+          {isFull && (
+            <section className="prenote" data-reveal>
+              <div className="wrap">
+                <p className="prenote-kicker">{t(lang, 'noteTitle')}</p>
+                <h2 className="prenote-head">{t(lang, 'noteHeadline')}</h2>
+                <p className="prenote-body">{t(lang, 'noteBody')}</p>
+              </div>
+            </section>
+          )}
+
           {report.chart && (
             <section id="chart" className="bg-paper scroll-mt-24" data-reveal>
               <div className="wrap py-10">
@@ -749,7 +760,7 @@ export default function ReportPage() {
                 )}
               </article>
 
-              <p className="fineprint report-foot">{L('entitlement')}</p>
+              <p className="fineprint report-foot">{isFull ? t(lang, 'disclaimer') : L('entitlement')}</p>
             </div>
           </section>
         </>

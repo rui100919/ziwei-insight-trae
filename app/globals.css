@@ -3324,6 +3324,33 @@ footer {
   line-height: 1.9;
   color: rgba(27, 23, 16, 0.55);
 }
+.prenote {
+  padding: 64px 0 58px;
+  border-bottom: 1px solid rgba(184, 148, 92, 0.28);
+  background: #fbf8f1;
+  text-align: center;
+}
+.prenote-kicker {
+  margin: 0 0 18px;
+  font-family: var(--latin);
+  font-size: 10px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.prenote-head {
+  margin: 0 0 18px;
+  font-size: clamp(21px, 2.6vw, 27px);
+  letter-spacing: 0.08em;
+  color: #1b1710;
+}
+.prenote-body {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 13.5px;
+  line-height: 2.1;
+  color: rgba(27, 23, 16, 0.68);
+}
 .report .decades {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3549,6 +3576,23 @@ footer {
   }
   .cover-archive {
     color: #4a4034 !important;
+  }
+
+  /* 开篇说明：深色字、整块不拆分。 */
+  .prenote,
+  .prenote-kicker,
+  .prenote-head,
+  .prenote-body {
+    background: transparent !important;
+    color: #111 !important;
+  }
+  .prenote {
+    padding: 22pt 0 20pt !important;
+    border-bottom: 1px solid #ded4c2 !important;
+    break-inside: avoid;
+  }
+  .prenote-kicker {
+    color: #7a5b33 !important;
   }
 
   /* 大限：PDF 用连续列表，节省页数。 */
