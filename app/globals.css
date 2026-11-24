@@ -3135,6 +3135,136 @@ footer {
 }
 
 /* ---------------- 打印：报告白底黑字 ---------------- */
+/* ---------------- 典藏册（完整报告）：封面 / 目录 / 宫位卡 / 结语 ---------------- */
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 26px;
+  border: 1px solid rgba(184, 148, 92, 0.28);
+  pointer-events: none;
+  z-index: 1;
+}
+.cover-dedication {
+  margin: 18px 0 0;
+  font-size: 15px;
+  letter-spacing: 0.3em;
+  color: var(--gold-lit);
+}
+.toc {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 26px;
+  padding: 22px 0 10px;
+  border-top: 1px solid rgba(184, 148, 92, 0.35);
+  border-bottom: 1px solid rgba(184, 148, 92, 0.35);
+  counter-reset: toc;
+}
+.toc-title {
+  grid-column: 1 / -1;
+  margin: 0 0 4px;
+  font-family: var(--latin);
+  font-size: 10px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.toc a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(27, 23, 16, 0.08);
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  color: rgba(27, 23, 16, 0.82);
+  counter-increment: toc;
+}
+.toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--latin);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--gold-deep);
+}
+.toc a::after {
+  display: none;
+}
+.ch-head {
+  border-bottom-color: rgba(184, 148, 92, 0.32);
+}
+.ch-no {
+  letter-spacing: 0.22em;
+}
+.ch-head h2 {
+  letter-spacing: 0.1em;
+}
+.report .palace {
+  margin: 0 0 10px;
+  border: 1px solid rgba(184, 148, 92, 0.26);
+  border-left: 2px solid rgba(184, 148, 92, 0.55);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 253, 247, 0.92), rgba(252, 248, 239, 0.7));
+  overflow: hidden;
+}
+.report .palace summary {
+  padding: 16px 18px;
+}
+.report .palace .body {
+  padding: 0 22px 24px 86px;
+}
+.colophon {
+  margin-top: clamp(56px, 8vw, 96px);
+  padding: clamp(48px, 7vw, 80px) 24px;
+  border-top: 1px solid rgba(184, 148, 92, 0.4);
+  text-align: center;
+}
+.colo-seal {
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border: 1px solid rgba(160, 52, 40, 0.55);
+  border-radius: 8px;
+  color: #a03428;
+  font-size: 21px;
+  line-height: 1;
+  transform: rotate(-6deg);
+}
+.colo-line {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 2.6vw, 26px);
+  letter-spacing: 0.18em;
+  color: #1b1710;
+}
+.colo-note {
+  max-width: 520px;
+  margin: 0 auto;
+  font-size: 13.5px;
+  line-height: 2.1;
+  color: rgba(27, 23, 16, 0.66);
+}
+.colo-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+  font-family: var(--latin);
+  font-size: 10.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(27, 23, 16, 0.45);
+}
+.colo-foot i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
 @media print {
   body {
     background: #fff !important;
@@ -3186,12 +3316,113 @@ footer {
   /* 交互元素不进入 PDF。 */
   .locked,
   .unlock-actions,
-  .toc,
   .edit,
   .cover-actions,
   .nav,
   button {
     display: none !important;
+  }
+
+  /* 封面：PDF 首页用宣纸底 + 烫金框 + 深色字，清晰可读。 */
+  .cover {
+    min-height: 0 !important;
+    padding: 34pt 30pt !important;
+    background: #fbf8f1 !important;
+    color: #1b1710 !important;
+    break-after: page;
+  }
+  .cover::after {
+    inset: 8pt !important;
+    border: 1px solid rgba(184, 148, 92, 0.6) !important;
+  }
+  .cover-inner {
+    padding-top: 26pt !important;
+    padding-bottom: 26pt !important;
+  }
+  .cover h1,
+  .cover h1 em,
+  .cover .eyebrow,
+  .cover .intro,
+  .cover .cover-dedication,
+  .cover .cover-meta,
+  .cover .cover-note {
+    color: #1b1710 !important;
+  }
+  .cover h1 em,
+  .cover .cover-dedication {
+    color: #7a5b33 !important;
+  }
+  .cover-meta,
+  .cover-meta i {
+    color: #4a4034 !important;
+  }
+  .cover-meta i {
+    background: #7a5b33 !important;
+  }
+  .cover-chart {
+    display: none !important;
+  }
+
+  /* 目录：独立一页，深色字 + 金色编号。 */
+  .toc {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    padding: 18pt 0 !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+    break-after: page;
+  }
+  .toc-title {
+    margin: 0 0 14pt !important;
+    font-size: 9pt !important;
+    color: #7a5b33 !important;
+  }
+  .toc a {
+    display: flex !important;
+    padding: 9pt 0 !important;
+    border-bottom: 1px solid #ded4c2 !important;
+    font-size: 13pt !important;
+    color: #111 !important;
+  }
+  .toc a::before {
+    color: #7a5b33 !important;
+  }
+
+  /* 宫位卡：白底细金框，整卡不跨页。 */
+  .report .palace {
+    background: #fff !important;
+    border: 1px solid #d3c6ad !important;
+    border-left: 2px solid #b8945c !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .report .palace summary {
+    padding: 12pt 14pt !important;
+  }
+  .report .palace .body {
+    padding: 0 14pt 14pt 14pt !important;
+  }
+  .report .palace .pno,
+  .report .palace .pm {
+    color: #7a5b33 !important;
+  }
+
+  /* 结语页：单独成页。 */
+  .colophon {
+    break-before: page;
+    page-break-before: always;
+    border-top: 0 !important;
+    padding-top: 40pt !important;
+  }
+  .colo-line {
+    color: #111 !important;
+  }
+  .colo-note {
+    color: #333 !important;
+  }
+  .colo-foot {
+    color: #555 !important;
   }
 
   /* 去掉大块留白，避免章节被顶到下一页后留下整页空白。 */
@@ -3205,9 +3436,8 @@ footer {
     margin-top: 18pt !important;
   }
 
-  /* 盘面单独占一页并整体保留，避免被分页切开或顶部被遮住。 */
+  /* 盘面单独占一页并整体保留，避免被分页切开或顶部被遮住（封面已强制分页）。 */
   #chart {
-    break-before: page;
     break-inside: avoid;
   }
   #chart .wrap {

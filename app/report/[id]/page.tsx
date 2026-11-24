@@ -371,6 +371,11 @@ export default function ReportPage() {
               <div className="intro">
                 <p className="eyebrow">{isFull ? L('fullReportTitle') : L('basicReportTitle')}</p>
                 <h1 data-reveal>{isFull ? t(lang, 'fullCoverTitle') : t(lang, 'readingCoverTitle')}</h1>
+                {isFull && report.profile?.label && (
+                  <p className="cover-dedication" data-reveal>
+                    {t(lang, 'coverDedication').replace('{name}', report.profile.label)}
+                  </p>
+                )}
                 <p className="intro" data-reveal>{isFull ? t(lang, 'fullCoverIntro') : t(lang, 'readingCoverIntro')}</p>
                 <div className="cover-meta" data-reveal>
                   {coverMeta.map((m, i) => (
@@ -512,6 +517,7 @@ export default function ReportPage() {
 
               {toc.length > 1 && (
                 <nav className="toc" aria-label={t(lang, 'reports')} data-reveal>
+                  <p className="toc-title">{t(lang, 'tocTitle')}</p>
                   {toc.map(([anchor, label]) => (
                     <a key={anchor} href={`#${anchor}`}>{label}</a>
                   ))}
@@ -611,6 +617,25 @@ export default function ReportPage() {
                     </div>
                     <div className="ch-body">
                       <p className="whitespace-pre-wrap">{fullContent.caveats}</p>
+                    </div>
+                  </section>
+                )}
+
+                {isFull && (
+                  <section className="colophon" data-reveal>
+                    <div className="colo-seal" aria-hidden="true">
+                      {t(lang, 'sealChars')
+                        .split(/\s+/)
+                        .map((c, i) => (
+                          <span key={i}>{c}</span>
+                        ))}
+                    </div>
+                    <p className="colo-line">{t(lang, 'colophonLine')}</p>
+                    <p className="colo-note">{t(lang, 'colophonNote')}</p>
+                    <div className="colo-foot">
+                      <span>{t(lang, 'brand')}</span>
+                      <i aria-hidden="true" />
+                      <span>{dateStr}</span>
                     </div>
                   </section>
                 )}
