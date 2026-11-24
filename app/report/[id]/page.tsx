@@ -385,6 +385,11 @@ export default function ReportPage() {
                     </span>
                   ))}
                 </div>
+                {isFull && (
+                  <p className="cover-archive" data-reveal>
+                    {t(lang, 'metaArchive')} · ZW-{reportYear}-{report.id.slice(0, 8).toUpperCase()}
+                  </p>
+                )}
                 <div className="flex flex-wrap items-center gap-3 pt-2">
                   <StatusBadge
                     label={report.status === 'failed' ? L('statusFailed') : report.status === 'pending' ? L('statusProcessing') : L('statusCompleted')}
@@ -431,6 +436,42 @@ export default function ReportPage() {
               )}
             </div>
           </section>
+
+          {/* 02 排盘资料与确认项：区分已确认输入、依赖时辰的判断与倾向性解释 */}
+          {isFull && report.profile && (
+            <section className="meta-panel" data-reveal>
+              <div className="wrap">
+                <p className="eyebrow">{t(lang, 'metaTitle')}</p>
+                <div className="meta-grid">
+                  {report.profile.birthDate && (
+                    <div className="meta-cell">
+                      <b>{report.profile.birthDate}</b>
+                      <span>{t(lang, 'reportGregorian')}</span>
+                    </div>
+                  )}
+                  <div className="meta-cell">
+                    <b>{report.profile.timeKnown && report.profile.birthTime ? report.profile.birthTime : '—'}</b>
+                    <span>{t(lang, 'birthTime')}</span>
+                  </div>
+                  {report.profile.birthPlace && (
+                    <div className="meta-cell">
+                      <b>{report.profile.birthPlace}</b>
+                      <span>{report.profile.timezone}</span>
+                    </div>
+                  )}
+                  <div className="meta-cell">
+                    <b>ZW-{reportYear}-{report.id.slice(0, 8).toUpperCase()}</b>
+                    <span>{t(lang, 'metaArchive')}</span>
+                  </div>
+                </div>
+                <p className={`meta-note${report.profile.timeKnown === false ? ' warn' : ''}`}>
+                  {report.profile.timeKnown === false ? t(lang, 'metaTimeUnknown') : t(lang, 'metaTimeKnown')}
+                </p>
+                <p className="meta-sub">{t(lang, 'metaDepends')}</p>
+                <p className="meta-sub">{t(lang, 'metaInterpretation')}</p>
+              </div>
+            </section>
+          )}
 
           {report.chart && (
             <section id="chart" className="bg-paper scroll-mt-24" data-reveal>

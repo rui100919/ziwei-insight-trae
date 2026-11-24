@@ -3264,6 +3264,115 @@ footer {
   border-radius: 50%;
   background: var(--gold);
 }
+.cover-archive {
+  margin: 18px 0 0;
+  font-family: var(--latin);
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(244, 238, 225, 0.45);
+}
+.meta-panel {
+  background: #fbf8f1;
+  border-bottom: 1px solid rgba(184, 148, 92, 0.28);
+}
+.meta-panel .wrap {
+  padding-top: 54px;
+  padding-bottom: 46px;
+}
+.meta-panel .eyebrow {
+  color: var(--gold-deep);
+}
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.meta-cell {
+  padding-left: 14px;
+  border-left: 1px solid rgba(184, 148, 92, 0.45);
+}
+.meta-cell b {
+  display: block;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: #1b1710;
+}
+.meta-cell span {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--latin);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(27, 23, 16, 0.5);
+}
+.meta-note {
+  margin: 24px 0 0;
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(27, 23, 16, 0.72);
+}
+.meta-note.warn {
+  color: #8a3b2e;
+}
+.meta-sub {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.9;
+  color: rgba(27, 23, 16, 0.55);
+}
+.report .decades {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  border-top: 0;
+  margin-top: 22px;
+}
+.report .decade {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid rgba(184, 148, 92, 0.24);
+  border-radius: 10px;
+  background: rgba(255, 253, 247, 0.75);
+  font-size: 12.5px;
+}
+.report .decade .age {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--gold-deep);
+}
+.report .decade .pal {
+  font-size: 13.5px;
+  color: #1b1710;
+}
+.report .decade .theme {
+  font-size: 12.5px;
+  line-height: 1.95;
+  color: rgba(27, 23, 16, 0.66);
+}
+.report .decade .mark {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: #8a3b2e;
+}
+.report .decade.current {
+  border-color: rgba(184, 148, 92, 0.7);
+  background: linear-gradient(180deg, rgba(184, 148, 92, 0.14), rgba(255, 253, 247, 0.9));
+  box-shadow: 0 8px 24px rgba(184, 148, 92, 0.12);
+}
+@media (max-width: 900px) {
+  .meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .report .decades {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
 @media print {
   body {
@@ -3423,6 +3532,47 @@ footer {
   }
   .colo-foot {
     color: #555 !important;
+  }
+
+  /* 排盘资料页：深色字、整块不拆分。 */
+  .meta-panel,
+  .meta-panel .eyebrow,
+  .meta-cell b,
+  .meta-cell span,
+  .meta-note,
+  .meta-sub {
+    color: #111 !important;
+    background: transparent !important;
+  }
+  .meta-panel {
+    break-inside: avoid;
+  }
+  .cover-archive {
+    color: #4a4034 !important;
+  }
+
+  /* 大限：PDF 用连续列表，节省页数。 */
+  .report .decades {
+    display: block !important;
+    margin-top: 10pt !important;
+  }
+  .report .decade {
+    display: block !important;
+    padding: 7pt 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #ded4c2 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  .report .decade .age,
+  .report .decade .pal {
+    display: inline-block;
+    margin-right: 10pt;
+  }
+  .report .decade .theme {
+    display: block;
+    margin-top: 2pt;
   }
 
   /* 去掉大块留白，避免章节被顶到下一页后留下整页空白。 */
