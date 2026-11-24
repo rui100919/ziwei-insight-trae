@@ -3564,6 +3564,18 @@ footer {
     border-radius: 0 !important;
     background: none !important;
     box-shadow: none !important;
+    /* 单步大限整块保留，避免一行年龄在上一页、正文在下一页。 */
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* 章节标题不落在页面末尾成为孤行。 */
+  .chapter .ch-head {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .chapter h2 {
+    break-after: avoid;
+    page-break-after: avoid;
   }
   .report .decade .age,
   .report .decade .pal {
