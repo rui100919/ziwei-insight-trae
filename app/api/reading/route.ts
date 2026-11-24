@@ -104,7 +104,46 @@ export async function POST(request: Request) {
 
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: 'NEED_LOGIN' }, { status: 401 });
+
+    // 未登录访客：不写库、不占用免费额度，直接返回基础解读，先把价值给到人。
+    // 单独收紧 IP 限流，避免被当成免费生成接口刷。
+    if (!user) {
+      const anonRl = checkRateLimit(clientKey(request, 'reading-anon'), 5, 10 * 60_000);
+      if (!anonRl.ok) {
+        return NextResponse.json(
+          { error: 'RATE_LIMITED', retryAfter: anonRl.retryAfter },
+          { status: 429, headers: { 'Retry-After': String(anonRl.retryAfter) } },
+        );
+      }
+      const input: ChartInput = body;
+      if (!input.birthDate || !input.birthPlace || !input.timezone) {
+        return NextResponse.json({ error: 'INVALID_REQUEST' }, { status: 400 });
+      }
+      if (input.gender !== 'male' && input.gender !== 'female') {
+        return NextResponse.json({ error: 'INVALID_GENDER' }, { status: 400 });
+      }
+      const built = buildChart(input, lang);
+      const facts = chartFacts(built.chart, built.timeNote, lang, built.timeStatus, built.hasDST);
+      const label = body.profileLabel || DEFAULT_PROFILE_LABEL[lang];
+      const report: DemoReport = {
+        id: crypto.randomUUID(),
+        language: lang,
+        report_type: 'basic',
+        created_at: new Date().toISOString(),
+        content: generateDemoReading(facts, lang, { variant: 'preview' }),
+        chart: built.chart,
+        cacheKey: chartCacheKey({ ...input, name: label }),
+        profile: {
+          label,
+          birthDate: input.birthDate,
+          birthTime: input.birthTime,
+          birthPlace: input.birthPlace,
+          timezone: input.timezone,
+          timeKnown: input.timeKnown,
+        },
+      };
+      return NextResponse.json({ reportId: report.id, report, anonymous: true });
+    }
 
     if (!body.idempotencyKey || body.idempotencyKey.length < 8) {
       return NextResponse.json({ error: 'INVALID_REQUEST' }, { status: 400 });

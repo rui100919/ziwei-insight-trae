@@ -201,8 +201,14 @@ type ChartFacts = {
   hasDST?: boolean;
 };
 
-/** 演示用解读：把引擎算出的星曜翻译成大白话，不调用 AI、不预测、不判吉凶。 */
-export function generateDemoReading(facts: ChartFacts, lang: Lang) {
+/**
+ * 基础解读：把引擎算出的星曜翻译成大白话，不调用 AI、不预测、不判吉凶。
+ *
+ * variant 只影响结尾的说明文字：
+ *   - 'demo'（默认）：本地演示环境用，明说「这是演示版」。
+ *   - 'preview'：正式环境的未登录访客用，不暴露演示口径，改为引导解锁完整报告。
+ */
+export function generateDemoReading(facts: ChartFacts, lang: Lang, opts?: { variant?: 'demo' | 'preview' }) {
   const L = (r: Record<Lang, string>): string => r[lang];
 
   const majorNames = facts.mingPalace?.majorStars ?? [];
@@ -345,7 +351,16 @@ export function generateDemoReading(facts: ChartFacts, lang: Lang) {
     de: 'Das ist eine Produkt-Demo; die Live-Version verfasst die Deutung mit einem Sprachmodell unter denselben Einschränkungen.',
     ja: 'これは製品のデモです；正式版では同じ制約のもと、言語モデルが解読を執筆します。',
   };
-  const caveats = L(CAVEATS_INTRO) + timePlain + dstPlain + L(CAVEATS_MIDDLE) + L(CAVEATS_DEMO);
+  const CAVEATS_PREVIEW: Record<Lang, string> = {
+    zh: '以上是基础解读，由命盘规则直接推演。完整报告会逐宫展开十二宫与十年大限。',
+    en: 'That is the basic reading, derived from the chart rules. The full report walks through all twelve palaces and each ten-year period.',
+    es: 'Esto es la lectura básica, derivada de las reglas de la carta. El informe completo recorre las doce casas y cada período de diez años.',
+    fr: 'Ceci est la lecture de base, issue des règles du thème. Le rapport complet parcourt les douze palais et chaque période de dix ans.',
+    de: 'Das ist die Basisdeutung, abgeleitet aus den Regeln des Horoskops. Der Vollbericht geht alle zwölf Paläste und jede Zehnjahresperiode durch.',
+    ja: '以上は基礎解読で、命盤の規則から直接導いたものです。完全版レポートでは十二宮と各十年期を順に詳述します。',
+  };
+  const caveatsSuffix = opts?.variant === 'preview' ? L(CAVEATS_PREVIEW) : L(CAVEATS_DEMO);
+  const caveats = L(CAVEATS_INTRO) + timePlain + dstPlain + L(CAVEATS_MIDDLE) + caveatsSuffix;
 
   return { overview, personality, strengths, caveats };
 }

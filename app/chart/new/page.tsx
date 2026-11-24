@@ -115,6 +115,9 @@ export default function NewChartPage() {
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [saveAsProfile, setSaveAsProfile] = useState(true);
 
+  // 未登录访客：不跳登录页，直接排盘拿基础解读（报告存本地 localStorage）。
+  const [anonymous, setAnonymous] = useState(false);
+
   const [busy, setBusy] = useState(false);
   const [stage, setStage] = useState(0);
   const [error, setError] = useState('');
@@ -144,8 +147,14 @@ export default function NewChartPage() {
     const supabase = createClient();
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) {
-        trackEvent(E.AUTH_REDIRECT, { from: '/chart/new' });
-        router.replace('/auth?next=/chart/new'); return;
+        // 未登录：不拦登录，直接用本地保存的出生资料排盘，先生成基础解读。
+        setAnonymous(true);
+        const list = demoStore.getBirthProfiles();
+        setProfiles(list);
+        if (list.length) setSelectedId(list[0].id);
+        else setMode('new');
+        setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Shanghai');
+        return;
       }
       const { data: rows } = await supabase
         .from('birth_profiles')
@@ -197,7 +206,21 @@ export default function NewChartPage() {
 
       if (mode === 'select') {
         if (!selectedId) { setError(s.errChooseProfile); setBusy(false); return; }
-        payload.profileId = selectedId;
+        if (anonymous && selectedProfile) {
+          // 匿名访客没有服务端档案可查，直接把本地档案展开成完整出生资料。
+          Object.assign(payload, {
+            birthDate: selectedProfile.birthDate,
+            birthTime: selectedProfile.birthTime,
+            timeKnown: selectedProfile.timeKnown,
+            birthPlace: selectedProfile.birthPlace,
+            timezone: selectedProfile.timezone,
+            longitude: selectedProfile.longitude === '' ? null : Number(selectedProfile.longitude),
+            gender: selectedProfile.gender,
+            profileLabel: selectedProfile.label,
+          });
+        } else {
+          payload.profileId = selectedId;
+        }
       } else {
         if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) { setError(t(lang, 'birthDateRequired')); setBusy(false); return; }
         if (!birthPlace || !timezone) { setError(s.errPlaceTimezone); setBusy(false); return; }
@@ -212,9 +235,9 @@ export default function NewChartPage() {
         });
       }
 
-      // 演示模式：同一「姓名 + 出生资料」已有解读时直接复用，不重复生成、不重复扣免费额度。
-      // （正式模式由 /api/reading 在服务端做同样的缓存命中；与 IP/网络无关。）
-      if (isDemoMode()) {
+      // 演示模式 / 未登录访客：同一「姓名 + 出生资料」已有解读时直接复用，不重复生成。
+      // （正式登录用户由 /api/reading 在服务端做同样的缓存命中；与 IP/网络无关。）
+      if (isDemoMode() || anonymous) {
         const source = mode === 'select' && selectedProfile
           ? {
               name: selectedProfile.label,
@@ -256,7 +279,8 @@ export default function NewChartPage() {
         else setError(t(lang, 'errorGeneric'));
         return;
       }
-      if (data.demo && data.report) {
+      // 演示模式 / 匿名访客：报告只在本地保存，服务端不落库、不占免费额度。
+      if (data.report) {
         // 新建档案模式下，用户勾选了「保存为档案」则存入本地档案库。
         if (mode === 'new' && saveAsProfile) {
           demoStore.addBirthProfile({
@@ -268,9 +292,12 @@ export default function NewChartPage() {
           });
         }
         demoStore.addReport(data.report as DemoReport);
-        demoStore.consumeEntitlement();
+        if (data.demo) demoStore.consumeEntitlement();
       }
-      trackEvent(E.CHART_GENERATED, { demo: String(data.demo ?? false) });
+      trackEvent(E.CHART_GENERATED, {
+        demo: String(data.demo ?? false),
+        anonymous: String(data.anonymous ?? false),
+      });
       router.push(`/report/${data.reportId}`);
     } catch {
       setError(t(lang, 'errorGeneric'));

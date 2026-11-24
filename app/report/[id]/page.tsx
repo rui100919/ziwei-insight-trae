@@ -45,16 +45,16 @@ type ReportStrings = {
   chart: string; backToAccount: string;
   statusFailed: string; statusProcessing: string; statusCompleted: string;
   fullReportTitle: string; basicReportTitle: string;
-  savedToAccount: string; savePdf: string; deleteReport: string;
-  demoReport: string; entitlement: string;
+  savedToAccount: string; savedLocally: string; savePdf: string; deleteReport: string;
+  demoReport: string; anonReportNote: string; entitlement: string;
 };
 const S: Record<Lang, ReportStrings> = {
-  zh: { chart: '命盘', backToAccount: '返回账户', statusFailed: '生成失败', statusProcessing: '生成中', statusCompleted: '已完成', fullReportTitle: '紫微完整报告', basicReportTitle: '紫微基础解读', savedToAccount: '已保存在你的账户中', savePdf: '保存为 PDF', deleteReport: '删除报告', demoReport: '演示报告：命盘由真实引擎计算、数据已入库，但文字由本地示例模板生成。接入 AI 密钥后即为完整解读。', entitlement: '内容根据你的出生时间地点推算，用大白话写成。仅供自我了解与文化研究，不是预言，也不构成任何建议。' },
-  en: { chart: 'Chart', backToAccount: 'My account', statusFailed: 'Failed', statusProcessing: 'Processing', statusCompleted: 'Completed', fullReportTitle: 'Zi Wei full report', basicReportTitle: 'Zi Wei basic reading', savedToAccount: 'Saved to your account', savePdf: 'Save as PDF', deleteReport: 'Delete report', demoReport: 'Demo report: the real chart and database were used, but the text came from a local template. Add an AI key for full interpretation.', entitlement: 'Written in plain language from your birth time and place. For self-reflection and cultural research only — not a prediction or advice.' },
-  es: { chart: 'Carta', backToAccount: 'Mi cuenta', statusFailed: 'Fallido', statusProcessing: 'Procesando', statusCompleted: 'Completado', fullReportTitle: 'Informe completo de Zi Wei', basicReportTitle: 'Lectura básica de Zi Wei', savedToAccount: 'Guardado en tu cuenta', savePdf: 'Guardar como PDF', deleteReport: 'Eliminar informe', demoReport: 'Informe de demostración: la carta y la base de datos son reales, pero el texto proviene de una plantilla local. Añade una clave de IA para obtener la interpretación completa.', entitlement: 'Elaborado en lenguaje sencillo a partir de tu hora y lugar de nacimiento. Solo para autoconocimiento e investigación cultural; no es una predicción ni un consejo.' },
-  fr: { chart: 'Thème', backToAccount: 'Mon compte', statusFailed: 'Échec', statusProcessing: 'En cours', statusCompleted: 'Terminé', fullReportTitle: 'Rapport complet Zi Wei', basicReportTitle: 'Lecture de base Zi Wei', savedToAccount: 'Enregistré dans votre compte', savePdf: 'Enregistrer en PDF', deleteReport: 'Supprimer le rapport', demoReport: 'Rapport de démonstration : le thème et la base de données sont réels, mais le texte provient d’un modèle local. Ajoutez une clé d’IA pour l’interprétation complète.', entitlement: 'Rédigé en langage simple à partir de votre heure et lieu de naissance. Pour la réflexion personnelle et la recherche culturelle uniquement — pas une prédiction ni un conseil.' },
-  de: { chart: 'Horoskop', backToAccount: 'Mein Konto', statusFailed: 'Fehlgeschlagen', statusProcessing: 'In Bearbeitung', statusCompleted: 'Abgeschlossen', fullReportTitle: 'Zi Wei Vollbericht', basicReportTitle: 'Zi Wei Basisdeutung', savedToAccount: 'In deinem Konto gespeichert', savePdf: 'Als PDF speichern', deleteReport: 'Bericht löschen', demoReport: 'Demo-Bericht: Das Horoskop und die Datenbank sind echt, aber der Text stammt aus einer lokalen Vorlage. Füge einen KI-Schlüssel hinzu für die vollständige Deutung.', entitlement: 'In einfacher Sprache aus deiner Geburtszeit und deinem Geburtsort erstellt. Nur zur Selbstreflexion und kulturellen Forschung — keine Vorhersage oder Beratung.' },
-  ja: { chart: '命盤', backToAccount: 'アカウントに戻る', statusFailed: '生成失敗', statusProcessing: '生成中', statusCompleted: '完了', fullReportTitle: '紫微完全版レポート', basicReportTitle: '紫微基礎解読', savedToAccount: 'アカウントに保存済みです', savePdf: 'PDFとして保存', deleteReport: 'レポートを削除', demoReport: 'デモレポート：命盤は実際のエンジンで計算されデータも保存されていますが、文章はローカルのテンプレートで生成されています。AIキーを設定すると完全な解読になります。', entitlement: '出生時刻と場所に基づいて平易な言葉で記述されています。自己理解と文化研究のみを目的とし、予測や助言ではありません。' },
+  zh: { chart: '命盘', backToAccount: '返回账户', statusFailed: '生成失败', statusProcessing: '生成中', statusCompleted: '已完成', fullReportTitle: '紫微完整报告', basicReportTitle: '紫微基础解读', savedToAccount: '已保存在你的账户中', savedLocally: '已保存在当前浏览器', savePdf: '保存为 PDF', deleteReport: '删除报告', demoReport: '演示报告：命盘由真实引擎计算、数据已入库，但文字由本地示例模板生成。接入 AI 密钥后即为完整解读。', anonReportNote: '这份基础解读只保存在当前浏览器。登录后可保存到账户，并解锁逐宫展开的完整报告。', entitlement: '内容根据你的出生时间地点推算，用大白话写成。仅供自我了解与文化研究，不是预言，也不构成任何建议。' },
+  en: { chart: 'Chart', backToAccount: 'My account', statusFailed: 'Failed', statusProcessing: 'Processing', statusCompleted: 'Completed', fullReportTitle: 'Zi Wei full report', basicReportTitle: 'Zi Wei basic reading', savedToAccount: 'Saved to your account', savedLocally: 'Saved in this browser', savePdf: 'Save as PDF', deleteReport: 'Delete report', demoReport: 'Demo report: the real chart and database were used, but the text came from a local template. Add an AI key for full interpretation.', anonReportNote: 'This basic reading is stored only in this browser. Sign in to save it to your account and unlock the full report.', entitlement: 'Written in plain language from your birth time and place. For self-reflection and cultural research only — not a prediction or advice.' },
+  es: { chart: 'Carta', backToAccount: 'Mi cuenta', statusFailed: 'Fallido', statusProcessing: 'Procesando', statusCompleted: 'Completado', fullReportTitle: 'Informe completo de Zi Wei', basicReportTitle: 'Lectura básica de Zi Wei', savedToAccount: 'Guardado en tu cuenta', savedLocally: 'Guardado en este navegador', savePdf: 'Guardar como PDF', deleteReport: 'Eliminar informe', demoReport: 'Informe de demostración: la carta y la base de datos son reales, pero el texto proviene de una plantilla local. Añade una clave de IA para obtener la interpretación completa.', anonReportNote: 'Esta lectura básica solo se guarda en este navegador. Inicia sesión para guardarla en tu cuenta y desbloquear el informe completo.', entitlement: 'Elaborado en lenguaje sencillo a partir de tu hora y lugar de nacimiento. Solo para autoconocimiento e investigación cultural; no es una predicción ni un consejo.' },
+  fr: { chart: 'Thème', backToAccount: 'Mon compte', statusFailed: 'Échec', statusProcessing: 'En cours', statusCompleted: 'Terminé', fullReportTitle: 'Rapport complet Zi Wei', basicReportTitle: 'Lecture de base Zi Wei', savedToAccount: 'Enregistré dans votre compte', savedLocally: 'Enregistré dans ce navigateur', savePdf: 'Enregistrer en PDF', deleteReport: 'Supprimer le rapport', demoReport: 'Rapport de démonstration : le thème et la base de données sont réels, mais le texte provient d’un modèle local. Ajoutez une clé d’IA pour l’interprétation complète.', anonReportNote: 'Cette lecture de base n’est enregistrée que dans ce navigateur. Connectez-vous pour l’enregistrer dans votre compte et débloquer le rapport complet.', entitlement: 'Rédigé en langage simple à partir de votre heure et lieu de naissance. Pour la réflexion personnelle et la recherche culturelle uniquement — pas une prédiction ni un conseil.' },
+  de: { chart: 'Horoskop', backToAccount: 'Mein Konto', statusFailed: 'Fehlgeschlagen', statusProcessing: 'In Bearbeitung', statusCompleted: 'Abgeschlossen', fullReportTitle: 'Zi Wei Vollbericht', basicReportTitle: 'Zi Wei Basisdeutung', savedToAccount: 'In deinem Konto gespeichert', savedLocally: 'In diesem Browser gespeichert', savePdf: 'Als PDF speichern', deleteReport: 'Bericht löschen', demoReport: 'Demo-Bericht: Das Horoskop und die Datenbank sind echt, aber der Text stammt aus einer lokalen Vorlage. Füge einen KI-Schlüssel hinzu für die vollständige Deutung.', anonReportNote: 'Diese Basisdeutung wird nur in diesem Browser gespeichert. Melde dich an, um sie in deinem Konto zu speichern und den Vollbericht freizuschalten.', entitlement: 'In einfacher Sprache aus deiner Geburtszeit und deinem Geburtsort erstellt. Nur zur Selbstreflexion und kulturellen Forschung — keine Vorhersage oder Beratung.' },
+  ja: { chart: '命盤', backToAccount: 'アカウントに戻る', statusFailed: '生成失敗', statusProcessing: '生成中', statusCompleted: '完了', fullReportTitle: '紫微完全版レポート', basicReportTitle: '紫微基礎解読', savedToAccount: 'アカウントに保存済みです', savedLocally: 'このブラウザに保存済み', savePdf: 'PDFとして保存', deleteReport: 'レポートを削除', demoReport: 'デモレポート：命盤は実際のエンジンで計算されデータも保存されていますが、文章はローカルのテンプレートで生成されています。AIキーを設定すると完全な解読になります。', anonReportNote: 'この基礎解読は現在のブラウザにのみ保存されています。ログインするとアカウントに保存し、完全版レポートを解除できます。', entitlement: '出生時刻と場所に基づいて平易な言葉で記述されています。自己理解と文化研究のみを目的とし、予測や助言ではありません。' },
 };
 
 /**
@@ -91,6 +91,8 @@ export default function ReportPage() {
   const router = useRouter();
   const [report, setReport] = useState<Report | null>(null);
   const [error, setError] = useState('');
+  /** 报告仅存在于浏览器本地（未登录访客生成的基础解读）。 */
+  const [localOnly, setLocalOnly] = useState(false);
   /** 报告因订单退款被关闭（区别于普通加载失败）。 */
   const [locked, setLocked] = useState(false);
   const [pay, setPay] = useState<{ isDemo: boolean; paymentsEnabled: boolean; provider?: string; loggedIn: boolean; unlocked: boolean } | null>(null);
@@ -101,10 +103,15 @@ export default function ReportPage() {
   const L = (k: keyof ReportStrings) => S[lang][k];
 
   useEffect(() => {
+    // 未登录访客的基础解读只存在浏览器本地：优先读本地，命中就不再请求服务端。
+    const local = demoStore.getReport(id);
+    if (local) {
+      setReport(local as Report);
+      setLocalOnly(true);
+      return;
+    }
     if (isDemoMode()) {
-      const row = demoStore.getReport(id);
-      if (!row) setError(t(lang, 'errorGeneric'));
-      else setReport(row as Report);
+      setError(t(lang, 'errorGeneric'));
       return;
     }
     const supabase = createClient();
@@ -167,9 +174,10 @@ export default function ReportPage() {
 
   async function deleteReport() {
     if (!window.confirm(t(lang, 'confirmDelete'))) return;
-    if (isDemoMode()) {
+    // 本地报告（演示 / 未登录访客）只能从浏览器删除，没有服务端记录可删。
+    if (isDemoMode() || localOnly) {
       demoStore.deleteReport(id);
-      router.replace('/account');
+      router.replace(isDemoMode() ? '/account' : '/');
       return;
     }
     const supabase = createClient();
@@ -195,8 +203,11 @@ export default function ReportPage() {
         window.location.href = data.url;
         return;
       }
-      if (data.error === 'NEED_LOGIN') setError(t(lang, 'buyNeedLogin'));
-      else if (data.error === 'PAYMENTS_NOT_CONFIGURED' || data.error === 'DEMO_MODE') setError(t(lang, 'buyUnavailable'));
+      if (data.error === 'NEED_LOGIN') {
+        // 只有解锁完整版才要求登录：引导登录，回跳后继续结账。
+        router.push(`/auth?next=${encodeURIComponent(`/report/${id}`)}`);
+        return;
+      } else if (data.error === 'PAYMENTS_NOT_CONFIGURED' || data.error === 'DEMO_MODE') setError(t(lang, 'buyUnavailable'));
       else setError(t(lang, 'buyError'));
     } catch {
       setError(t(lang, 'buyError'));
@@ -396,7 +407,7 @@ export default function ReportPage() {
               )}
 
               <div className="flex flex-wrap items-center justify-between gap-3 border-y border-[rgba(27,23,16,.18)] py-3 print:hidden">
-                <p className="fineprint">{L('savedToAccount')}</p>
+                <p className="fineprint">{localOnly ? L('savedLocally') : L('savedToAccount')}</p>
                 <div className="flex items-center gap-4">
                   <button
                     className="text-sm text-[rgba(27,23,16,.72)] underline underline-offset-4 decoration-[rgba(27,23,16,.3)] hover:text-gold hover:decoration-gold"
@@ -413,7 +424,11 @@ export default function ReportPage() {
                 </div>
               </div>
 
-              {isDemoMode() && <p className="fineprint">{L('demoReport')}</p>}
+              {isDemoMode() ? (
+                <p className="fineprint">{L('demoReport')}</p>
+              ) : localOnly ? (
+                <p className="fineprint">{L('anonReportNote')}</p>
+              ) : null}
 
               {toc.length > 1 && (
                 <nav className="toc" aria-label={t(lang, 'reports')} data-reveal>
