@@ -7,6 +7,7 @@ import { findCachedBasicReportId } from '@/lib/report-cache';
 import { generateBasicReading } from '@/lib/ai';
 import { isDemoMode, generateDemoReading, DEMO, type DemoReport } from '@/lib/demo';
 import { checkRateLimit, clientKey } from '@/lib/rate-limit';
+import { toPreviewChart } from '@/lib/chart-preview';
 import { isLang, type Lang } from '@/lib/i18n';
 
 export const runtime = 'nodejs';
@@ -131,7 +132,8 @@ export async function POST(request: Request) {
         report_type: 'basic',
         created_at: new Date().toISOString(),
         content: generateDemoReading(facts, lang, { variant: 'preview' }),
-        chart: built.chart,
+        // 未付费访客只拿到预览盘：十二宫骨架 + 主星名，完整星曜/四化/大限不下发。
+        chart: toPreviewChart(built.chart),
         cacheKey: chartCacheKey({ ...input, name: label }),
         profile: {
           label,

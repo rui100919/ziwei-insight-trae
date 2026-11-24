@@ -1,4 +1,4 @@
-import type { ZiweiChart } from '@/lib/ziwei/types';
+import type { ChartView } from '@/lib/chart-preview';
 import type { Lang } from '@/lib/i18n';
 
 // 地支：中文与日文共用汉字，其它语言用通行拼音。
@@ -81,7 +81,7 @@ const SIHUA_STYLE: Record<string, string> = {
 };
 
 type Props = {
-  chart: ZiweiChart;
+  chart: ChartView;
   lang: Lang;
   /** 有对应解读章节的宫位名，点击可跳到对应文字。 */
   linkedPalaces?: Set<string>;

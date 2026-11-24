@@ -7,12 +7,14 @@ import { createAdmin } from '@/lib/supabase/admin';
  * 安全约定：
  * - DODO_PAYMENTS_API_KEY / DODO_PAYMENTS_WEBHOOK_KEY 只在服务端使用，绝不加 NEXT_PUBLIC_ 前缀。
  * - 创建 Checkout 与核实支付都以服务端订单为准，不采信前端传来的金额或状态。
- * - 订单金额固定为服务端常量，Dodo 返回金额必须与其匹配才发货。
+ * - 订单金额由服务端下单时写入，Dodo 返回金额必须与该订单金额匹配才发货。
+ *   （按订单校验可兼容调价前后的历史订单：9.90 的旧订单与 9.99 的新订单各自成立。）
  */
 
-export const FULL_REPORT_AMOUNT = 9.9;
+export const FULL_REPORT_AMOUNT = 9.99;
 export const FULL_REPORT_CURRENCY = 'USD';
-const AMOUNT_CENTS = Math.round(FULL_REPORT_AMOUNT * 100);
+/** 当前售价（分），仅用于创建订单；发货校验以订单自身金额为准。 */
+export const FULL_REPORT_AMOUNT_CENTS = Math.round(FULL_REPORT_AMOUNT * 100);
 
 /** 默认使用测试模式，只有显式配置 live_mode 才会进入正式支付环境。 */
 function dodoEnvironment(): 'test_mode' | 'live_mode' {
@@ -136,9 +138,15 @@ export async function fulfillDodoPayment(
   if (!Number.isFinite(total) || !Number.isFinite(tax) || tax < 0 || tax > total) {
     throw new DodoValidationError('DODO_AMOUNT_INVALID');
   }
+  // 以订单自身金额为准（下单时由服务端写入），而不是当前售价常量：
+  // 这样调价前创建的 9.90 订单仍能正常发货，也不会因为改常量而放宽校验。
+  const expectedCents = Math.round(Number(order.amount) * 100);
+  if (!Number.isFinite(expectedCents) || expectedCents <= 0) {
+    throw new DodoValidationError('DODO_AMOUNT_INVALID');
+  }
   // 税额含在结算总价内时用净额比对，税额另计时用总额比对；两者都不符则不发货。
-  const netMatches = Math.abs(total - tax - AMOUNT_CENTS) <= 1;
-  const grossMatches = Math.abs(total - AMOUNT_CENTS) <= 1;
+  const netMatches = Math.abs(total - tax - expectedCents) <= 1;
+  const grossMatches = Math.abs(total - expectedCents) <= 1;
   if (!netMatches && !grossMatches) throw new DodoValidationError('DODO_AMOUNT_MISMATCH');
 
   if (order.status === 'paid') return { orderId: order.id, alreadyPaid: true };
