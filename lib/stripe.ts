@@ -25,5 +25,5 @@ export function isPaymentsConfigured(): boolean {
 
 /** 完整报告价格（USD 分），仅用于创建本地 pending 订单的金额占位；
  *  真实结算金额以 Stripe Price 为准，Webhook 会用 amount_total 覆盖校验。 */
-export const FULL_REPORT_AMOUNT = 990; // $9.90
+export const FULL_REPORT_AMOUNT = 999; // $9.99
 export const FULL_REPORT_CURRENCY = 'usd';

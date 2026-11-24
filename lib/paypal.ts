@@ -136,5 +136,5 @@ export async function getOrder(orderId: string): Promise<OrderResult> {
 }
 
 /** 完整报告价格：与订单表、PayPal 下单金额保持一致，服务端常量，不接收前端金额。 */
-export const FULL_REPORT_AMOUNT = 9.9;
+export const FULL_REPORT_AMOUNT = 9.99;
 export const FULL_REPORT_CURRENCY = 'USD';

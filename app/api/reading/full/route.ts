@@ -13,6 +13,7 @@ import { checkRateLimit, clientKey } from '@/lib/rate-limit';
 import { createClient } from '@/lib/supabase/server';
 import { createAdmin } from '@/lib/supabase/admin';
 import { isLang, type Lang } from '@/lib/i18n';
+import { SAMPLE_BIRTH, SAMPLE_PROFILE_LABEL } from '@/lib/sample-birth';
 
 export const runtime = 'nodejs';
 
@@ -60,10 +61,12 @@ export async function POST(request: Request) {
     }
     const isSample = body.sample === true;
 
-    if (!body.birthDate || !body.birthPlace || !body.timezone || (body.timeKnown === true && !body.birthTime)) {
+    // 样例请求完全忽略客户端出生字段：固定使用服务端的虚构样例资料，
+    // 避免把访客真实出生资料渲染成「示例命盘」。
+    if (!isSample && (!body.birthDate || !body.birthPlace || !body.timezone || (body.timeKnown === true && !body.birthTime))) {
       return NextResponse.json({ error: 'INVALID_REQUEST' }, { status: 400 });
     }
-    if (body.gender !== 'male' && body.gender !== 'female') {
+    if (!isSample && body.gender !== 'male' && body.gender !== 'female') {
       return NextResponse.json({ error: 'INVALID_GENDER' }, { status: 400 });
     }
     if (!demo && !isSample && (!body.idempotencyKey || body.idempotencyKey.length < 8)) {
@@ -87,19 +90,24 @@ export async function POST(request: Request) {
       if (!ent) return NextResponse.json({ error: 'PAYMENT_REQUIRED' }, { status: 402 });
     }
 
-    const input: ChartInput = {
-      birthDate: body.birthDate,
-      birthTime: body.birthTime,
-      timeKnown: body.timeKnown === true,
-      birthPlace: body.birthPlace,
-      timezone: body.timezone,
-      longitude: body.longitude,
-      gender: body.gender,
-    };
+    const birth = isSample
+      ? SAMPLE_BIRTH
+      : {
+          birthDate: body.birthDate,
+          birthTime: body.birthTime,
+          timeKnown: body.timeKnown === true,
+          birthPlace: body.birthPlace,
+          timezone: body.timezone,
+          longitude: body.longitude,
+          gender: body.gender,
+        };
+    const input = { ...birth };
     const built = buildChart(input, lang);
-    const profileLabel = typeof body.profileLabel === 'string' && body.profileLabel.trim()
-      ? body.profileLabel
-      : DEFAULT_PROFILE_LABEL[lang];
+    const profileLabel = isSample
+      ? SAMPLE_PROFILE_LABEL
+      : typeof body.profileLabel === 'string' && body.profileLabel.trim()
+        ? body.profileLabel
+        : DEFAULT_PROFILE_LABEL[lang];
 
     // 同一命盘 + 同一虚岁已有完整报告：直接复用，不重复落库、不重复生成。
     // 身份 = 姓名 + 出生资料（与网络/IP 无关）；只对「正式保存」请求生效，样品仍即时生成。

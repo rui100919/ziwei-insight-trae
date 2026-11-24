@@ -12,7 +12,7 @@ import { ChartBoard } from '@/components/ChartBoard';
 import { CoverChart } from '@/components/oriental/CoverChart';
 import { Starfield } from '@/components/oriental/Starfield';
 import { trackEvent, E } from '@/lib/analytics';
-import type { ZiweiChart } from '@/lib/ziwei/types';
+import type { ChartView } from '@/lib/chart-preview';
 
 type Profile = { label: string; birthDate: string; birthTime: string; birthPlace: string; timezone: string; timeKnown: boolean };
 /** 兼容单语言新报告与旧双语报告：palaces / daXian / patterns 两种字段形态都接受。 */
@@ -37,7 +37,7 @@ type Report = {
   content: ReportContent | null;
   created_at: string;
   profile?: Profile;
-  chart?: ZiweiChart | null;
+  chart?: ChartView | null;
 };
 
 /** 报告页局部文案（字典里没有的条目），六语言各自独立翻译。 */
@@ -93,6 +93,8 @@ export default function ReportPage() {
   const [error, setError] = useState('');
   /** 报告仅存在于浏览器本地（未登录访客生成的基础解读）。 */
   const [localOnly, setLocalOnly] = useState(false);
+  /** 命盘是否完整版（服务端按权益裁剪，前端只读结果）。 */
+  const [chartFull, setChartFull] = useState(false);
   /** 报告因订单退款被关闭（区别于普通加载失败）。 */
   const [locked, setLocked] = useState(false);
   const [pay, setPay] = useState<{ isDemo: boolean; paymentsEnabled: boolean; provider?: string; loggedIn: boolean; unlocked: boolean } | null>(null);
@@ -108,6 +110,8 @@ export default function ReportPage() {
     if (local) {
       setReport(local as Report);
       setLocalOnly(true);
+      // 演示模式本地库里有完整盘面；未登录访客的本地报告只存预览盘。
+      setChartFull(isDemoMode());
       return;
     }
     if (isDemoMode()) {
@@ -119,7 +123,7 @@ export default function ReportPage() {
       if (!data.user) { router.replace(`/auth?next=${encodeURIComponent(`/report/${id}`)}`); return; }
       const { data: row, error } = await supabase
         .from('reports')
-        .select('id, language, report_type, status, content, created_at, chart:charts(chart_data, birth_profile:birth_profiles(label, birth_date, birth_time, birth_time_known, birth_place, timezone))')
+        .select('id, language, report_type, status, content, created_at')
         .eq('id', id)
         .maybeSingle();
       if (error || !row) {
@@ -130,9 +134,19 @@ export default function ReportPage() {
         setError(t(lang, isLocked ? 'reportLocked' : 'errorGeneric'));
       } else {
         const raw = row as unknown as Record<string, unknown>;
-        const chart = (Array.isArray(raw.chart) ? raw.chart[0] : raw.chart) as Record<string, unknown> | null | undefined;
-        const nested = chart?.birth_profile;
-        const bp = (Array.isArray(nested) ? nested[0] : nested) as Record<string, unknown> | null | undefined;
+        // 盘面与出生档案统一走权益函数：未购买只返回预览盘（十二宫骨架 + 主星），
+        // 裁剪在数据库内完成，前端改参数也拿不到完整星曜。
+        const { data: view } = await supabase.rpc('get_report_chart', { p_report_id: id });
+        const payload = (view ?? null) as {
+          full?: boolean;
+          chart?: ChartView | null;
+          profile?: {
+            label?: string; birthDate?: string; birthTime?: string | null;
+            timeKnown?: boolean; birthPlace?: string; timezone?: string;
+          } | null;
+        } | null;
+        const bp = payload?.profile ?? null;
+        setChartFull(Boolean(payload?.full));
         setReport({
           id: String(raw.id),
           language: String(raw.language),
@@ -140,14 +154,14 @@ export default function ReportPage() {
           status: raw.status ? String(raw.status) : undefined,
           content: raw.content as Report['content'],
           created_at: String(raw.created_at),
-          chart: (chart?.chart_data ?? null) as ZiweiChart | null,
+          chart: (payload?.chart ?? null) as ChartView | null,
           profile: bp ? {
-            label: String(bp.label),
-            birthDate: String(bp.birth_date),
-            birthTime: String(bp.birth_time ?? ''),
-            birthPlace: String(bp.birth_place ?? ''),
-            timezone: String(bp.timezone),
-            timeKnown: Boolean(bp.birth_time_known),
+            label: bp.label ?? '',
+            birthDate: bp.birthDate ?? '',
+            birthTime: bp.birthTime ?? '',
+            birthPlace: bp.birthPlace ?? '',
+            timezone: bp.timezone ?? '',
+            timeKnown: Boolean(bp.timeKnown),
           } : undefined,
         });
       }
@@ -373,7 +387,30 @@ export default function ReportPage() {
           {report.chart && (
             <section id="chart" className="bg-paper scroll-mt-24" data-reveal>
               <div className="wrap py-10">
-                <ChartBoard chart={report.chart} lang={lang} linkedPalaces={linkedPalaces.size ? linkedPalaces : undefined} />
+                <ChartBoard
+                  chart={report.chart}
+                  lang={lang}
+                  linkedPalaces={chartFull && linkedPalaces.size ? linkedPalaces : undefined}
+                />
+                {/* 未解锁：盘面只显示十二宫骨架与主星，完整星曜在购买后由服务端下发。 */}
+                {!chartFull && (
+                  <div className="locked mt-8" data-reveal>
+                    <div className="lock-header">
+                      <p className="eyebrow">{t(lang, 'chartPreviewLocked')}</p>
+                      <h3>{t(lang, 'chartPaywallTitle')}</h3>
+                      <p>{t(lang, 'chartPaywallDesc')}</p>
+                    </div>
+                    <div className="locked-actions">
+                      <button className="btn" onClick={buy} disabled={buying}>
+                        {buying ? t(lang, 'payOverlaySub') : t(lang, 'chartPaywallCta')}
+                      </button>
+                      <Link className="btn-ghost" href="/full-preview">{t(lang, 'lockedCtaSample')}</Link>
+                    </div>
+                    <p className="fine">
+                      {t(lang, 'chartPaywallPrice')} · {t(lang, 'chartPaywallOneTime')}
+                    </p>
+                  </div>
+                )}
               </div>
             </section>
           )}
