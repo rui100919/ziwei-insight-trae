@@ -1,12 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { CityPicker } from '@/components/CityPicker';
+import { useEffect, useRef, useState } from 'react';
 import { PayPalButton } from '@/components/PayPalButton';
 import { Starfield } from '@/components/oriental/Starfield';
 import { CoverChart } from '@/components/oriental/CoverChart';
-import type { City } from '@/lib/cities';
 import { PALACE_LABELS, t, type Lang } from '@/lib/i18n';
 import { useLang } from '@/components/LangProvider';
 
@@ -23,16 +20,15 @@ type FullContent = {
 
 /** 本页局部文案（字典里没有的条目），六语言各自独立翻译。 */
 type PreviewStrings = {
-  home: string; redirecting: string; birthDetails: string; changeToRerun: string;
-  sampleChart: string; age: string; palaces: string; phases: string;
+  home: string; redirecting: string; sampleChart: string; age: string; palaces: string; phases: string;
 };
 const S: Record<Lang, PreviewStrings> = {
-  zh: { home: '返回首页', redirecting: '正在跳转支付…', birthDetails: '出生资料', changeToRerun: '改一下就能重新推演。', sampleChart: '示例命盘', age: '虚岁', palaces: '宫', phases: '段大限' },
-  en: { home: 'Home', redirecting: 'Redirecting…', birthDetails: 'Birth details', changeToRerun: 'Change any field to run it again.', sampleChart: 'Sample chart', age: 'age', palaces: 'palaces', phases: 'phases' },
-  es: { home: 'Inicio', redirecting: 'Redirigiendo…', birthDetails: 'Datos de nacimiento', changeToRerun: 'Cambia cualquier campo para volver a calcularlo.', sampleChart: 'Carta de ejemplo', age: 'edad', palaces: 'palacios', phases: 'etapas' },
-  fr: { home: 'Accueil', redirecting: 'Redirection…', birthDetails: 'Données de naissance', changeToRerun: 'Modifiez un champ pour relancer le calcul.', sampleChart: 'Thème d’exemple', age: 'âge', palaces: 'palais', phases: 'périodes' },
-  de: { home: 'Startseite', redirecting: 'Weiterleitung…', birthDetails: 'Geburtsdaten', changeToRerun: 'Ändere ein Feld, um es neu zu berechnen.', sampleChart: 'Beispielhoroskop', age: 'Alter', palaces: 'Paläste', phases: 'Phasen' },
-  ja: { home: 'ホームに戻る', redirecting: '支払いに移動中…', birthDetails: '出生情報', changeToRerun: '項目を変更すると再計算できます。', sampleChart: 'サンプル命盤', age: '数え年', palaces: '宮', phases: '段階' },
+  zh: { home: '返回首页', redirecting: '正在跳转支付…', sampleChart: '示例命盘', age: '虚岁', palaces: '宫', phases: '段大限' },
+  en: { home: 'Home', redirecting: 'Redirecting…', sampleChart: 'Sample chart', age: 'age', palaces: 'palaces', phases: 'phases' },
+  es: { home: 'Inicio', redirecting: 'Redirigiendo…', sampleChart: 'Carta de ejemplo', age: 'edad', palaces: 'palacios', phases: 'etapas' },
+  fr: { home: 'Accueil', redirecting: 'Redirection…', sampleChart: 'Thème d’exemple', age: 'âge', palaces: 'palais', phases: 'périodes' },
+  de: { home: 'Startseite', redirecting: 'Weiterleitung…', sampleChart: 'Beispielhoroskop', age: 'Alter', palaces: 'Paläste', phases: 'Phasen' },
+  ja: { home: 'ホームに戻る', redirecting: '支払いに移動中…', sampleChart: 'サンプル命盤', age: '数え年', palaces: '宮', phases: '段階' },
 };
 type Meta = {
   birthInfo: { year: number; month: number; day: number; hour?: number; gender: string; city: string };
@@ -74,23 +70,9 @@ function buildToc(content: FullContent | null, lang: Lang): TocItem[] {
 
 export default function FullPreviewPage() {
   const { lang } = useLang();
-  const router = useRouter();
-  const zones = useMemo(() => {
-    try { return Intl.supportedValuesOf('timeZone'); } catch { return ['Asia/Shanghai', 'Asia/Kuala_Lumpur', 'Europe/London', 'America/New_York']; }
-  }, []);
-  const [birthDate, setBirthDate] = useState('1990-06-15');
-  const [birthTime, setBirthTime] = useState('14:30');
-  const [timeKnown, setTimeKnown] = useState(true);
-  const [birthPlace, setBirthPlace] = useState('上海');
-  const [timezone, setTimezone] = useState('Asia/Shanghai');
-  const [longitude, setLongitude] = useState('121.5');
-  const [cityPicked, setCityPicked] = useState(true);
-  const [gender, setGender] = useState<'male' | 'female'>('female');
   const [content, setContent] = useState<FullContent | null>(null);
   const [meta, setMeta] = useState<Meta | null>(null);
   const [busy, setBusy] = useState(false);
-  const [busyMode, setBusyMode] = useState<'sample' | 'full' | null>(null);
-  const requestRef = useRef<{ signature: string; key: string } | null>(null);
   // 样品请求竞态防护：切换语言时，旧语言的异步响应不得覆盖新语言内容。
   const sampleTokenRef = useRef(0);
   const [error, setError] = useState('');
@@ -98,29 +80,15 @@ export default function FullPreviewPage() {
   const [buying, setBuying] = useState(false);
   const [payError, setPayError] = useState('');
 
-  function handleCitySelect(city: City) {
-    setLongitude(String(city.lon));
-    setTimezone(city.tz);
-    setBirthPlace(lang === 'zh' ? (city.a.find((a) => /[\u4e00-\u9fff]/.test(a)) ?? city.n) : city.n);
-    setCityPicked(true);
-  }
-  function handlePlaceChange(value: string) {
-    setBirthPlace(value);
-    if (cityPicked) { setCityPicked(false); setLongitude(''); }
-  }
-
+  /** 样例命盘由服务端固定为虚构资料，本页不接收也不展示任何真实用户出生信息。 */
   async function generateSample() {
     const token = ++sampleTokenRef.current;
-    setBusy(true); setBusyMode('sample'); setError(''); setPayError('');
+    setBusy(true); setError(''); setPayError('');
     try {
       const res = await fetch('/api/reading/full', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          birthDate, birthTime, timeKnown, birthPlace, timezone,
-          longitude: longitude === '' ? null : Number(longitude),
-          gender, lang, sample: true,
-        }),
+        body: JSON.stringify({ lang, sample: true }),
       });
       const data = await res.json();
       // 切换语言或再次点击后，旧请求作废，只采纳最新一次响应。
@@ -136,43 +104,8 @@ export default function FullPreviewPage() {
       setError(t(lang, 'errorGeneric'));
     } finally {
       if (token === sampleTokenRef.current) {
-        setBusy(false); setBusyMode(null);
+        setBusy(false);
       }
-    }
-  }
-
-  async function generateFull() {
-    if (busy) return;
-    const input = {
-      birthDate, birthTime, timeKnown, birthPlace, timezone,
-      longitude: longitude === '' ? null : Number(longitude),
-      gender, lang,
-    };
-    const signature = JSON.stringify(input);
-    if (!requestRef.current || requestRef.current.signature !== signature) {
-      requestRef.current = { signature, key: crypto.randomUUID() };
-    }
-    setBusy(true); setBusyMode('full'); setError(''); setPayError('');
-    try {
-      const res = await fetch('/api/reading/full', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...input, idempotencyKey: requestRef.current.key }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        if (data.error === 'NEED_LOGIN') setError(t(lang, 'buyNeedLogin'));
-        else if (data.error === 'PAYMENT_REQUIRED') setError(t(lang, 'buyIntro'));
-        else if (data.error === 'INVALID_TIMEZONE') setError(t(lang, 'invalidTimezone'));
-        else setError(t(lang, 'errorGeneric'));
-        return;
-      }
-      if (!data.reportId) { setError(t(lang, 'errorGeneric')); return; }
-      router.push(`/report/${data.reportId}`);
-    } catch {
-      setError(t(lang, 'errorGeneric'));
-    } finally {
-      setBusy(false); setBusyMode(null);
     }
   }
 
@@ -259,67 +192,22 @@ export default function FullPreviewPage() {
 
           <div className="cover-actions" data-reveal>
             <a href="#unlock" className="btn">{t(lang, 'previewUnlock')}<span className="arw" aria-hidden="true">→</span></a>
-            <a href="#birth" className="btn-ghost">{L('birthDetails')}</a>
+            <a href="/chart/new" className="btn-ghost">{t(lang, 'start')}</a>
           </div>
 
           <p className="cover-note" data-reveal>{t(lang, 'fullSampleHint')}</p>
         </div>
       </section>
 
-      {/* 可修改的出生资料：放在深色区，CityPicker 用默认外观（不传 sheet） */}
-      <section id="birth" style={{ background: 'var(--ink)' }}>
-        <div className="wrap" style={{ paddingTop: 'clamp(64px, 8vw, 104px)', paddingBottom: 'clamp(64px, 8vw, 104px)' }}>
+      {/* 样例说明：本页只用固定的虚构样本，不接收访客出生资料，避免与真实用户数据混淆。 */}
+      <section id="sample" style={{ background: 'var(--ink)' }}>
+        <div className="wrap" style={{ paddingTop: 'clamp(48px, 6vw, 76px)', paddingBottom: 'clamp(48px, 6vw, 76px)' }}>
           <div data-reveal>
-            <p className="eyebrow">{L('birthDetails')}</p>
-            <p style={{ marginTop: 10, fontSize: 13, color: 'var(--muted)' }}>{L('changeToRerun')}</p>
+            <p className="eyebrow">{L('sampleChart')}</p>
+            <p style={{ marginTop: 10, fontSize: 13, lineHeight: 1.8, color: 'var(--muted)' }}>
+              {t(lang, 'fullSampleHint')}
+            </p>
           </div>
-
-          <div className="grid gap-5 md:grid-cols-2" data-reveal style={{ marginTop: 28 }}>
-            <div>
-              <label className="label">{t(lang, 'birthDate')}</label>
-              <input className="input" type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
-            </div>
-            <div style={{ position: 'relative' }}>
-              <label className="label">{t(lang, 'birthTime')}</label>
-              <label style={{ position: 'absolute', top: 0, right: 0, display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--muted)', whiteSpace: 'nowrap' }}>
-                <input type="checkbox" style={{ accentColor: 'var(--gold)' }} checked={!timeKnown} onChange={(e) => setTimeKnown(!e.target.checked)} />
-                {t(lang, 'timeUnknown')}
-              </label>
-              <input className="input" type="time" value={birthTime} disabled={!timeKnown} onChange={(e) => setBirthTime(e.target.value)} />
-            </div>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2" data-reveal style={{ marginTop: 5 }}>
-            <div>
-              <label className="label">{t(lang, 'birthPlace')}</label>
-              <CityPicker lang={lang} value={birthPlace} onChange={handlePlaceChange} onSelect={handleCitySelect} />
-              {cityPicked && longitude !== '' && (
-                <p style={{ marginTop: 8, fontSize: 12, color: '#a8c49c' }}>✓ {t(lang, 'autoResolved')} · {Number(longitude).toFixed(2)}° · {timezone}</p>
-              )}
-            </div>
-            <div>
-              <label className="label">{t(lang, 'gender')}</label>
-              <select className="input" value={gender} onChange={(e) => setGender(e.target.value as 'male' | 'female')}>
-                <option value="male">{t(lang, 'male')}</option>
-                <option value="female">{t(lang, 'female')}</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-3" data-reveal style={{ marginTop: 28 }}>
-            <button className="btn-ghost" disabled={busy} onClick={generateSample}>
-              {busyMode === 'sample' ? t(lang, 'fullSampleGenerating') : t(lang, 'fullRegenerate')}
-            </button>
-            {pay?.unlocked && !pay.isDemo && (
-              <button className="btn" disabled={busy} onClick={generateFull}>
-                {busyMode === 'full' ? t(lang, 'fullGenerating') : t(lang, 'fullGenerateSaved')}
-                {busyMode !== 'full' ? ' →' : ''}
-              </button>
-            )}
-          </div>
-          <p style={{ marginTop: 14, fontSize: 12, lineHeight: 1.7, color: 'var(--muted)' }} data-reveal>
-            {pay?.unlocked && !pay.isDemo ? t(lang, 'fullSaveHint') : t(lang, 'fullSampleHint')}
-          </p>
           {error && <p style={{ marginTop: 12, fontSize: 14, color: '#d98a7a' }}>{error}</p>}
         </div>
       </section>
