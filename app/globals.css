@@ -3189,8 +3189,69 @@ footer {
   .toc,
   .edit,
   .cover-actions,
+  .nav,
   button {
     display: none !important;
+  }
+
+  /* 去掉大块留白，避免章节被顶到下一页后留下整页空白。 */
+  section,
+  .wrap,
+  .report-wrap {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .report .chapter {
+    margin-top: 18pt !important;
+  }
+
+  /* 盘面单独占一页并整体保留，避免被分页切开或顶部被遮住。 */
+  #chart {
+    break-before: page;
+    break-inside: avoid;
+  }
+  #chart .wrap {
+    padding: 0 !important;
+  }
+  /* 纸面比屏幕宽，盘面铺满可印宽度，字号随之放大更易读。 */
+  #chart [class*='max-w-'] {
+    max-width: 660px !important;
+  }
+  .report .palace {
+    break-inside: avoid;
+  }
+
+  /* 打印用高对比度：盘面与正文的浅色文字统一加深。 */
+  #chart,
+  #chart [class*='text-ink'],
+  #chart [class*='text-gold'],
+  #chart [class*='text-plum'] {
+    color: #111 !important;
+  }
+  #chart [class*='border-line'],
+  #chart [class*='border-gold'] {
+    border-color: #b9ad97 !important;
+  }
+  #chart [class*='bg-white'],
+  #chart [class*='bg-gold'] {
+    background: #fff !important;
+  }
+  .report,
+  .report p,
+  .report li,
+  .report dd,
+  .report .body,
+  .report .meta,
+  .report .fine {
+    color: #1a1a1a !important;
+  }
+  .report h1,
+  .report h2,
+  .report h3,
+  .report h4,
+  .report .pt,
+  .report summary {
+    color: #000 !important;
   }
 }
 
