@@ -1,0 +1,45 @@
+MIT License
+
+Copyright (c) 2026 紫微研究
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================
+Third-party components and attribution
+================================================================
+
+1) Ziwei chart engine — lib/ziwei/*
+   Source: https://github.com/Renhuai123/ziwei-doushu
+   Author: 王多鱼AI / 紫微研究
+   License: MIT (see the license text above, reproduced verbatim from the
+            upstream LICENSE file)
+   Files used: algorithm, constants, sihua, types, true-solar-time,
+   school-config, school-data, school-tables.generated, yunxian-context,
+   clock-adjust, dst-cn, lunar-solar, shier-shen, patterns and the
+   patterns-ding* modules.
+   NOTE: This product uses the engine CODE only. It does NOT ship the
+   non-commercial materials from the upstream repository — namely the
+   "倪师原话" corpus under docs/tianji-ziwei/ (CC BY-NC-SA 4.0), the
+   research directory transcripts, or the released interpretation datasets.
+   All user-facing reading text in this product is written independently and
+   does not reproduce quoted source material.
+
+2) iztro — MIT License
+3) lunar-javascript — MIT License
+4) City dataset — GeoNames (https://www.geonames.org), CC BY 4.0
