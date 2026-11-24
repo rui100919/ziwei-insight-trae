@@ -26,6 +26,8 @@ export type DaXianSection = { label: string; text: string };
 /** 格局与神煞：只取引擎的判定结果，用白话转述，不引古籍或讲义原文。 */
 export type PatternsSection = { title: string; text: string; count: number };
 
+export type TopicSection = { key: string; title: string; text: string };
+
 export type FullReportContent = {
   overview: string;
   personality: string;
@@ -34,6 +36,12 @@ export type FullReportContent = {
   patterns?: PatternsSection;
   currentPhase: string;
   caveats: string;
+  /** 04 一句话认识自己 */
+  oneLine?: string;
+  /** 07 事业 / 财富 / 感情专题 */
+  topics?: TopicSection[];
+  /** 11 优势与挑战 */
+  strength?: { text: string };
 };
 
 /** 生成完整报告所需的时间元数据（来自引擎，避免解析多语言 timeNote 文本）。 */
@@ -386,6 +394,86 @@ const T = {
       ja: '十年はおおよその目安にすぎず、実際のペースはあなたが決めるものです。',
     },
   ],
+  oneLine: {
+    zh: '一句话认识你：{labels}。这也是别人最先感受到的你，你最顺手的本事是{talent}',
+    en: 'In one line: {labels}. That is what people feel first about you, and your natural strength is {talent}',
+    es: 'En una línea: {labels}. Es lo primero que los demás perciben de ti, y tu fuerza natural es {talent}',
+    fr: 'En une phrase : {labels}. C’est ce que les autres perçoivent d’abord de vous, et votre force naturelle est {talent}',
+    de: 'In einem Satz: {labels}. Das spüren andere zuerst an dir, und deine natürliche Stärke ist {talent}',
+    ja: '一言で言えば：{labels}。これが人から最初に感じられるあなたで、自然に発揮できる力は{talent}',
+  },
+  oneLineEmpty: {
+    zh: '这张盘的主星分布比较平均，没有被某一种气质独占——你更像是在不同场合切换不同的一面。',
+    en: 'The major stars here are fairly evenly spread, with no single temperament taking over — you tend to shift between different sides depending on the setting.',
+    es: 'Las estrellas principales están bastante repartidas y ningún temperamento domina: sueles cambiar de lado según el contexto.',
+    fr: 'Les astres majeurs sont assez répartis, sans qu’un tempérament domine : vous changez de facette selon le contexte.',
+    de: 'Die Hauptsterne sind recht gleichmäßig verteilt, kein Temperament dominiert – du wechselst je nach Situation zwischen verschiedenen Seiten.',
+    ja: '主星の配置は比較的均等で、一つの気質が独占しているわけではありません。場面によって違う一面を出すタイプです。',
+  },
+  topicLead: {
+    zh: '{title}这一块，主星呈现出来的气质是{labels}。',
+    en: 'In {title}, the main stars read as: {labels}. ',
+    es: 'En {title}, las estrellas principales se leen así: {labels}. ',
+    fr: 'Dans {title}, les astres majeurs se lisent ainsi : {labels}. ',
+    de: 'In {title} lesen sich die Hauptsterne so: {labels}. ',
+    ja: '{title}では、主星はこう表れます：{labels}。',
+  },
+  topicEmpty: {
+    zh: '这一宫没有主星，传统上看作随缘、弹性较大，不必硬套一种解释。',
+    en: 'No major star here. Traditionally this area is read as open-ended, without one fixed interpretation.',
+    es: 'Aquí no hay estrella principal. Tradicionalmente se lee como abierta, sin una interpretación fija.',
+    fr: 'Aucun astre majeur ici. Traditionnellement, cette zone est lue comme ouverte, sans interprétation figée.',
+    de: 'Kein Hauptstern hier. Traditionell wird dieser Bereich als offen gelesen, ohne feste Deutung.',
+    ja: 'この宮に主星はありません。伝統的には縛りが少なく、一つの解釈に固定しないと見ます。',
+  },
+  topicQCareer: {
+      zh: '如果只保留一件让你真正有成就感的事，会是哪一件？',
+      en: 'If you kept only one thing that truly gives you a sense of achievement, what would it be?',
+      es: 'Si conservaras solo una cosa que de verdad te dé satisfacción, ¿cuál sería?',
+      fr: 'S’il ne devait rester qu’une chose qui vous procure un vrai sentiment d’accomplissement, laquelle serait-ce ?',
+      de: 'Wenn nur eine Sache bliebe, die dir wirklich Erfüllung gibt – welche wäre es?',
+      ja: '本当に達成感を得られることを一つだけ残すなら、何を残しますか。',
+    },
+  topicQWealth: {
+      zh: '你更在意钱带来的安全感，还是它带来的选择权？',
+      en: 'Do you care more about the security money brings, or the options it opens?',
+      es: '¿Te importa más la seguridad que da el dinero o las opciones que abre?',
+      fr: 'Ce qui compte le plus pour vous : la sécurité que l’argent apporte, ou les choix qu’il ouvre ?',
+      de: 'Was zählt für dich mehr: die Sicherheit, die Geld gibt, oder die Möglichkeiten, die es eröffnet?',
+      ja: 'お金に求めるのは安心感ですか、それとも選べる自由ですか。',
+    },
+  topicQLove: {
+    zh: '在亲密关系里，你最希望被对方看见的是什么？',
+    en: 'In close relationships, what do you most want the other person to see in you?',
+    es: 'En las relaciones cercanas, ¿qué quieres que la otra persona vea sobre todo en ti?',
+    fr: 'Dans une relation proche, qu’aimeriez-vous surtout que l’autre voie en vous ?',
+    de: 'In engen Beziehungen: Was soll der andere vor allem in dir sehen?',
+    ja: '親密な関係で、相手に一番見てほしいのはあなたのどんなところですか。',
+  },
+  strengthLead: {
+    zh: '你的优势集中在{labels}。',
+    en: 'Your strengths gather around {labels}.',
+    es: 'Tus fortalezas se concentran en {labels}.',
+    fr: 'Vos forces se concentrent autour de {labels}.',
+    de: 'Deine Stärken bündeln sich um {labels}.',
+    ja: 'あなたの強みは{labels}に集まっています。',
+  },
+  strengthChallenge: {
+    zh: '需要留意的是{stars}带来的拉扯：它让你敏锐，也容易让你消耗自己。',
+    en: 'Worth watching is the pull from {stars}: it sharpens you, and it can also drain you.',
+    es: 'Conviene vigilar la tensión de {stars}: te agudiza y también puede desgastarte.',
+    fr: 'À surveiller : la tension liée à {stars} ; elle vous affûte et peut aussi vous épuiser.',
+    de: 'Zu beachten ist die Spannung durch {stars}: Sie schärft dich und kann dich auch zehren.',
+    ja: '気をつけたいのは{stars}がもたらす揺れです。鋭さを与える一方で、自分を消耗させやすい面があります。',
+  },
+  strengthClosing: {
+    zh: '优势不需要夸张，能稳定用出来，就是你真正的底牌。',
+    en: 'Strengths need no exaggeration; used steadily, they are your real hand.',
+    es: 'Las fortalezas no necesitan exageración: usadas con constancia, son tu mejor carta.',
+    fr: 'Les forces n’ont pas besoin d’exagération : utilisées avec constance, elles sont votre vrai atout.',
+    de: 'Stärken brauchen keine Übertreibung; beständig genutzt sind sie dein wahres Ass.',
+    ja: '強みは誇張する必要はありません。安定して使えることが、あなたの本当の切り札です。',
+  },
   currentPhaseYes: {
     zh: '按引擎的计算，你现在大约 {age} 岁（虚岁），正走在「{label}」这一段。{text}',
     en: 'By the engine, you’re around {age} (East Asian age reckoning), in the phase "{label}". {text}',
@@ -654,6 +742,61 @@ export function generateFullReading(
 
   const caveats = L(T.caveatsIntro) + timeCaveat + dstText + L(T.caveatsClosing);
 
+  // 04 一句话认识自己：只取命宫主星的本地化标签与天赋，不引入新数据。
+  const joinList = (xs: string[]) => xs.join(lang === 'zh' || lang === 'ja' ? '、' : ', ');
+  const infosOf = (names: string[]) => names.map((n) => plainOf(n)).filter((x): x is StarPlain => Boolean(x));
+  const mingInfos = infosOf(ming ? majorOf(ming) : []);
+  const oneLine = mingInfos.length
+    ? sub(T.oneLine, {
+        labels: joinList(mingInfos.slice(0, 2).map((m) => m[lang].label)),
+        talent: mingInfos[0][lang].talent,
+      })
+    : L(T.oneLineEmpty);
+
+  // 07 专题：事业看官禄、财富看财帛、感情看夫妻，只转述该宫主星，不跨宫拼接。
+  const topicDefs = [
+    { key: 'career', palace: '官禄' },
+    { key: 'wealth', palace: '财帛' },
+    { key: 'love', palace: '夫妻' },
+  ] as const;
+  const topics: TopicSection[] = topicDefs.map((def) => {
+    const p = palaces.find((x) => x.name.includes(def.palace));
+    const meta = PALACE_META[def.palace]?.[lang];
+    const title = meta?.title ?? def.palace;
+    const infos = infosOf(p ? majorOf(p) : []);
+    if (!infos.length) return { key: def.key, title, text: L(T.topicEmpty) };
+    const lead = sub(T.topicLead, { title, labels: joinList(infos.slice(0, 2).map((i) => i[lang].label)) });
+    const body = infos.slice(0, 2).map((i) => i[lang].traits).join(' ');
+    const question = T[`topicQ${def.key[0].toUpperCase()}${def.key.slice(1)}` as 'topicQCareer'|'topicQWealth'|'topicQLove'][lang];
+    return { key: def.key, title, text: `${lead} ${body} ${question}` };
+  });
+
+  // 11 优势与挑战：优势取命宫 / 福德 / 官禄主星，挑战取命宫煞星的本地化名称。
+  const strengthPalaces = ['命宫', '福德', '官禄']
+    .map((k) => palaces.find((x) => x.name.includes(k)))
+    .filter((x): x is (typeof palaces)[number] => Boolean(x));
+  const strengthInfos: StarPlain[] = [];
+  const seenStrength = new Set<string>();
+  for (const p of strengthPalaces) {
+    for (const n of majorOf(p)) {
+      const info = plainOf(n);
+      if (info && !seenStrength.has(info[lang].label)) {
+        seenStrength.add(info[lang].label);
+        strengthInfos.push(info);
+      }
+    }
+  }
+  const shaNames = (ming?.stars ?? [])
+    .filter((s) => s.type === 'sha')
+    .slice(0, 2)
+    .map((s) => plainAux(s.name)?.[lang].label ?? s.name);
+  const strengthText = [
+    strengthInfos.length ? sub(T.strengthLead, { labels: joinList(strengthInfos.slice(0, 3).map((i) => i[lang].label)) }) : '',
+    strengthInfos.map((i) => i[lang].talent).join(' '),
+    shaNames.length ? sub(T.strengthChallenge, { stars: joinList(shaNames) }) : '',
+    L(T.strengthClosing),
+  ].filter(Boolean).join(' ');
+
   return {
     overview,
     personality,
@@ -662,5 +805,8 @@ export function generateFullReading(
     patterns: patternsSection,
     currentPhase,
     caveats,
+    oneLine,
+    topics,
+    strength: { text: strengthText },
   };
 }

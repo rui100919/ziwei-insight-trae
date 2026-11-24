@@ -28,6 +28,9 @@ type ReportContent = {
   daXian?: CompatDaXian[];
   patterns?: CompatPatterns;
   currentPhase?: string;
+  oneLine?: string;
+  topics?: { key: string; title: string; text: string }[];
+  strength?: { text: string };
 };
 type Report = {
   id: string;
@@ -295,9 +298,12 @@ export default function ReportPage() {
         ['personality', t(lang, 'personality')],
         ...(isFull
           ? [
+              ...(fullContent?.oneLine ? [['oneline', t(lang, 'fullOneLine')] as [string, string]] : []),
               ['palaces', t(lang, 'fullPalaces')],
+              ...(fullContent?.topics?.length ? [['topics', t(lang, 'fullTopics')] as [string, string]] : []),
               ['daxian', t(lang, 'fullDaXian')],
               ['current', t(lang, 'fullCurrent')],
+              ...(fullContent?.strength?.text ? [['strength', t(lang, 'fullStrength')] as [string, string]] : []),
             ] as [string, string][]
           : []),
         ['caveats', t(lang, 'caveats')],
@@ -306,6 +312,22 @@ export default function ReportPage() {
 
   // 仅用于展示的派生值（不改动任何数据获取 / 兼容 / 权益逻辑）。
   const nSec = sections.length;
+  // 章节编号按实际渲染顺序连续递增，新增章节时无需手改数字。
+  const chNo: Record<string, string> = (() => {
+    let c = nSec;
+    const out: Record<string, string> = {};
+    const add = (id: string, present: boolean) => {
+      if (present) out[id] = pad(++c);
+    };
+    add('oneline', Boolean(fullContent?.oneLine));
+    add('palaces', Boolean(fullContent?.palaces?.length));
+    add('topics', Boolean(fullContent?.topics?.length));
+    add('daxian', Boolean(fullContent?.daXian?.length));
+    add('patterns', Boolean(fullContent?.patterns?.text));
+    add('strength', Boolean(fullContent?.strength?.text));
+    out.caveats = pad(++c);
+    return out;
+  })();
   const dateStr = report
     ? new Date(report.created_at).toLocaleDateString(LANG_META[lang].locale, { year: 'numeric', month: 'short', day: 'numeric' })
     : '';
@@ -589,10 +611,22 @@ export default function ReportPage() {
                   </section>
                 ))}
 
+                {isFull && fullContent?.oneLine && (
+                  <section className="chapter" id="oneline" data-reveal>
+                    <div className="ch-head">
+                      <span className="ch-no">{chNo.oneline}</span>
+                      <h2>{t(lang, 'fullOneLine')}</h2>
+                    </div>
+                    <div className="ch-body">
+                      <p className="whitespace-pre-wrap">{fullContent.oneLine}</p>
+                    </div>
+                  </section>
+                )}
+
                 {isFull && fullContent?.palaces && fullContent.palaces.length > 0 && (
                   <section className="chapter" id="palaces" data-reveal>
                     <div className="ch-head">
-                      <span className="ch-no">{pad(nSec + 1)}</span>
+                      <span className="ch-no">{chNo.palaces}</span>
                       <h2>{t(lang, 'fullPalaces')}</h2>
                     </div>
                     <div className="ch-body">
@@ -617,10 +651,27 @@ export default function ReportPage() {
                   </section>
                 )}
 
+                {isFull && fullContent?.topics && fullContent.topics.length > 0 && (
+                  <section className="chapter" id="topics" data-reveal>
+                    <div className="ch-head">
+                      <span className="ch-no">{chNo.topics}</span>
+                      <h2>{t(lang, 'fullTopics')}</h2>
+                    </div>
+                    <div className="ch-body">
+                      {fullContent.topics.map((tp) => (
+                        <div className="topic" key={tp.key}>
+                          <h3 className="topic-title">{tp.title}</h3>
+                          <p className="whitespace-pre-wrap">{tp.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
                 {isFull && fullContent?.daXian && fullContent.daXian.length > 0 && (
                   <section className="chapter" id="daxian" data-reveal>
                     <div className="ch-head">
-                      <span className="ch-no">{pad(nSec + 2)}</span>
+                      <span className="ch-no">{chNo.daxian}</span>
                       <h2>{t(lang, 'fullDaXian')}</h2>
                     </div>
                     <div className="ch-body">
@@ -652,7 +703,7 @@ export default function ReportPage() {
                 {isFull && fullContent?.patterns && (
                   <section className="chapter" id="patterns" data-reveal>
                     <div className="ch-head">
-                      <span className="ch-no">{pad(nSec + 3)}</span>
+                      <span className="ch-no">{chNo.patterns}</span>
                       <h2>{patternsTitle(fullContent.patterns, rl)}</h2>
                     </div>
                     <div className="ch-body">
@@ -661,10 +712,22 @@ export default function ReportPage() {
                   </section>
                 )}
 
+                {isFull && fullContent?.strength?.text && (
+                  <section className="chapter" id="strength" data-reveal>
+                    <div className="ch-head">
+                      <span className="ch-no">{chNo.strength}</span>
+                      <h2>{t(lang, 'fullStrength')}</h2>
+                    </div>
+                    <div className="ch-body">
+                      <p className="whitespace-pre-wrap">{fullContent.strength.text}</p>
+                    </div>
+                  </section>
+                )}
+
                 {isFull && fullContent?.caveats && (
                   <section className="chapter" id="caveats" data-reveal>
                     <div className="ch-head">
-                      <span className="ch-no">{pad(nSec + (fullContent.patterns ? 4 : 3))}</span>
+                      <span className="ch-no">{chNo.caveats}</span>
                       <h2>{t(lang, 'caveats')}</h2>
                     </div>
                     <div className="ch-body">

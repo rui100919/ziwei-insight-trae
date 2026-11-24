@@ -3351,6 +3351,26 @@ footer {
   line-height: 2.1;
   color: rgba(27, 23, 16, 0.68);
 }
+.report .topic {
+  padding: 22px 0;
+  border-top: 1px solid rgba(184, 148, 92, 0.24);
+}
+.report .topic:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.report .topic-title {
+  margin: 0 0 10px;
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  color: #1b1710;
+}
+.report .topic p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 2;
+  color: rgba(27, 23, 16, 0.75);
+}
 .report .decades {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3593,6 +3613,15 @@ footer {
   }
   .prenote-kicker {
     color: #7a5b33 !important;
+  }
+
+  /* 专题小标题：深色、与正文不拆开。 */
+  .report .topic {
+    break-inside: avoid;
+  }
+  .report .topic-title,
+  .report .topic p {
+    color: #111 !important;
   }
 
   /* 大限：PDF 用连续列表，节省页数。 */
