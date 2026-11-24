@@ -310,14 +310,32 @@ const T = {
     de: 'Was {area} betrifft: ',
     ja: '{area}について言うと：',
   },
-  palaceClosing: {
-    zh: '把这些放在一起，{title}在你身上就成了一条连贯的线。',
-    en: 'Taken together, {title} forms a coherent thread in you.',
-    es: 'En conjunto, {title} forma un hilo coherente en ti.',
-    fr: 'Ensemble, {title} forme un fil cohérent chez vous.',
-    de: 'Zusammengenommen bildet {title} einen stimmigen Faden in dir.',
-    ja: 'まとめると、「{title}」はあなたの中で一貫した線になっています。',
-  },
+  palaceClosings: [
+    {
+      zh: '把这些放在一起，{title}就成了一条清楚的线。',
+      en: 'Taken together, {title} forms a clear thread.',
+      es: 'En conjunto, {title} forma un hilo claro.',
+      fr: 'Ensemble, {title} forme un fil clair.',
+      de: 'Zusammengenommen bildet {title} einen klaren Faden.',
+      ja: 'まとめると、「{title}」は一筋の線になります。',
+    },
+    {
+      zh: '这些特质落在同一个位置，说的是同一件事。',
+      en: 'These traits share one place in the chart, and they speak of one thing.',
+      es: 'Estos rasgos comparten una misma posición y hablan de lo mismo.',
+      fr: 'Ces traits partagent une même position et parlent de la même chose.',
+      de: 'Diese Eigenschaften teilen sich einen Platz und sprechen von einer Sache.',
+      ja: 'これらの特質は同じ位置にあり、同じことを語っています。',
+    },
+    {
+      zh: '几颗星聚在这里，指向的是同一种倾向。',
+      en: 'Several stars gather here, all leaning the same way.',
+      es: 'Varias estrellas se reúnen aquí y apuntan en la misma dirección.',
+      fr: 'Plusieurs astres se rejoignent ici et vont dans la même direction.',
+      de: 'Mehrere Sterne versammeln sich hier und weisen in eine Richtung.',
+      ja: 'いくつかの星がここに集まり、同じ方向を示しています。',
+    },
+  ],
   daXianThemeFallback: {
     zh: '相对平静、按部就班',
     en: 'quieter, steady-going',
@@ -350,14 +368,24 @@ const T = {
     de: 'Das Thema dieser Dekade tendiert zu „{theme}“, rund um {area}. ',
     ja: 'この十年のテーマは「{theme}」に偏り、対応する生活面は{area}です。',
   },
-  daXianClosing: {
-    zh: '把它当作这段时间心力流向的提示，读起来会更贴近它的本意。',
-    en: 'Read it as a hint of where your energy may flow in this period.',
-    es: 'Léelo como una pista de hacia dónde puede fluir tu energía en esta etapa.',
-    fr: 'Lisez-le comme une indication de là où votre énergie peut s’écouler pendant cette période.',
-    de: 'Lies es als Hinweis darauf, wohin deine Energie in dieser Zeit fließen kann.',
-    ja: 'この時期に力が向かう先のヒントとして読むと、より自然に受け取れます。',
-  },
+  daXianClosings: [
+    {
+      zh: '把它当作这段时间心力流向的提示，读起来会更贴近它的本意。',
+      en: 'Read it as a hint of where your energy may flow in this period.',
+      es: 'Léelo como una pista de hacia dónde puede fluir tu energía en esta etapa.',
+      fr: 'Lisez-le comme une indication de là où votre énergie peut s’écouler pendant cette période.',
+      de: 'Lies es als Hinweis darauf, wohin deine Energie in dieser Zeit fließen kann.',
+      ja: 'この時期に力が向かう先のヒントとして読むと、より自然に受け取れます。',
+    },
+    {
+      zh: '十年只是一个粗略的刻度，真正的节奏由你自己走出来。',
+      en: 'A decade is only a rough scale; the real pace is yours to set.',
+      es: 'Una década es solo una escala aproximada; el ritmo real lo marcas tú.',
+      fr: 'Une décennie n’est qu’une échelle approximative ; le rythme réel vous appartient.',
+      de: 'Ein Jahrzehnt ist nur ein grober Maßstab; das eigentliche Tempo bestimmst du.',
+      ja: '十年はおおよその目安にすぎず、実際のペースはあなたが決めるものです。',
+    },
+  ],
   currentPhaseYes: {
     zh: '按引擎的计算，你现在大约 {age} 岁（虚岁），正走在「{label}」这一段。{text}',
     en: 'By the engine, you’re around {age} (East Asian age reckoning), in the phase "{label}". {text}',
@@ -438,7 +466,7 @@ const T = {
     de: 'Es sagt nichts voraus, beurteilt kein Ergebnis und trifft keine Entscheidungen für dich. Bei echten Entscheidungen über Karriere, Beziehungen oder Gesundheit, vertraue auf echte Informationen und qualifizierten Rat. Betrachte es als Spiegel mit einem anderen Blickwinkel.',
     ja: '将来起こることを予測したり、吉凶を判断したり、あなたに代わって決断したりすることはありません。キャリア、人間関係、健康に関する具体的な選択は、現実の情報と専門家の意見に依拠してください。別の角度を提供する鏡として捉えれば十分です。',
   },
-} satisfies Record<string, Record<Lang, string>>;
+} satisfies Record<string, Record<Lang, string> | Array<Record<Lang, string>>>;
 
 /** 主星/辅星/四化嵌入句的前缀与后缀（六语言）。 */
 const SLOT: Record<'majors' | 'aux' | 'sihua', Record<Lang, Slot>> = {
@@ -517,7 +545,7 @@ export function generateFullReading(
   // 十二宫逐宫：只取最有信息量的宫，避免把 12 个空宫都写成废话。
   const palaceOrder = ['命宫', '身宫', '夫妻', '财帛', '官禄', '迁移', '福德', '疾厄', '田宅', '父母', '兄弟', '子女', '仆役'];
   const palaceSections: PalaceSection[] = [];
-  for (const key of palaceOrder) {
+  for (const [pi, key] of palaceOrder.entries()) {
     const p = palaces.find((x) => x.name.includes(key));
     if (!p) continue;
     const metaLang = PALACE_META[key]?.[lang];
@@ -539,7 +567,7 @@ export function generateFullReading(
       (majors.length ? `${SLOT.majors[lang].prefix}${starLine(majors, lang)}${SLOT.majors[lang].suffix}` : '') +
       (auxs.length ? `${SLOT.aux[lang].prefix}${starLine(auxs, lang)}${SLOT.aux[lang].suffix}` : '') +
       (sihua.length ? `${sihuaSlot.prefix}${sihuaList}${sihuaSlot.suffix}` : '') +
-      sub(T.palaceClosing, { title: metaLang.title });
+      sub(T.palaceClosings[pi % 3], { title: metaLang.title });
     palaceSections.push({ key, title: metaLang.title, text });
   }
 
@@ -550,7 +578,7 @@ export function generateFullReading(
   // 宫名：zh / ja 沿用汉字（日文同字），其余语言用 PALACE_META 的本地化标题，不在西/法/德文里露出中文。
   const palaceNameIn = (name: string) =>
     lang === 'zh' || lang === 'ja' ? name : (PALACE_META[name]?.[lang]?.title ?? name);
-  const daXianSections: DaXianSection[] = (chart.daXians ?? []).map((d) => {
+  const daXianSections: DaXianSection[] = (chart.daXians ?? []).map((d, di) => {
     const p = palaces.find((x) => x.branch === d.palaceBranch);
     const majors = p ? majorOf(p) : [];
     const plain = majors.map((n) => plainOf(n)).filter((x): x is StarPlain => Boolean(x));
@@ -564,7 +592,7 @@ export function generateFullReading(
     const text =
       sub(T.daXianOpening, { theme, area: areaLang }) +
       (majors.length ? `${SLOT.majors[lang].prefix}${starLine(majors, lang)}${SLOT.majors[lang].suffix}` : '') +
-      L(T.daXianClosing);
+      L(T.daXianClosings[di % 2]);
     return { label, text };
   });
 
