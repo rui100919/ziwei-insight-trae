@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { demoStore, isDemoMode, type DemoBirthProfile, type DemoReport } from '@/lib/demo';
 import { chartCacheKey } from '@/lib/chart-cache';
+import { getTimezoneOffsetMinutes } from '@/lib/time';
 import { CityPicker } from '@/components/CityPicker';
 import { cityName, type City } from '@/lib/cities';
 import { t, type Lang } from '@/lib/i18n';
@@ -26,61 +27,67 @@ const S: Record<Lang, {
   errChooseProfile: string; errPlaceTimezone: string; defaultProfileLabel: string;
   newReadingEyebrow: string; tabSaved: string; tabNew: string; chooseBirthDetails: string;
   timeUnknownNote: string; profileNameLabel: string; profileNamePlaceholder: string;
-  saveProfileHint: string; freeNote: string;
+  saveProfileHint: string; freeNote: string; tzLonMismatch: string;
 }> = {
   zh: {
     errChooseProfile: '请选择一份出生资料', errPlaceTimezone: '请填写出生地和时区',
     defaultProfileLabel: '我的命盘', newReadingEyebrow: '新解读',
     tabSaved: '用已保存的资料', tabNew: '填新资料', chooseBirthDetails: '选择出生资料',
-    timeUnknownNote: '出生时间未知 — 将按正午默认，涉及时辰的细节仅供参考。',
+    timeUnknownNote: '出生时间未知 — 将按子时（00:00–01:00）默认，涉及时辰的细节仅供参考。',
     profileNameLabel: '资料名称（选填）', profileNamePlaceholder: '例如：我的命盘 / 孩子',
     saveProfileHint: '保存这份资料，方便下次直接选用',
     freeNote: '每个账号有一次免费解读，生成通常需要一分钟。',
+    tzLonMismatch: '所选时区与经度不匹配，真太阳时可能偏差数小时，建议重新选择出生城市。',
   },
   en: {
     errChooseProfile: 'Please choose a birth profile', errPlaceTimezone: 'Please enter birth place and timezone',
     defaultProfileLabel: 'My Chart', newReadingEyebrow: 'New reading',
     tabSaved: 'Saved profiles', tabNew: 'New details', chooseBirthDetails: 'Birth details',
-    timeUnknownNote: 'Birth time unknown — a noon default is used; hour-dependent details are provisional.',
+    timeUnknownNote: 'Birth time unknown — a 子时 (00:00–01:00) default is used; hour-dependent details are provisional.',
     profileNameLabel: 'Profile name (optional)', profileNamePlaceholder: 'e.g. My Chart / My child',
     saveProfileHint: 'Save these details for next time',
     freeNote: 'One complimentary basic reading per account. Generation usually takes about a minute.',
+    tzLonMismatch: 'Timezone and longitude do not match — the true solar time could be off by hours. Please pick the birth city again.',
   },
   es: {
     errChooseProfile: 'Selecciona un perfil de nacimiento', errPlaceTimezone: 'Introduce el lugar de nacimiento y la zona horaria',
     defaultProfileLabel: 'Mi carta', newReadingEyebrow: 'Nueva lectura',
     tabSaved: 'Perfiles guardados', tabNew: 'Nuevos datos', chooseBirthDetails: 'Datos de nacimiento',
-    timeUnknownNote: 'Hora de nacimiento desconocida — se usará el mediodía por defecto; los detalles que dependen de la hora son orientativos.',
+    timeUnknownNote: 'Hora de nacimiento desconocida — se usará 子时 (00:00–01:00) por defecto; los detalles que dependen de la hora son orientativos.',
     profileNameLabel: 'Nombre del perfil (opcional)', profileNamePlaceholder: 'p. ej. Mi carta / Mi hijo',
     saveProfileHint: 'Guarda estos datos para usarlos directamente la próxima vez',
     freeNote: 'Cada cuenta tiene una lectura gratuita; la generación suele tardar un minuto.',
+    tzLonMismatch: 'La zona horaria y la longitud no coinciden: el tiempo solar verdadero podría desviarse varias horas. Vuelve a elegir la ciudad de nacimiento.',
   },
   fr: {
     errChooseProfile: 'Choisissez un profil de naissance', errPlaceTimezone: 'Saisissez le lieu de naissance et le fuseau horaire',
     defaultProfileLabel: 'Mon thème', newReadingEyebrow: 'Nouvelle lecture',
     tabSaved: 'Profils enregistrés', tabNew: 'Nouvelles données', chooseBirthDetails: 'Données de naissance',
-    timeUnknownNote: 'Heure de naissance inconnue — midi est utilisé par défaut ; les détails dépendant de l’heure sont indicatifs.',
+    timeUnknownNote: 'Heure de naissance inconnue — 子时 (00:00–01:00) est utilisé par défaut ; les détails dépendant de l’heure sont indicatifs.',
     profileNameLabel: 'Nom du profil (facultatif)', profileNamePlaceholder: 'ex. Mon thème / Mon enfant',
     saveProfileHint: 'Enregistrez ces données pour les réutiliser la prochaine fois',
     freeNote: 'Chaque compte a droit à une lecture gratuite ; la génération prend généralement une minute.',
+    tzLonMismatch: 'Le fuseau horaire et la longitude ne correspondent pas : l’heure solaire vraie peut dériver de plusieurs heures. Choisissez à nouveau la ville de naissance.',
   },
   de: {
     errChooseProfile: 'Bitte wähle ein Geburtsprofil', errPlaceTimezone: 'Gib Geburtsort und Zeitzone ein',
     defaultProfileLabel: 'Mein Horoskop', newReadingEyebrow: 'Neue Deutung',
     tabSaved: 'Gespeicherte Profile', tabNew: 'Neue Daten', chooseBirthDetails: 'Geburtsdaten',
-    timeUnknownNote: 'Geburtszeit unbekannt — standardmäßig wird Mittag verwendet; stundenabhängige Details sind vorläufig.',
+    timeUnknownNote: 'Geburtszeit unbekannt — standardmäßig wird 子时 (00:00–01:00) verwendet; stundenabhängige Details sind vorläufig.',
     profileNameLabel: 'Profilname (optional)', profileNamePlaceholder: 'z. B. Mein Horoskop / Mein Kind',
     saveProfileHint: 'Diese Daten speichern, um sie beim nächsten Mal direkt auszuwählen',
     freeNote: 'Jedes Konto erhält eine kostenlose Deutung; die Erstellung dauert in der Regel etwa eine Minute.',
+    tzLonMismatch: 'Zeitzone und Längengrad passen nicht zusammen – die wahre Sonnenzeit kann um Stunden abweichen. Bitte wähle die Geburtsstadt erneut.',
   },
   ja: {
     errChooseProfile: '出生プロフィールを選択してください', errPlaceTimezone: '出生地とタイムゾーンを入力してください',
     defaultProfileLabel: 'マイ命盤', newReadingEyebrow: '新しい解読',
     tabSaved: '保存済みプロフィール', tabNew: '新しい情報', chooseBirthDetails: '出生情報',
-    timeUnknownNote: '出生時刻が不明の場合は正午をデフォルトとして使用します。時刻に依存する詳細は参考値となります。',
+    timeUnknownNote: '出生時刻が不明の場合は子時（00:00–01:00）をデフォルトとして使用します。時刻に依存する詳細は参考値となります。',
     profileNameLabel: 'プロフィール名（任意）', profileNamePlaceholder: '例：マイ命盤 / 子ども',
     saveProfileHint: '次回そのまま使えるよう、この情報を保存する',
     freeNote: 'アカウントごとに無料解読を1回利用できます。生成には通常1分ほどかかります。',
+    tzLonMismatch: 'タイムゾーンと経度が一致していません。真太陽時が数時間ずれる可能性があるため、出生都市を選び直してください。',
   },
 };
 
@@ -276,6 +283,7 @@ export default function NewChartPage() {
         else if (data.error === 'FREE_USED') setError(t(lang, 'freeUsed'));
         else if (data.error === 'NEED_VERIFY') setError('__NEED_VERIFY__');
         else if (data.error === 'RATE_LIMITED') setError(t(lang, 'rateLimited'));
+        else if (data.error === 'INVALID_TIMEZONE') setError(t(lang, 'invalidTimezone'));
         else setError(t(lang, 'errorGeneric'));
         return;
       }
@@ -351,6 +359,29 @@ export default function NewChartPage() {
     setBirthTime(next.slice(0, 2).join(':'));
   };
   const selectedProfile = profiles.find((p) => p.id === selectedId);
+
+  // 手动改过时区后，经度可能还停在原来那座城市。中央经线 = 偏移/4，
+  // 偏差超过 30°（约 2 小时）说明两者不匹配，纠正量会失真，提示用户重选城市。
+  const tzLonMismatch = useMemo(() => {
+    if (longitude === '' || !timezone) return 0;
+    const lon = Number(longitude);
+    if (!Number.isFinite(lon)) return 0;
+    const [y, m, dd] = (birthDate || '').split('-').map(Number);
+    const hasDate = Number.isInteger(y) && y > 1900 && Number.isInteger(m) && Number.isInteger(dd);
+    try {
+      const offset = getTimezoneOffsetMinutes(
+        timezone,
+        hasDate ? y : 2000,
+        hasDate ? m : 1,
+        hasDate ? dd : 1,
+        12,
+        0,
+      );
+      return Math.abs(lon - offset / 4);
+    } catch {
+      return 0;
+    }
+  }, [longitude, timezone, birthDate]);
 
   return (
     <main className="page">
@@ -627,6 +658,9 @@ export default function NewChartPage() {
                               </datalist>
                             </div>
                           </div>
+                          {tzLonMismatch > 30 && (
+                            <p className="mt-3 text-[11px] leading-relaxed text-[#8e3527]">{s.tzLonMismatch}</p>
+                          )}
                         </div>
                       )}
                     </div>

@@ -613,7 +613,7 @@ export function generateFullReading(
     patternsSection = undefined;
   }
 
-  // 夏令时核对提醒：沿用引擎口径，只提示不自动改时间（用 hasDST 元数据，不解析 timeNote）。
+  // 夏令时核对提醒：偏移已按 IANA（含夏令时）换算，这里只说明、不让用户手动加减。
   const bi = chart.birthInfo;
   const dstText = timeMeta.hasDST && bi
     ? ` ${chinaDSTNotice(bi.year, bi.month, bi.day, lang) ?? ''}`

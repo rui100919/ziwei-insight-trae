@@ -1,7 +1,7 @@
 import { calculateTrueSolarTime, resolveZiweiDayOffset, shiftGregorianDate } from '@/lib/ziwei/true-solar-time';
 import { generateChart } from '@/lib/ziwei/algorithm';
 import type { BirthInfo, ZiweiChart } from '@/lib/ziwei/types';
-import { getTimezoneOffsetMinutes } from '@/lib/time';
+import { getTimezoneOffsetMinutes, isValidTimeZone } from '@/lib/time';
 import { isChinaDST, chinaDSTRange, chinaDSTSpan } from '@/lib/ziwei/dst-cn';
 import type { Lang } from '@/lib/i18n';
 
@@ -28,7 +28,7 @@ export interface BuiltChart {
   utcOffset: string;
   /** unknown=出生时间未知；clock=仅按当地钟表时间；corrected=已按经度/均时差校正 */
   timeStatus: TimeStatus;
-  /** 出生日期是否落在中国大陆夏令时区间（仅判定、不自动改时间） */
+  /** 出生日期是否落在中国大陆夏令时区间（只用于提示；偏移已按 IANA 含夏令时计算，不再手动加减） */
   hasDST: boolean;
 }
 
@@ -81,26 +81,26 @@ function dstWhen(year: number, lang: Lang): string {
 }
 
 /**
- * 中国大陆夏令时提示：1986–1991 年间出生、且落在夏令时区间时给出核对提醒。
- * 只判定、不自动改时间——沿用上游引擎口径，避免把用户已换算过的时间改错。
- * 返回 null 表示该日期不涉及夏令时。
+ * 中国大陆夏令时提示：出生日期落在站内夏令时表区间时给出核对提醒。
+ * 真太阳时换算本身已经使用出生地当时的实际偏移（IANA，含夏令时），
+ * 所以这里只做说明、不再让用户手动加减一小时——否则会重复调整。
  */
 export function chinaDSTNotice(year: number, month: number, day: number, lang: Lang): string | null {
   if (!isChinaDST(year, month, day)) return null;
   const when = dstWhen(year, lang);
   switch (lang) {
     case 'zh':
-      return `${year} 年中国大陆实行过夏令时（${when}）。如果你填的是当年的钟表时间，和现在的时间差一小时，可以把时间前后调一小时再排一次看看；我们不替你自动改。`;
+      return `${year} 年中国大陆实行过夏令时（${when}）。本盘按你填写的钟表时间换算真太阳时，不用自己再加减一小时；如果你填的其实是已经换算成标准时间的时间，请改回当年的钟表读数再排一次。`;
     case 'en':
-      return `Mainland China observed daylight saving time in ${year} (${when}). If the time you entered was the clock reading back then, it differs by one hour from standard time — try shifting it by one hour and recalculating. We do not adjust it automatically.`;
+      return `Mainland China observed daylight saving time in ${year} (${when}). This chart converts the time you entered as the clock reading of that period, so you do not need to shift anything yourself. If you entered a standard time that was already converted, please re-enter the original clock reading.`;
     case 'es':
-      return `En ${year}, la China continental aplicó el horario de verano (${when}). Si la hora que introdujiste era la que marcaba el reloj en aquel entonces, se diferencia en una hora de la hora actual; prueba a desplazarla una hora y recalcular. No la ajustamos automáticamente.`;
+      return `En ${year}, la China continental aplicó el horario de verano (${when}). Esta carta convierte la hora que introdujiste como la lectura del reloj de entonces, así que no necesitas ajustar nada. Si introdujiste una hora estándar ya convertida, vuelve a introducir la lectura original del reloj.`;
     case 'fr':
-      return `En ${year}, la Chine continentale a appliqué l’heure d’été (${when}). Si l’heure saisie était celle du réveil à l’époque, elle diffère d’une heure de l’heure actuelle ; essayez de la décaler d’une heure et de recalculer. Nous ne l’ajustons pas automatiquement.`;
+      return `En ${year}, la Chine continentale a appliqué l’heure d’été (${when}). Ce thème convertit l’heure saisie comme l’heure lue sur l’horloge de l’époque : inutile de la décaler vous-même. Si vous avez saisi une heure standard déjà convertie, saisissez à nouveau l’heure d’horloge d’origine.`;
     case 'de':
-      return `In ${year} galt in Festlandchina die Sommerzeit (${when}). Wenn die eingegebene Uhrzeit der damaligen Uhrzeit entsprach, weicht sie um eine Stunde von der heutigen Zeit ab – versuche, sie um eine Stunde zu verschieben und neu zu berechnen. Wir passen sie nicht automatisch an.`;
+      return `In ${year} galt in Festlandchina die Sommerzeit (${when}). Dieses Horoskop rechnet die eingegebene Zeit als damalige Uhrzeit um, du musst also nichts selbst verschieben. Wenn du bereits eine umgerechnete Standardzeit eingegeben hast, gib bitte die ursprüngliche Uhrzeit erneut ein.`;
     case 'ja':
-      return `${year}年、中国本土では夏時間（${when}）が実施されていました。入力した時刻が当時の時計の時刻であれば、現在の時刻と1時間ずれます。1時間ずらして再計算してみてください。自動では修正しません。`;
+      return `${year}年、中国本土では夏時間（${when}）が実施されていました。この命盤は入力された時刻を当時の時計の時刻として真太陽時に換算するため、ご自身で1時間を足し引きする必要はありません。すでに標準時に換算した時刻を入力した場合は、当時の時計の時刻に戻して再入力してください。`;
   }
 }
 
@@ -146,6 +146,9 @@ export function buildChart(input: ChartInput, lang: Lang): BuiltChart {
   let timeNote: string;
   let timeStatus: TimeStatus;
   let utcOffset = '';
+
+  // 时区是外部输入（高级面板可手填），非法值会让 Intl 抛错，这里转成可识别的业务错误。
+  if (!isValidTimeZone(input.timezone)) throw new Error('INVALID_TIMEZONE');
 
   if (input.timeKnown) {
     const { clockHour, clockMinute } = parseTime(input.birthTime);

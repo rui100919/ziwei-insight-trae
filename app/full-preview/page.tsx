@@ -163,6 +163,7 @@ export default function FullPreviewPage() {
       if (!res.ok) {
         if (data.error === 'NEED_LOGIN') setError(t(lang, 'buyNeedLogin'));
         else if (data.error === 'PAYMENT_REQUIRED') setError(t(lang, 'buyIntro'));
+        else if (data.error === 'INVALID_TIMEZONE') setError(t(lang, 'invalidTimezone'));
         else setError(t(lang, 'errorGeneric'));
         return;
       }

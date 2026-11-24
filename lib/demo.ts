@@ -252,12 +252,12 @@ export function generateDemoReading(facts: ChartFacts, lang: Lang, opts?: { vari
   const timePlain = L(TIME[timeStatus]);
 
   const DST: Record<Lang, string> = {
-    zh: ' 另外提醒：你出生那年赶上过夏令时，如果填的是当时的钟表时间，和现在差一小时，可以把时间调一小时再排一次看看。',
-    en: ' Also, daylight saving time was in effect when you were born; if you entered the clock reading from back then, try shifting it by one hour and recalculating.',
-    es: ' Además, en el año de tu nacimiento estuvo en vigor el horario de verano; si introdujiste la hora del reloj de entonces, prueba a desplazarla una hora y recalcular.',
-    fr: ' De plus, l’heure d’été était en vigueur l’année de votre naissance ; si vous avez saisi l’heure du réveil de l’époque, essayez de la décaler d’une heure et de recalculer.',
-    de: ' Außerdem galt in deinem Geburtsjahr die Sommerzeit; wenn du die damalige Uhrzeit eingegeben hast, versuche, sie um eine Stunde zu verschieben und neu zu berechnen.',
-    ja: ' また、あなたの生まれた年は夏時間が実施されていました。当時の時計の時刻を入力した場合は、1時間ずらして再計算してみてください。',
+    zh: ' 另外提醒：你出生那年赶上过夏令时。上面的换算已按当年的钟表读数处理，不用自己再加减一小时；如果你填的是已经换算成标准时间的时间，请改回当年的钟表读数。',
+    en: ' Also, daylight saving time was in effect when you were born. The conversion above treats your input as the clock reading of that period, so no manual shift is needed; if you entered a standard time that was already converted, use the original clock reading instead.',
+    es: ' Además, en el año de tu nacimiento estuvo en vigor el horario de verano. La conversión anterior trata tu hora como la lectura del reloj de entonces, así que no hace falta que la ajustes; si introdujiste una hora estándar ya convertida, usa la lectura original del reloj.',
+    fr: ' De plus, l’heure d’été était en vigueur l’année de votre naissance. La conversion ci-dessus traite votre heure comme l’heure lue sur l’horloge de l’époque : inutile de la décaler ; si vous avez saisi une heure standard déjà convertie, utilisez l’heure d’horloge d’origine.',
+    de: ' Außerdem galt in deinem Geburtsjahr die Sommerzeit. Die obige Umrechnung behandelt deine Angabe als die damalige Uhrzeit, du musst also nichts verschieben; wenn du bereits eine umgerechnete Standardzeit eingegeben hast, verwende die ursprüngliche Uhrzeit.',
+    ja: ' また、あなたの生まれた年は夏時間が実施されていました。上記の換算は入力時刻を当時の時計の時刻として扱っているため、ご自身で調整する必要はありません。すでに標準時に換算した時刻を入力した場合は、当時の時計の時刻に戻してください。',
   };
   const dstPlain = hasDST ? L(DST) : '';
 

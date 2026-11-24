@@ -292,6 +292,9 @@ export async function POST(request: Request) {
     }
   } catch (error) {
     const detail = error instanceof Error ? error.message : 'UNKNOWN';
+    if (detail === 'INVALID_TIMEZONE') {
+      return NextResponse.json({ error: 'INVALID_TIMEZONE' }, { status: 400 });
+    }
     return NextResponse.json({ error: 'SERVER_ERROR', detail }, { status: 500 });
   }
 }

@@ -1,3 +1,14 @@
+/** 校验 IANA 时区名是否合法（Intl 不认的名字会抛 RangeError）。 */
+export function isValidTimeZone(timeZone: string): boolean {
+  if (!timeZone) return false;
+  try {
+    new Intl.DateTimeFormat('en-GB', { timeZone });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** 根据 IANA 时区与公历日期，求当地相对 UTC 的偏移（分钟，东正西负）。 */
 export function getTimezoneOffsetMinutes(
   timeZone: string,
