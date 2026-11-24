@@ -99,6 +99,7 @@ export default function ReportPage() {
   const [locked, setLocked] = useState(false);
   const [pay, setPay] = useState<{ isDemo: boolean; paymentsEnabled: boolean; provider?: string; loggedIn: boolean; unlocked: boolean } | null>(null);
   const [buying, setBuying] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
 
   // 内容语言以报告生成时的 report.language 为准——UI 切语言只换界面文案，不重建已付费报告。
   const rl: Lang = report && isLang(report.language) ? report.language : 'zh';
@@ -185,6 +186,30 @@ export default function ReportPage() {
       .catch(() => {});
     return () => { alive = false; };
   }, []);
+
+  /** 已解锁用户：用本报告自己的出生资料生成完整报告，权益由服务端再次校验。 */
+  async function upgradeToFull() {
+    if (upgrading) return;
+    setUpgrading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/report/full', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reportId: id }),
+      });
+      const data = await res.json();
+      if (res.ok && data.reportId) {
+        router.push(`/report/${data.reportId}`);
+        return;
+      }
+      setError(data.error === 'PAYMENT_REQUIRED' ? t(lang, 'buyIntro') : t(lang, 'errorGeneric'));
+    } catch {
+      setError(t(lang, 'errorGeneric'));
+    } finally {
+      setUpgrading(false);
+    }
+  }
 
   async function deleteReport() {
     if (!window.confirm(t(lang, 'confirmDelete'))) return;
@@ -580,7 +605,9 @@ export default function ReportPage() {
                       <h2>{t(lang, 'unlockedTitle')}</h2>
                       <p>{t(lang, 'unlockedBody')}</p>
                       <div className="unlock-actions">
-                        <Link className="btn" href="/full-preview">{t(lang, 'fullGenerateSaved')} →</Link>
+                        <button className="btn" onClick={upgradeToFull} disabled={upgrading}>
+                          {upgrading ? t(lang, 'payOverlaySub') : `${t(lang, 'fullGenerateSaved')} →`}
+                        </button>
                       </div>
                     </div>
                   ) : (
