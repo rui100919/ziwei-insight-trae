@@ -141,16 +141,30 @@ export async function POST(request: Request) {
     // 演示模式保留完整本地样品，且不写远端账户。
     if (demo) return NextResponse.json({ demo: DEMO, content, meta });
 
-    // 正式环境的免费样品只返回节选，付费章节不会随响应下发。
+    // 正式环境的免费样品：给到「够看、勾人」的深度，但不给全。
+    // 保留总览/性格/一句话/优势/格局/当下阶段与提醒；宫位取前 4 段、大限取前 3 段、专题取 1 段。
     if (isSample) {
+      const sampleContent = {
+        overview: content.overview,
+        personality: content.personality,
+        oneLine: content.oneLine,
+        strength: content.strength,
+        currentPhase: content.currentPhase,
+        patterns: content.patterns,
+        palaces: (content.palaces || []).slice(0, 4),
+        daXian: (content.daXian || []).slice(0, 3),
+        topics: (content.topics || []).slice(0, 1),
+        caveats: content.caveats,
+      };
       return NextResponse.json({
         demo: DEMO,
-        content: {
-          overview: content.overview,
-          personality: content.personality,
-          caveats: content.caveats,
+        content: sampleContent,
+        meta: {
+          ...meta,
+          palaceCount: sampleContent.palaces.length,
+          daXianCount: sampleContent.daXian.length,
+          sample: true,
         },
-        meta,
       });
     }
 

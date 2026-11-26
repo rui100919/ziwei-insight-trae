@@ -41,6 +41,7 @@ type AccountStrings = {
   savedCheck: string; saveProfile: string;
   privacy: string; privateByDesign: string; priv1: string; priv2: string; priv3: string;
   delBirthConfirm: string;
+  signOut: string;
 };
 
 const S: Record<Lang, AccountStrings> = {
@@ -68,6 +69,7 @@ const S: Record<Lang, AccountStrings> = {
     priv2: '删除报告会把它从账户移除，免费次数不会恢复。',
     priv3: '出生资料可以随时删除，关联的命盘和报告会一并移除。',
     delBirthConfirm: '删除这份出生资料？已生成的报告会保留。',
+    signOut: '退出登录',
   },
   en: {
     welcomeBack: 'Welcome back', subtitle: 'Your chart, your free reading, and the details behind it — all in one private place.',
@@ -93,6 +95,7 @@ const S: Record<Lang, AccountStrings> = {
     priv2: 'Deleting a report removes it from your account. Your free reading stays used.',
     priv3: 'Birth details can be deleted at any time. Related charts and reports are removed with them.',
     delBirthConfirm: 'Delete this birth profile? Saved reports will be kept.',
+    signOut: 'Sign out',
   },
   es: {
     welcomeBack: 'Bienvenido de nuevo', subtitle: 'Tu carta, tu lectura gratuita y todos tus datos, reunidos en un solo lugar privado.',
@@ -118,6 +121,7 @@ const S: Record<Lang, AccountStrings> = {
     priv2: 'Eliminar un informe lo quita de tu cuenta; la lectura gratuita no se recupera.',
     priv3: 'Los datos de nacimiento se pueden eliminar en cualquier momento. Las cartas e informes asociados se eliminan con ellos.',
     delBirthConfirm: '¿Eliminar estos datos de nacimiento? Los informes ya generados se conservarán.',
+    signOut: 'Cerrar sesión',
   },
   fr: {
     welcomeBack: 'Bon retour', subtitle: 'Votre thème, votre lecture gratuite et toutes vos données, réunis dans un seul espace privé.',
@@ -143,6 +147,7 @@ const S: Record<Lang, AccountStrings> = {
     priv2: 'Supprimer un rapport le retire de votre compte ; la lecture gratuite reste consommée.',
     priv3: 'Les données de naissance peuvent être supprimées à tout moment. Les thèmes et rapports associés sont supprimés en même temps.',
     delBirthConfirm: 'Supprimer ces données de naissance ? Les rapports déjà générés seront conservés.',
+    signOut: 'Se déconnecter',
   },
   de: {
     welcomeBack: 'Willkommen zurück', subtitle: 'Dein Horoskop, deine kostenlose Deutung und alle deine Daten — an einem privaten Ort.',
@@ -168,6 +173,7 @@ const S: Record<Lang, AccountStrings> = {
     priv2: 'Einen Bericht zu löschen entfernt ihn aus deinem Konto; die kostenlose Deutung bleibt verbraucht.',
     priv3: 'Geburtsdaten können jederzeit gelöscht werden. Zugehörige Horoskope und Berichte werden dabei ebenfalls entfernt.',
     delBirthConfirm: 'Diese Geburtsdaten löschen? Bereits erstellte Berichte bleiben erhalten.',
+    signOut: 'Abmelden',
   },
   ja: {
     welcomeBack: 'おかえりなさい', subtitle: 'あなたの命盤、無料解読、そしてすべてのデータが、プライベートな一箇所にまとまっています。',
@@ -193,6 +199,7 @@ const S: Record<Lang, AccountStrings> = {
     priv2: 'レポートを削除するとアカウントから削除され、無料回数は元に戻りません。',
     priv3: '出生情報はいつでも削除できます。関連する命盤とレポートも一緒に削除されます。',
     delBirthConfirm: 'この出生情報を削除しますか？生成済みのレポートは残ります。',
+    signOut: 'ログアウト',
   },
 };
 
@@ -392,14 +399,23 @@ export default function AccountPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-5 pt-28 pb-20">
-      <header>
-        <p className="eyebrow">{t(lang, 'account')}</p>
-        <h1 className="mt-2 font-serif text-[40px] leading-[1.04] tracking-tight text-ink">
-          {s.welcomeBack}{displayName ? `, ${displayName}` : ''}.
-        </h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
-          {s.subtitle}
-        </p>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="eyebrow">{t(lang, 'account')}</p>
+          <h1 className="mt-2 font-serif text-[40px] leading-[1.04] tracking-tight text-ink">
+            {s.welcomeBack}{displayName ? `, ${displayName}` : ''}.
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
+            {s.subtitle}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={signOut}
+          className="link shrink-0 text-sm text-ink-muted hover:text-gold"
+        >
+          {s.signOut}
+        </button>
       </header>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">

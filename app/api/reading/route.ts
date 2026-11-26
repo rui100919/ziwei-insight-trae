@@ -203,26 +203,57 @@ export async function POST(request: Request) {
 
     // 没有指定档案时，按表单数据新建一份。
     if (!profileId) {
-      const { data: created, error: profileError } = await admin
+      // 同一账号的同一份出生资料只保留一条：命中已有档案就直接复用，
+      // 避免生成失败重试时反复堆积重复资料。
+      const wantedLabel = profileLabel || DEFAULT_PROFILE_LABEL[lang];
+      const wantedLongitude = input.longitude ?? null;
+      const { data: candidates } = await admin
         .from('birth_profiles')
-        .insert({
-          user_id: user.id,
-          label: profileLabel || DEFAULT_PROFILE_LABEL[lang],
-          birth_date: input.birthDate,
-          birth_time: input.timeKnown ? input.birthTime : null,
-          birth_time_known: input.timeKnown,
-          birth_place: input.birthPlace,
-          timezone: input.timezone,
-          utc_offset: built.utcOffset || null,
-          chart_preferences: {
-            ...(input.longitude != null ? { longitude: input.longitude } : {}),
-            gender: input.gender,
-          },
-        })
-        .select('id')
-        .single();
-      if (profileError) throw profileError;
-      profileId = created.id;
+        .select('id, birth_time, chart_preferences')
+        .eq('user_id', user.id)
+        .eq('label', wantedLabel)
+        .eq('birth_date', input.birthDate)
+        .eq('birth_time_known', input.timeKnown)
+        .eq('birth_place', input.birthPlace)
+        .eq('timezone', input.timezone)
+        .order('created_at', { ascending: true })
+        .limit(10);
+      const reusable = (candidates ?? []).find((row) => {
+        const prefs = (row.chart_preferences ?? {}) as { gender?: string; longitude?: number | string | null };
+        const rowTime = row.birth_time ? String(row.birth_time).slice(0, 5) : null;
+        const wantedTime = input.timeKnown ? input.birthTime : null;
+        const rowLongitude = prefs.longitude === null || prefs.longitude === undefined
+          ? null
+          : Number(prefs.longitude);
+        return rowTime === wantedTime
+          && (prefs.gender === 'female' ? 'female' : 'male') === input.gender
+          && rowLongitude === wantedLongitude;
+      });
+
+      if (reusable) {
+        profileId = reusable.id;
+      } else {
+        const { data: created, error: profileError } = await admin
+          .from('birth_profiles')
+          .insert({
+            user_id: user.id,
+            label: wantedLabel,
+            birth_date: input.birthDate,
+            birth_time: input.timeKnown ? input.birthTime : null,
+            birth_time_known: input.timeKnown,
+            birth_place: input.birthPlace,
+            timezone: input.timezone,
+            utc_offset: built.utcOffset || null,
+            chart_preferences: {
+              ...(input.longitude != null ? { longitude: input.longitude } : {}),
+              gender: input.gender,
+            },
+          })
+          .select('id')
+          .single();
+        if (profileError) throw profileError;
+        profileId = created.id;
+      }
     }
 
     const { data: chartRow, error: chartError } = await admin
@@ -267,7 +298,22 @@ export async function POST(request: Request) {
 
     try {
       const facts = chartFacts(built.chart, built.timeNote, lang, built.timeStatus, built.hasDST);
-      const { content, model } = await generateBasicReading(facts, lang);
+      // AI 只是增强：调用失败（未配 Key、额度不足、限流、网络异常）时回退本地模板，
+      // 保证报告始终有内容，不会因为外部服务不可用而生成空白报告。
+      let content: Record<string, unknown>;
+      let model: string;
+      try {
+        const ai = await generateBasicReading(facts, lang);
+        content = ai.content as unknown as Record<string, unknown>;
+        model = ai.model;
+      } catch (aiError) {
+        console.warn(
+          '[reading] AI 生成失败，回退本地模板:',
+          aiError instanceof Error ? aiError.message : aiError,
+        );
+        content = generateDemoReading(facts, lang, { variant: 'demo' }) as unknown as Record<string, unknown>;
+        model = 'local-template';
+      }
 
       const { error: completeError } = await supabase.rpc('complete_generation', {
         p_job_id: jobId as string,

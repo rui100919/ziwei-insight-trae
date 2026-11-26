@@ -50,8 +50,8 @@ export function Home() {
               {t(lang, 'heroSub')}
             </p>
             <div className="hero-actions" data-reveal style={revealDelay('.34s')}>
-              <Link href="/chart/new" className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_start' })}>
-                {t(lang, 'start')}
+              <Link href="/auth" className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_signup' })}>
+                {t(lang, 'signUp')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
               <Link href="/full-preview" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_full_sample' })}>
@@ -217,8 +217,8 @@ export function Home() {
             <h2>{t(lang, 'finalTitle')}</h2>
             <p>{t(lang, 'finalBody')}</p>
             <div className="final-actions">
-              <Link href="/chart/new" className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_start' })}>
-                {t(lang, 'start')}
+              <Link href="/auth" className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_signup' })}>
+                {t(lang, 'signUp')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
               <Link href="/full-preview" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_sample' })}>

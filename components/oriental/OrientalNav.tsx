@@ -56,6 +56,12 @@ export function OrientalNav() {
   const accountLink = signedIn || demo;
   const authHref = `/auth?next=${encodeURIComponent(pathname.startsWith('/auth') ? '/' : pathname)}`;
 
+  async function handleSignOut() {
+    if (isDemoMode()) demoStore.clearUser();
+    else await createClient().auth.signOut();
+    window.location.href = '/';
+  }
+
   return (
     <nav ref={navRef} className="nav" aria-label={t(lang, 'navMainAria')}>
       <div className="nav-inner">
@@ -83,6 +89,11 @@ export function OrientalNav() {
             <Link href={authHref} className="nav-link">
               {t(lang, 'signIn')}
             </Link>
+          )}
+          {accountLink && (
+            <button type="button" onClick={handleSignOut} className="nav-link nav-signout">
+              {t(lang, 'signOut')}
+            </button>
           )}
           <LanguageSwitcher className="nav-lang" />
           <Link href="/chart/new" className="nav-cta">

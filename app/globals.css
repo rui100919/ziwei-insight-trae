@@ -195,6 +195,13 @@ button {
 .nav-link:hover::after {
   width: 100%;
 }
+/* 导航里的退出登录用按钮实现，去掉浏览器默认外观，与 nav-link 视觉一致 */
+.nav-signout {
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
 .nav-cta {
   display: inline-flex;
   align-items: center;
