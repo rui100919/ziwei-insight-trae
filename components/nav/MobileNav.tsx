@@ -30,6 +30,17 @@ export function MobileNav({ lang, accountLink, authHref }: Props) {
       </Link>
 
       <div className="nav-right">
+        <Link
+          href={accountLink ? '/account?v=3' : authHref}
+          className="nav-icon"
+          aria-label={accountLink ? t(lang, 'account') : t(lang, 'signIn')}
+          title={accountLink ? t(lang, 'account') : t(lang, 'signIn')}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="8.4" r="3.6" />
+            <path d="M4.6 20c0-3.9 3.3-6.6 7.4-6.6s7.4 2.7 7.4 6.6" />
+          </svg>
+        </Link>
         <LanguageSwitcher className="nav-lang" />
         <Link href={accountLink ? '/chart/new' : authHref} className="nav-cta">
           {accountLink ? t(lang, 'navChart') : t(lang, 'signUp')}

@@ -249,6 +249,32 @@ button {
   gap: 10px;
   width: 100%;
 }
+/* 手机导航的「我的」入口：只有图标，登录/未登录都指向正确去处 */
+.nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  color: var(--muted);
+  transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease;
+}
+.nav-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+.nav-icon:hover {
+  border-color: rgba(184, 148, 92, 0.6);
+  color: var(--cream);
+  background: rgba(184, 148, 92, 0.08);
+}
 /* 语言切换：金色胶囊，替代浏览器原生 select 外观 */
 .nav-lang {
   appearance: none;

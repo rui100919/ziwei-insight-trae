@@ -506,3 +506,42 @@
     line-height: 1.95;
   }
 }
+
+/* =====================================================================
+   极窄屏（≤400px，多数安卓与小屏 iPhone）
+   导航一行里要放下：品牌 + 我的 + 语言 + CTA，把控件再收一档。
+   ===================================================================== */
+@media (max-width: 400px) {
+  .nav-inner {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .brand-name {
+    font-size: 15px;
+    letter-spacing: 0.1em;
+  }
+  .brand-mark {
+    width: 24px;
+    height: 24px;
+  }
+  .nav-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .nav-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+  .nav-lang {
+    min-height: 34px;
+    padding: 0 18px 0 8px;
+    font-size: 11px;
+    background-position: right 7px center;
+  }
+  .nav-cta {
+    min-height: 34px;
+    padding: 0 11px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+}
