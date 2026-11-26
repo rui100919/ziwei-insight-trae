@@ -1,0 +1,508 @@
+/* =====================================================================
+   手机端样式（≤600px，以 iPhone 17 Pro Max 440×956 为基准）
+   —— 只放手机规则，电脑端样式在 ../globals.css。
+   —— 每段都用 @media 包住，所以这里写什么都不会影响桌面。
+   —— 由 app/layout.tsx 在 globals.css 之后引入。
+   ===================================================================== */
+
+/* 封面的金色细框：手机上框线离正文只有十来个像素，显得局促，小屏直接去掉。
+   用 screen 限定，避免影响 @media print 里的 PDF 边框。 */
+@media screen and (max-width: 600px) {
+  .cover::after {
+    display: none;
+  }
+}
+
+/* =====================================================================
+   手机端：iPhone 17 Pro Max（440 × 956 CSS px，@3x）
+   只覆盖窄屏，桌面端不受影响。
+   目标：收紧纵向节奏、放大可点区域、让正文行宽/行高适合单手阅读。
+   ===================================================================== */
+@media (max-width: 600px) {
+  :root {
+    --pad: 20px;
+  }
+  html {
+    /* 站内锚点跳转时不要被固定导航压住 */
+    scroll-padding-top: 72px;
+  }
+
+  /* ---------------- 导航：更矮、更紧凑，CTA 与语言胶囊等高手感 ---------------- */
+  .nav-inner {
+    height: 60px;
+    padding: 0 16px;
+    gap: 10px;
+  }
+  .brand {
+    gap: 10px;
+  }
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+  .brand-name {
+    font-size: 16px;
+    letter-spacing: 0.12em;
+  }
+  .nav-right {
+    gap: 8px;
+  }
+  .nav-lang {
+    min-height: 38px;
+    padding: 0 22px 0 10px;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    background-position: right 9px center;
+  }
+  .nav-cta {
+    min-height: 38px;
+    padding: 0 14px;
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    gap: 6px;
+  }
+  .nav-back {
+    font-size: 11.5px;
+  }
+
+  /* ---------------- 首页 ---------------- */
+  /* 首屏整体上移：上方留白 330px → 约 240px，底部留给山海照片 */
+  .hero-inner {
+    padding: 88px var(--pad) 200px;
+  }
+  .hero-title {
+    font-size: 34px;
+    line-height: 1.26;
+  }
+  .hero-sub {
+    margin-top: 20px;
+    max-width: none;
+    font-size: 14.5px;
+    line-height: 1.92;
+  }
+  .hero-actions {
+    margin-top: 28px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .hero-actions .btn,
+  .hero-actions .btn-ghost {
+    width: 100%;
+    justify-content: space-between;
+    padding: 15px 20px;
+    font-size: 13.5px;
+  }
+  .hero-note {
+    margin-top: 20px;
+    font-size: 11.5px;
+    line-height: 1.9;
+  }
+
+  .creed {
+    padding: 64px 0 60px;
+  }
+  .creed h2 {
+    font-size: 28px;
+    line-height: 1.5;
+  }
+  .creed-body {
+    margin-top: 18px;
+    font-size: 14.5px;
+    line-height: 1.95;
+  }
+  .creed-meta {
+    margin-top: 24px;
+    gap: 16px 22px;
+  }
+  .scroll-strip {
+    padding: 22px 20px 18px;
+  }
+  .scroll-strip .vertical {
+    height: 190px;
+    font-size: 20px;
+    letter-spacing: 0.22em;
+  }
+
+  .palaces {
+    padding: 64px 0 60px;
+  }
+  .palaces-head {
+    margin-bottom: 28px;
+    gap: 14px;
+  }
+  .palaces-head h2 {
+    font-size: 27px;
+    line-height: 1.42;
+  }
+  .palaces-head p {
+    max-width: none;
+    font-size: 13.5px;
+    line-height: 1.9;
+  }
+  /* 十二宫 2 列：格子更矮，手指扫读更快 */
+  .chart-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: none;
+    grid-template-areas: none;
+  }
+  .palace {
+    grid-area: auto !important;
+    padding: 15px 14px;
+    min-height: 88px;
+  }
+  .palace .nm {
+    font-size: 16px;
+  }
+  .palace .idx {
+    font-size: 10px;
+  }
+  .palace .st {
+    font-size: 11.5px;
+    line-height: 1.7;
+  }
+  .mid {
+    padding: 30px 16px;
+  }
+  .mid-name {
+    font-size: 20px;
+  }
+
+  .reading {
+    padding: 64px 0 66px;
+  }
+  .reading h2 {
+    font-size: 27px;
+    line-height: 1.45;
+  }
+  .reading .intro {
+    margin-top: 16px;
+    max-width: none;
+    font-size: 14px;
+    line-height: 1.95;
+  }
+  .reading .foot {
+    margin-top: 22px;
+  }
+  .excerpt-item {
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+    padding: 22px 0 24px;
+  }
+  .excerpt-item h3 {
+    font-size: 15.5px;
+    letter-spacing: 0.14em;
+  }
+  .excerpt-item p {
+    font-size: 14px;
+    line-height: 1.95;
+  }
+
+  .steps {
+    padding: 64px 0 60px;
+  }
+  .steps-head h2 {
+    font-size: 27px;
+    line-height: 1.45;
+  }
+  .steps-grid {
+    gap: 30px;
+    margin-top: 28px;
+  }
+  .step-num {
+    font-size: 28px;
+  }
+
+  .final {
+    padding: 68px 0 64px;
+  }
+  .final-frame {
+    padding: 34px 20px 30px;
+  }
+  .final h2 {
+    font-size: 27px;
+    line-height: 1.42;
+  }
+  .final-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .final-actions .btn,
+  .final-actions .btn-ghost {
+    width: 100%;
+    min-width: 0;
+    justify-content: space-between;
+    padding: 15px 20px;
+  }
+
+  /* ---------------- 账户页 ---------------- */
+  .account-page {
+    padding: 92px 20px 64px;
+  }
+  .account-page h1 {
+    margin-top: 12px;
+    font-size: 30px;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+  .account-page header > div > p {
+    font-size: 13.5px;
+    line-height: 1.9;
+  }
+  .account-page .card {
+    padding: 20px;
+    border-radius: 14px;
+    min-width: 0;
+  }
+  /* 网格子项默认 min-width:auto，会被横向滚动的胶囊撑开整页 */
+  .account-page .mt-8.grid > * {
+    min-width: 0;
+  }
+  .account-page .card h2 {
+    font-size: 21px;
+  }
+  /* 人物切换 / 添加资料：胶囊按钮做成 36px 可点区域，横向可滚动不换行 */
+  .account-page .rounded-full {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    padding: 7px 14px;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  .account-page .mt-4.flex.flex-wrap {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .account-page .mt-4.flex.flex-wrap > * {
+    flex: 0 0 auto;
+  }
+  /* 胶囊只留姓名：三个人的名字加「添加资料」刚好一行，不必横向滑动 */
+  .account-page .person-dob {
+    display: none;
+  }
+  .account-page .mt-4.flex.flex-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  .account-page .card article {
+    padding: 2px 0;
+  }
+  .account-page .link.text-sm {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  /* ---------------- 排盘 / 登录 ---------------- */
+  .page {
+    padding-top: 84px !important;
+  }
+  .sheet {
+    padding: 24px 20px 26px;
+  }
+  .auth-inner {
+    padding-top: 84px;
+    padding-bottom: 48px;
+  }
+  .auth-brand {
+    font-size: 30px;
+  }
+  .auth-hero {
+    font-size: 21px;
+    line-height: 1.45;
+  }
+  .auth-title {
+    font-size: 30px;
+  }
+  .auth-input {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .auth-submit {
+    min-height: 50px;
+  }
+
+  /* ---------------- 完整报告 ---------------- */
+  /* 封面：略矮于整屏，露出正文一角，提示「往下还有内容」 */
+  .cover {
+    min-height: 82svh;
+  }
+  .cover-inner {
+    padding: 96px var(--pad) 64px;
+  }
+  .cover h1 {
+    font-size: 34px;
+    line-height: 1.26;
+  }
+  .cover .intro {
+    margin-top: 18px;
+    max-width: none;
+    font-size: 14px;
+    line-height: 1.95;
+  }
+  .cover-dedication {
+    margin-top: 12px;
+    font-size: 13.5px;
+    letter-spacing: 0.22em;
+  }
+  .cover-meta {
+    margin-top: 22px;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+  .cover-archive {
+    margin-top: 10px;
+    font-size: 10.5px;
+  }
+  .cover-actions {
+    margin-top: 24px;
+  }
+  .cover-actions .btn-ghost {
+    min-height: 42px;
+    padding: 0 18px;
+    font-size: 12.5px;
+  }
+
+  .report {
+    padding: 30px 0 56px;
+  }
+  .report-wrap,
+  .report .wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .report .chapter {
+    padding-top: 34px;
+  }
+  .report .ch-head {
+    gap: 12px;
+    padding-bottom: 14px;
+    align-items: center;
+  }
+  .ch-head h2 {
+    font-size: 22px;
+    line-height: 1.38;
+    letter-spacing: 0.04em;
+  }
+  .ch-no {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding-bottom: 0;
+  }
+  .ch-body {
+    padding-top: 18px;
+  }
+  .ch-body p {
+    margin-bottom: 1.15em;
+    font-size: 15px;
+    line-height: 1.95;
+    letter-spacing: 0.01em;
+  }
+  .lede {
+    font-size: 16px !important;
+    line-height: 1.9 !important;
+  }
+  .fineprint {
+    margin-top: 24px;
+    padding-top: 16px;
+    font-size: 10.5px;
+    line-height: 1.9;
+  }
+
+  .meta-panel {
+    padding-top: 36px;
+  }
+  .meta-grid {
+    gap: 12px 14px;
+  }
+  .meta-cell b {
+    font-size: 15px;
+  }
+  .meta-cell span {
+    font-size: 11px;
+  }
+  .prenote {
+    padding: 40px 0 36px;
+  }
+  .prenote-head {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .prenote-body {
+    font-size: 13.5px;
+    line-height: 1.95;
+  }
+
+  /* 逐宫：正文不再被 46px 缩进挤成窄栏 */
+  .report .palace summary {
+    grid-template-columns: 24px minmax(0, 1fr) 18px;
+    gap: 10px;
+    padding: 14px 2px;
+  }
+  .report .palace .pno {
+    font-size: 11px;
+  }
+  .report .palace .pt {
+    font-size: 16px;
+  }
+  .report .palace .body {
+    padding: 4px 2px 18px;
+  }
+  .report .palace .body p {
+    font-size: 14.5px;
+    line-height: 1.95;
+  }
+
+  .report .topic {
+    padding: 18px 0;
+  }
+  .report .topic-title {
+    font-size: 15.5px;
+  }
+  .report .topic p {
+    font-size: 14.5px;
+    line-height: 1.95;
+  }
+
+  /* 大限：小屏单列 + 紧凑行式，12 张卡不再拉出两千多像素 */
+  .report .decades {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .report .decade {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 2px 8px;
+    padding: 10px 12px;
+  }
+  .report .decade .age {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .report .decade .pal {
+    font-size: 12.5px;
+  }
+  .report .decade .theme {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    line-height: 1.72;
+  }
+  .report .decade .mark {
+    grid-column: 1 / -1;
+    font-size: 9.5px;
+  }
+
+  .colophon {
+    padding: 36px 0 8px;
+  }
+  .colo-line {
+    font-size: 14px;
+    line-height: 1.95;
+  }
+}

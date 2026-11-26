@@ -1,6 +1,8 @@
 import Script from 'next/script';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+// 手机端样式单独一份，必须在 globals.css 之后引入（同为媒体查询，后者覆盖前者）
+import './styles/mobile.css';
 import { LangProvider } from '@/components/LangProvider';
 import { Header } from '@/components/Header';
 import { MainFrame } from '@/components/MainFrame';
