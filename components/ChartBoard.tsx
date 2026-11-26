@@ -153,7 +153,7 @@ export function ChartBoard({ chart, lang, linkedPalaces }: Props) {
           const style = { gridRow: pos.row, gridColumn: pos.col };
 
           return linkedPalaces?.has(palace.name) ? (
-            <a key={palace.branch} href={`#palace-${encodeURIComponent(palace.name)}`} className={className} style={style}>
+            <a key={palace.branch} href={`#palace-${palace.name}`} className={className} style={style}>
               {inner}
             </a>
           ) : (

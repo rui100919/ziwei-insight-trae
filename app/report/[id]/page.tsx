@@ -657,7 +657,7 @@ export default function ReportPage() {
                         <details
                           className="palace"
                           key={p.key}
-                          id={`palace-${encodeURIComponent(p.key)}`}
+                          id={`palace-${p.key}`}
                           open
                         >
                           <summary>
