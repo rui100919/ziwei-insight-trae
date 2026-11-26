@@ -202,7 +202,8 @@ button {
 .nav-signout {
   background: none;
   border: 0;
-  font: inherit;
+  /* 不写 font: inherit——那会按父元素（16px）算，盖掉 .nav-link 的 12.5px */
+  padding: 0;
   cursor: pointer;
 }
 .nav-cta {
@@ -230,8 +231,11 @@ button {
   min-width: 0;
 }
 .nav-right .nav-link,
-.nav-right .nav-cta {
+.nav-right .nav-cta,
+.nav-right .nav-lang {
   white-space: nowrap;
+  /* 导航内所有可点元素统一字号，避免按钮/下拉各自继承出不同大小 */
+  font-size: 12.5px;
 }
 /* 电脑 / 手机两套导航结构（components/nav/ 下各一个文件），靠这里切换：
    默认显示电脑版，≤1080px 换成手机版。两套都渲染，用 display 隐藏，避免水合闪烁。 */
