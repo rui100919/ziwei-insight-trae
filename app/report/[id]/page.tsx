@@ -330,25 +330,6 @@ export default function ReportPage() {
 
   const linkedPalaces = new Set((fullContent?.palaces ?? []).map((p) => p.key));
 
-  const toc: [string, string][] = report
-    ? [
-        ...(report.chart ? [['chart', L('chart')] as [string, string]] : []),
-        ['overview', t(lang, 'overview')],
-        ['personality', t(lang, 'personality')],
-        ...(isFull
-          ? [
-              ...(fullContent?.oneLine ? [['oneline', t(lang, 'fullOneLine')] as [string, string]] : []),
-              ['palaces', t(lang, 'fullPalaces')],
-              ...(fullContent?.topics?.length ? [['topics', t(lang, 'fullTopics')] as [string, string]] : []),
-              ['daxian', t(lang, 'fullDaXian')],
-              ['current', t(lang, 'fullCurrent')],
-              ...(fullContent?.strength?.text ? [['strength', t(lang, 'fullStrength')] as [string, string]] : []),
-            ] as [string, string][]
-          : []),
-        ['caveats', t(lang, 'caveats')],
-      ]
-    : [];
-
   // 仅用于展示的派生值（不改动任何数据获取 / 兼容 / 权益逻辑）。
   const nSec = sections.length;
   // 章节编号按实际渲染顺序连续递增，新增章节时无需手改数字。
@@ -639,15 +620,6 @@ export default function ReportPage() {
               ) : localOnly ? (
                 <p className="fineprint">{L('anonReportNote')}</p>
               ) : null}
-
-              {toc.length > 1 && (
-                <nav className="toc" aria-label={t(lang, 'reports')} data-reveal>
-                  <p className="toc-title">{t(lang, 'tocTitle')}</p>
-                  {toc.map(([anchor, label]) => (
-                    <a key={anchor} href={`#${anchor}`}>{label}</a>
-                  ))}
-                </nav>
-              )}
 
               <article>
                 {sections.map(([anchor, title, value], i) => (
