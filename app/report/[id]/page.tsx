@@ -237,13 +237,13 @@ export default function ReportPage() {
     // 本地报告（演示 / 未登录访客）只能从浏览器删除，没有服务端记录可删。
     if (isDemoMode() || localOnly) {
       demoStore.deleteReport(id);
-      router.replace(isDemoMode() ? '/account' : '/');
+      router.replace(isDemoMode() ? '/account?v=3' : '/');
       return;
     }
     const supabase = createClient();
     const { error } = await supabase.rpc('soft_delete_report', { p_report_id: id });
     if (error) { setError(error.message); return; }
-    router.replace('/account');
+    router.replace('/account?v=3');
   }
 
   // 解锁 CTA 走真实支付：复用现有结账发起逻辑（Dodo / 默认 checkout），不使用原型假解锁。
@@ -376,7 +376,7 @@ export default function ReportPage() {
             <h1>{locked ? t(lang, 'reportLockedTitle') : t(lang, 'errorGeneric')}</h1>
             <p className="intro">{error}</p>
             <div className="cover-actions">
-              <Link className="btn-ghost" href="/account">{L('backToAccount')}</Link>
+              <Link className="btn-ghost" href="/account?v=3">{L('backToAccount')}</Link>
             </div>
           </div>
         </section>
@@ -421,7 +421,7 @@ export default function ReportPage() {
                 {/* 正文就在封面下方，直接滚动即可阅读，不再拦截成「开始阅读」按钮。 */}
                 {isFull && (
                   <div className="cover-actions">
-                    <Link className="btn-ghost" href="/account">{t(lang, 'back')}</Link>
+                    <Link className="btn-ghost" href="/account?v=3">{t(lang, 'back')}</Link>
                   </div>
                 )}
                 {!isFull && <p className="cover-note">{t(lang, 'readingCoverNote')}</p>}
@@ -526,7 +526,7 @@ export default function ReportPage() {
                       <button className="btn" onClick={buy} disabled={buying}>
                         {buying ? t(lang, 'payOverlaySub') : t(lang, 'chartPaywallCta')}
                       </button>
-                      <Link className="btn-ghost" href="/full-preview">{t(lang, 'lockedCtaSample')}</Link>
+                      <Link className="btn-ghost" href="/full-preview?v=3">{t(lang, 'lockedCtaSample')}</Link>
                     </div>
                     <p className="fine">
                       {t(lang, 'chartPaywallPrice')} · {t(lang, 'chartPaywallOneTime')}
@@ -558,7 +558,7 @@ export default function ReportPage() {
                     )}
                   </div>
                 </div>
-                <Link className="edit" href="/chart/new">{t(lang, 'reportEditBirth')}</Link>
+                <Link className="edit" href="/chart/new?v=3">{t(lang, 'reportEditBirth')}</Link>
               </div>
 
               {error && (
@@ -801,7 +801,7 @@ export default function ReportPage() {
                         <button className="btn" onClick={buy} disabled={buying}>
                           {buying ? t(lang, 'payOverlaySub') : t(lang, 'readingUnlock')}
                         </button>
-                        <Link className="btn-ghost" href="/full-preview">{t(lang, 'lockedCtaSample')}</Link>
+                        <Link className="btn-ghost" href="/full-preview?v=3">{t(lang, 'lockedCtaSample')}</Link>
                       </div>
                       <p className="fine">{t(lang, 'buyPrice')}</p>
                     </div>
@@ -815,8 +815,8 @@ export default function ReportPage() {
                     <h2>{t(lang, 'endTitle')}</h2>
                     <p>{t(lang, 'endBody')}</p>
                     <div className="unlock-actions">
-                      <Link className="btn" href="/full-preview">{t(lang, 'endCtaNew')} →</Link>
-                      <Link className="btn-ghost" href="/account">{t(lang, 'back')}</Link>
+                      <Link className="btn" href="/full-preview?v=3">{t(lang, 'endCtaNew')} →</Link>
+                      <Link className="btn-ghost" href="/account?v=3">{t(lang, 'back')}</Link>
                     </div>
                     <p className="fine">{t(lang, 'endFine')}</p>
                   </div>

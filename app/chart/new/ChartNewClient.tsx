@@ -292,9 +292,9 @@ export default function NewChartPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        if (data.error === 'NEED_LOGIN') router.replace('/auth?next=/chart/new');
+        if (data.error === 'NEED_LOGIN') router.replace('/auth?next=%2Fchart%2Fnew%3Fv%3D3');
         else if (data.error === 'FREE_USED') setError(t(lang, 'freeUsed'));
-        else if (data.error === 'PAYMENT_REQUIRED') router.push('/full-preview');
+        else if (data.error === 'PAYMENT_REQUIRED') router.push('/full-preview?v=3');
         else if (data.error === 'NEED_VERIFY') setError('__NEED_VERIFY__');
         else if (data.error === 'RATE_LIMITED') setError(t(lang, 'rateLimited'));
         else if (data.error === 'INVALID_TIMEZONE') setError(t(lang, 'invalidTimezone'));
@@ -703,7 +703,7 @@ export default function NewChartPage() {
                     <button
                       type="button"
                       className="mt-2 text-sm font-medium text-[#8e3527] underline-offset-4 hover:underline"
-                      onClick={() => router.push('/auth?next=/chart/new')}
+                      onClick={() => router.push('/auth?next=%2Fchart%2Fnew%3Fv%3D3')}
                     >
                       {t(lang, 'verifyNow')} →
                     </button>

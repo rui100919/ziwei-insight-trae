@@ -78,11 +78,11 @@ export function OrientalNav() {
           <Link href="/" className="nav-link">
             {t(lang, 'navHome')}
           </Link>
-          <Link href="/full-preview" className="nav-link">
+          <Link href="/full-preview?v=3" className="nav-link">
             {t(lang, 'navSample')}
           </Link>
           {accountLink ? (
-            <Link href="/account" className="nav-link">
+            <Link href="/account?v=3" className="nav-link">
               {t(lang, 'account')}
             </Link>
           ) : (

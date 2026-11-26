@@ -127,11 +127,11 @@ function PaymentSuccessContent() {
           <p className="mt-4 text-sm leading-relaxed text-ink-soft">
             {s.unlockedDesc}
           </p>
-          <Link href="/full-preview" className="btn mt-8 inline-block px-8 py-3.5">
+          <Link href="/full-preview?v=3" className="btn mt-8 inline-block px-8 py-3.5">
             {s.genNow} →
           </Link>
           <div className="mt-4">
-            <Link href="/account" className="link text-sm">{s.viewLater}</Link>
+            <Link href="/account?v=3" className="link text-sm">{s.viewLater}</Link>
           </div>
         </>
       ) : status === 'failed' ? (
@@ -140,7 +140,7 @@ function PaymentSuccessContent() {
           <p className="mt-4 text-sm leading-relaxed text-ink-soft">
             {s.failedDesc}
           </p>
-          <Link href="/account" className="btn mt-8 inline-block px-8 py-3.5">{s.goAccount} →</Link>
+          <Link href="/account?v=3" className="btn mt-8 inline-block px-8 py-3.5">{s.goAccount} →</Link>
         </>
       ) : (
         <>

@@ -37,7 +37,7 @@ export default function ResetPasswordPage() {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       setStatus('done');
-      window.setTimeout(() => router.replace('/account'), 1200);
+      window.setTimeout(() => router.replace('/account?v=3'), 1200);
     } catch {
       setError(t(lang, 'errorGeneric'));
     } finally {
@@ -65,7 +65,7 @@ export default function ResetPasswordPage() {
       {status === 'done' && (
         <div className="card mt-8 p-6">
           <p className="text-sm leading-relaxed text-ink-soft">{t(lang, 'passwordUpdated')}</p>
-          <Link href="/account" className="link mt-4 inline-block text-sm">
+          <Link href="/account?v=3" className="link mt-4 inline-block text-sm">
             {t(lang, 'account')} <span aria-hidden="true">→</span>
           </Link>
         </div>

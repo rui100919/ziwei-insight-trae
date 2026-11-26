@@ -448,7 +448,7 @@ export default function AccountPage() {
               {fullUnlocked && (
                 <p className="mt-3 text-sm leading-relaxed text-ink-soft">
                   {s.fullDesc}{' '}
-                  <Link href="/full-preview" className="link text-sm">{s.genFull} →</Link>
+                  <Link href="/full-preview?v=3" className="link text-sm">{s.genFull} →</Link>
                 </p>
               )}
               {orders.length > 0 && (
@@ -500,7 +500,7 @@ export default function AccountPage() {
                 </button>
               ))}
               <Link
-                href="/chart/new"
+                href="/chart/new?v=3"
                 className="rounded-full border border-dashed border-line-strong px-3.5 py-1.5 text-xs text-ink-soft transition hover:border-gold hover:bg-gold/10 hover:text-ink"
               >
                 ＋ {s.addBirth}
@@ -512,7 +512,7 @@ export default function AccountPage() {
                 <p className="mt-1 text-xs leading-relaxed text-ink-muted">
                   {s.noReadingsHint}
                 </p>
-                <Link href="/chart/new" className="link mt-4 inline-block text-sm">{s.genBasic} →</Link>
+                <Link href="/chart/new?v=3" className="link mt-4 inline-block text-sm">{s.genBasic} →</Link>
               </div>
             ) : (
               <div className="mt-4 space-y-4">
@@ -554,11 +554,11 @@ export default function AccountPage() {
                                   </button>
                                 </>
                               ) : row.kind === 'basic' ? (
-                                <Link href="/chart/new" className="link text-sm">{s.genBasic} →</Link>
+                                <Link href="/chart/new?v=3" className="link text-sm">{s.genBasic} →</Link>
                               ) : fullUnlocked ? (
-                                <Link href="/chart/new?full=1" className="link text-sm">{s.genFull} →</Link>
+                                <Link href="/chart/new?full=1&v=3" className="link text-sm">{s.genFull} →</Link>
                               ) : (
-                                <Link href="/full-preview" className="link text-sm">{s.unlockFull} →</Link>
+                                <Link href="/full-preview?v=3" className="link text-sm">{s.unlockFull} →</Link>
                               )}
                             </div>
                           </div>
@@ -574,7 +574,7 @@ export default function AccountPage() {
             )}
             {fullUnlocked && (
               <Link
-                href="/chart/new?full=1"
+                href="/chart/new?full=1&v=3"
                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-line-strong px-4 py-3 text-sm font-medium text-ink-soft transition hover:border-gold hover:bg-gold/10 hover:text-ink"
               >
                 <span className="text-lg leading-none">＋</span> {s.genFull}

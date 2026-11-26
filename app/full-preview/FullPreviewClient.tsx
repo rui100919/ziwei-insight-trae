@@ -192,7 +192,7 @@ export default function FullPreviewPage() {
 
           <div className="cover-actions" data-reveal>
             <a href="#unlock" className="btn">{t(lang, 'previewUnlock')}<span className="arw" aria-hidden="true">→</span></a>
-            <a href="/chart/new" className="btn-ghost">{t(lang, 'start')}</a>
+            <a href="/chart/new?v=3" className="btn-ghost">{t(lang, 'start')}</a>
           </div>
 
           <p className="cover-note" data-reveal>{t(lang, 'fullSampleHint')}</p>

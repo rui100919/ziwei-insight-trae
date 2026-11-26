@@ -25,7 +25,7 @@ export default function NotFound() {
       <p className="mt-5 text-sm leading-relaxed text-ink-soft">{s.subtitle}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link href="/" className="btn px-6 py-3">{s.home} <span aria-hidden="true">→</span></Link>
-        <Link href="/chart/new" className="btn-ghost px-6 py-3">{s.gen}</Link>
+        <Link href="/chart/new?v=3" className="btn-ghost px-6 py-3">{s.gen}</Link>
       </div>
     </div>
   );

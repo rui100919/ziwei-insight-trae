@@ -296,7 +296,7 @@ export default function AuthPage() {
             {next === '/chart/new' ? t(lang, 'authNextHint') : s.subtitleAlt}
           </p>
           <p className="auth-sample">
-            <Link href="/full-preview">
+            <Link href="/full-preview?v=3">
               {t(lang, 'authSampleLink')} <span aria-hidden="true">→</span>
             </Link>
           </p>

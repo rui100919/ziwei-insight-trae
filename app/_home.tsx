@@ -61,11 +61,11 @@ export function Home() {
               {t(lang, 'heroSub')}
             </p>
             <div className="hero-actions" data-reveal style={revealDelay('.34s')}>
-              <Link href={signedIn ? '/account' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'hero_account' : 'hero_signup' })}>
+              <Link href={signedIn ? '/account?v=3' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'hero_account' : 'hero_signup' })}>
                 {signedIn ? t(lang, 'account') : t(lang, 'signUp')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
-              <Link href="/full-preview" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_full_sample' })}>
+              <Link href="/full-preview?v=3" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_full_sample' })}>
                 {t(lang, 'heroCtaFullSample')}
               </Link>
             </div>
@@ -177,7 +177,7 @@ export function Home() {
                   <div>
                     <h3>{label}</h3>
                     <p>{t(lang, 'sampleNote')}</p>
-                    <Link href="/full-preview" className="tag">
+                    <Link href="/full-preview?v=3" className="tag">
                       {t(lang, 'heroCtaFullSample')}
                       <span aria-hidden="true"> →</span>
                     </Link>
@@ -228,11 +228,11 @@ export function Home() {
             <h2>{t(lang, 'finalTitle')}</h2>
             <p>{t(lang, 'finalBody')}</p>
             <div className="final-actions">
-              <Link href={signedIn ? '/account' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'final_account' : 'final_signup' })}>
+              <Link href={signedIn ? '/account?v=3' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'final_account' : 'final_signup' })}>
                 {signedIn ? t(lang, 'account') : t(lang, 'signUp')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
-              <Link href="/full-preview" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_sample' })}>
+              <Link href="/full-preview?v=3" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_sample' })}>
                 {t(lang, 'finalCtaSample')}
               </Link>
             </div>
