@@ -47,6 +47,8 @@
 }
 html {
   scroll-behavior: smooth;
+  /* 站内锚点跳转统一让开固定导航（80px） */
+  scroll-padding-top: 96px;
 }
 body {
   margin: 0;
@@ -3235,8 +3237,6 @@ footer {
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(255, 253, 247, 0.92), rgba(252, 248, 239, 0.7));
   overflow: hidden;
-  /* 盘上点宫位会跳到这一块，给 80px 固定导航留出余量 */
-  scroll-margin-top: 110px;
 }
 .report .palace summary {
   padding: 16px 18px;
@@ -4263,18 +4263,6 @@ footer {
   html {
     /* 站内锚点跳转时不要被固定导航压住 */
     scroll-padding-top: 72px;
-  }
-  .chapter,
-  .topic,
-  .report .palace,
-  #chart,
-  #palaces,
-  #daxian,
-  #topics,
-  #patterns,
-  #strength,
-  #caveats {
-    scroll-margin-top: 72px;
   }
 
   /* ---------------- 导航：更矮、更紧凑，CTA 与语言胶囊等高手感 ---------------- */
