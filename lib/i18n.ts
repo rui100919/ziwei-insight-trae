@@ -375,6 +375,8 @@ export const PALACE_LABELS: Record<Lang, readonly string[]> = {
  * 报告里的 key 与标签表有一处叫法不同（key 用「仆役」，表里是「交友」），先归一。
  */
 export function palaceName(key: string, lang: Lang): string {
+  // 中文直接沿用报告里的叫法，与盘面上的宫名逐字一致（含「仆役」这类古称）
+  if (lang === 'zh') return key;
   const k = key === '仆役' ? '交友' : key;
   const i = PALACE_LABELS.zh.indexOf(k);
   return i < 0 ? key : (PALACE_LABELS[lang][i] ?? key);
