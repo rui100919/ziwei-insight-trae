@@ -4238,6 +4238,14 @@ footer {
   }
 }
 
+/* 封面的金色细框：手机上框线离正文只有十来个像素，显得局促，小屏直接去掉。
+   用 screen 限定，避免影响 @media print 里的 PDF 边框。 */
+@media screen and (max-width: 600px) {
+  .cover::after {
+    display: none;
+  }
+}
+
 /* =====================================================================
    手机端：iPhone 17 Pro Max（440 × 956 CSS px，@3x）
    只覆盖窄屏，桌面端不受影响。
