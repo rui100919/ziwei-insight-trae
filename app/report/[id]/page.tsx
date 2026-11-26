@@ -138,17 +138,27 @@ export default function ReportPage() {
         setError(t(lang, isLocked ? 'reportLocked' : 'errorGeneric'));
       } else {
         const raw = row as unknown as Record<string, unknown>;
-        // 盘面与出生档案统一走权益函数：未购买只返回预览盘（十二宫骨架 + 主星），
-        // 裁剪在数据库内完成，前端改参数也拿不到完整星曜。
-        const { data: view } = await supabase.rpc('get_report_chart', { p_report_id: id });
-        const payload = (view ?? null) as {
+        // 盘面与出生档案走服务端接口：已生成的完整解读本人可看完整盘面，
+        // 基础解读仍按权益裁剪成预览盘。
+        type ChartPayload = {
           full?: boolean;
           chart?: ChartView | null;
           profile?: {
             label?: string; birthDate?: string; birthTime?: string | null;
             timeKnown?: boolean; birthPlace?: string; timezone?: string;
           } | null;
-        } | null;
+        };
+        let payload: ChartPayload | null = null;
+        try {
+          const res = await fetch(`/api/report/chart?report=${encodeURIComponent(id)}`);
+          if (res.ok) payload = (await res.json()) as ChartPayload;
+        } catch {
+          payload = null;
+        }
+        if (!payload) {
+          const { data: view } = await supabase.rpc('get_report_chart', { p_report_id: id });
+          payload = (view ?? null) as ChartPayload | null;
+        }
         const bp = payload?.profile ?? null;
         setChartFull(Boolean(payload?.full));
         setReport({
