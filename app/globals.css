@@ -202,8 +202,8 @@ button {
 .nav-signout {
   background: none;
   border: 0;
-  /* 不写 font: inherit——那会按父元素（16px）算，盖掉 .nav-link 的 12.5px */
-  padding: 0;
+  /* 不写 font: inherit——那会按父元素（16px）算，盖掉 .nav-link 的 12.5px；
+     也不写 padding——.nav-link 的 6px 上下内边距要留着，否则基线会比旁边的链接低 */
   cursor: pointer;
 }
 .nav-cta {
