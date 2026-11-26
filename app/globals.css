@@ -1340,11 +1340,13 @@ footer {
 }
 .cover h1 {
   margin: 0;
-  font-size: clamp(38px, 5.2vw, 68px);
+  /* 标题栏宽 560px：「十二宫，一次读完。」9 个字，字号超过 60px 就会把「完。」挤到第二行 */
+  font-size: clamp(38px, 5.2vw, 58px);
   line-height: 1.24;
   font-weight: 400;
   letter-spacing: 0.03em;
   color: #f5eedf;
+  text-wrap: balance;
 }
 .cover h1 em {
   font-style: normal;
