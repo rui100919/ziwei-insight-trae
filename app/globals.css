@@ -1343,6 +1343,13 @@ footer {
 .cover.is-short {
   min-height: 88svh;
 }
+/* 封面两套结构（components/report/）：默认电脑版，≤600px 换手机版 */
+.cover-desktop {
+  display: flex;
+}
+.cover-mobile {
+  display: none;
+}
 .cover-bg {
   position: absolute;
   inset: 0;

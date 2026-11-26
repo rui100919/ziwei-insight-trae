@@ -9,7 +9,8 @@ import { t, LANG_META, PALACE_LABELS, palaceName, isLang, type Lang } from '@/li
 import { useLang } from '@/components/LangProvider';
 import { StatusBadge } from '@/components/StatusBadge';
 import { ChartBoard } from '@/components/ChartBoard';
-import { CoverChart } from '@/components/oriental/CoverChart';
+import { ReportCoverDesktop, type CoverProps, type CoverText } from '@/components/report/ReportCoverDesktop';
+import { ReportCoverMobile } from '@/components/report/ReportCoverMobile';
 import { Starfield } from '@/components/oriental/Starfield';
 import { trackEvent, E } from '@/lib/analytics';
 import type { ChartView } from '@/lib/chart-preview';
@@ -369,6 +370,32 @@ export default function ReportPage() {
       })()
     : [];
 
+  // 封面文案只算一次，电脑与手机两套封面共用（components/report/）。
+  const coverText: CoverText = {
+    eyebrow: isFull ? L('fullReportTitle') : L('basicReportTitle'),
+    title: isFull ? t(lang, 'fullCoverTitle') : t(lang, 'readingCoverTitle'),
+    dedication: isFull && report?.profile?.label
+      ? t(lang, 'coverDedication').replace('{name}', report.profile.label)
+      : undefined,
+    intro: isFull ? t(lang, 'fullCoverIntro') : t(lang, 'readingCoverIntro'),
+    archive: isFull && report
+      ? `${t(lang, 'metaArchive')} · ZW-${reportYear}-${report.id.slice(0, 8).toUpperCase()}`
+      : undefined,
+    statusLabel: report?.status === 'failed' ? L('statusFailed') : report?.status === 'pending' ? L('statusProcessing') : L('statusCompleted'),
+    statusTone: report?.status === 'failed' ? 'consumed' : report?.status === 'pending' ? 'reserved' : 'completed',
+    backLabel: t(lang, 'back'),
+    note: isFull ? undefined : t(lang, 'readingCoverNote'),
+    sealChars: t(lang, 'sealChars').split(/\s+/),
+    medalCap: t(lang, 'readingMedalCap'),
+    medalYear: reportYear,
+  };
+  const coverProps: CoverProps = {
+    text: coverText,
+    meta: coverMeta,
+    isFull,
+    palaceLabels: PALACE_LABELS[rl],
+  };
+
   return (
     <>
       {diag && (
@@ -415,80 +442,9 @@ export default function ReportPage() {
 
       {report && (
         <>
-          {/* 深色封面 */}
-          <section className="cover" id="top" data-reveal>
-            <div className="cover-bg" aria-hidden="true" />
-            <Starfield />
-            {isFull && <CoverChart labels={PALACE_LABELS[rl]} />}
-            <div className={`wrap cover-inner${isFull ? '' : ' two-col'}`}>
-              <div className="intro">
-                <p className="eyebrow">{isFull ? L('fullReportTitle') : L('basicReportTitle')}</p>
-                <h1 data-reveal>{isFull ? t(lang, 'fullCoverTitle') : t(lang, 'readingCoverTitle')}</h1>
-                {isFull && report.profile?.label && (
-                  <p className="cover-dedication" data-reveal>
-                    {t(lang, 'coverDedication').replace('{name}', report.profile.label)}
-                  </p>
-                )}
-                <p className="intro" data-reveal>{isFull ? t(lang, 'fullCoverIntro') : t(lang, 'readingCoverIntro')}</p>
-                <div className="cover-meta" data-reveal>
-                  {coverMeta.map((m, i) => (
-                    <span key={i}>
-                      {m}
-                      {i < coverMeta.length - 1 && <i aria-hidden="true" />}
-                    </span>
-                  ))}
-                </div>
-                {isFull && (
-                  <p className="cover-archive" data-reveal>
-                    {t(lang, 'metaArchive')} · ZW-{reportYear}-{report.id.slice(0, 8).toUpperCase()}
-                  </p>
-                )}
-                <div className="flex flex-wrap items-center gap-3 pt-2">
-                  <StatusBadge
-                    label={report.status === 'failed' ? L('statusFailed') : report.status === 'pending' ? L('statusProcessing') : L('statusCompleted')}
-                    tone={report.status === 'failed' ? 'consumed' : report.status === 'pending' ? 'reserved' : 'completed'}
-                  />
-                </div>
-                {/* 正文就在封面下方，直接滚动即可阅读，不再拦截成「开始阅读」按钮。 */}
-                {isFull && (
-                  <div className="cover-actions">
-                    <Link className="btn-ghost" href="/account?v=3">{t(lang, 'back')}</Link>
-                  </div>
-                )}
-                {!isFull && <p className="cover-note">{t(lang, 'readingCoverNote')}</p>}
-              </div>
-
-              {!isFull && (
-                <div className="medallion" aria-hidden="true" data-reveal>
-                  <div className="rings">
-                    <svg viewBox="0 0 320 320" fill="none">
-                      <g stroke="#B8945C">
-                        <circle cx="160" cy="160" r="154" strokeWidth="0.7" strokeDasharray="2 8" opacity="0.8" />
-                        <circle cx="160" cy="160" r="140" strokeWidth="0.5" strokeDasharray="1 6" opacity="0.55" />
-                        <g opacity="0.7">
-                          <circle cx="160" cy="6" r="1.6" fill="#B8945C" stroke="none" />
-                          <circle cx="314" cy="160" r="1.6" fill="#B8945C" stroke="none" />
-                          <circle cx="160" cy="314" r="1.6" fill="#B8945C" stroke="none" />
-                          <circle cx="6" cy="160" r="1.6" fill="#B8945C" stroke="none" />
-                        </g>
-                      </g>
-                      <g stroke="#B8945C" opacity="0.5">
-                        <circle cx="160" cy="160" r="118" strokeWidth="0.5" strokeDasharray="1 4" />
-                        <circle cx="160" cy="160" r="104" strokeWidth="0.5" />
-                      </g>
-                      <path d="M160 126l8.4 25.6L194 160l-25.6 8.4L160 194l-8.4-25.6L126 160l25.6-8.4z" fill="#B8945C" opacity="0.45" />
-                    </svg>
-                  </div>
-                  <div className="stamp">
-                    {t(lang, 'sealChars').split(/\s+/).map((c, i) => (
-                      <span key={i}>{c}</span>
-                    ))}
-                  </div>
-                  <div className="medal-cap"><b>{t(lang, 'readingMedalCap')}</b>{reportYear}</div>
-                </div>
-              )}
-            </div>
-          </section>
+          {/* 深色封面：电脑与手机各一套结构，见 components/report/ */}
+          <ReportCoverDesktop {...coverProps} />
+          <ReportCoverMobile {...coverProps} />
 
           {/* 02 排盘资料与确认项：区分已确认输入、依赖时辰的判断与倾向性解释 */}
           {isFull && report.profile && (
