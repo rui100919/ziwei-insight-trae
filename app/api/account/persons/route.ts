@@ -92,5 +92,28 @@ export async function GET() {
     });
   }
 
+  // 没有报告的出生档案也要出现在人物栏里（刚添加、还没生成的人）。
+  const { data: profiles } = await createAdmin()
+    .from('birth_profiles')
+    .select('label, birth_date, birth_place, birth_time, birth_time_known, created_at')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: true });
+  for (const p of (profiles ?? []) as Array<Record<string, unknown>>) {
+    const label = String(p.label ?? '').trim();
+    const birthDate = String(p.birth_date ?? '');
+    const birthPlace = String(p.birth_place ?? '');
+    const key = identity(label, birthDate, birthPlace);
+    if (persons.has(key)) continue;
+    persons.set(key, {
+      key,
+      label,
+      birthDate,
+      birthPlace,
+      timeKnown: Boolean(p.birth_time_known),
+      birthTime: p.birth_time ? String(p.birth_time).slice(0, 5) : null,
+      reports: [],
+    });
+  }
+
   return NextResponse.json({ persons: Array.from(persons.values()) });
 }

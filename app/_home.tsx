@@ -6,6 +6,9 @@ import { HOME_SAMPLE_LABELS, PALACE_LABELS, t } from '@/lib/i18n';
 import { useLang } from '@/components/LangProvider';
 import { Starfield } from '@/components/oriental/Starfield';
 import { trackEvent, E } from '@/lib/analytics';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
+import { demoStore, isDemoMode } from '@/lib/demo';
 
 /** 三步段的中文序号（艺术类标签，跨语言保留中文）。 */
 const STEP_NUMS = ['壹', '贰', '叁'] as const;
@@ -22,6 +25,14 @@ function sealLines(s: string): string[] {
 
 export function Home() {
   const { lang } = useLang();
+  // 已登录时首屏主按钮改为「我的账户」，不再展示无意义的「注册」。
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    if (isDemoMode()) { setSignedIn(!!demoStore.getUser()); return; }
+    let active = true;
+    createClient().auth.getUser().then(({ data }) => { if (active) setSignedIn(!!data.user); });
+    return () => { active = false; };
+  }, []);
 
   const steps: [string, string][] = [
     [t(lang, 'step1'), t(lang, 'step1d')],
@@ -50,8 +61,8 @@ export function Home() {
               {t(lang, 'heroSub')}
             </p>
             <div className="hero-actions" data-reveal style={revealDelay('.34s')}>
-              <Link href="/auth" className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_signup' })}>
-                {t(lang, 'signUp')}
+              <Link href={signedIn ? '/account' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'hero_account' : 'hero_signup' })}>
+                {signedIn ? t(lang, 'account') : t(lang, 'signUp')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
               <Link href="/full-preview" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_full_sample' })}>
@@ -217,8 +228,8 @@ export function Home() {
             <h2>{t(lang, 'finalTitle')}</h2>
             <p>{t(lang, 'finalBody')}</p>
             <div className="final-actions">
-              <Link href="/auth" className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_signup' })}>
-                {t(lang, 'signUp')}
+              <Link href={signedIn ? '/account' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'final_account' : 'final_signup' })}>
+                {signedIn ? t(lang, 'account') : t(lang, 'signUp')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
               <Link href="/full-preview" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_sample' })}>

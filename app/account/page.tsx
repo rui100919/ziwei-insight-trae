@@ -49,6 +49,7 @@ type AccountStrings = {
   orderPaid: string; orderRefunded: string; orderPending: string;
   savedReadings: string; repOne: string; repOther: string;
   myReports: string; personUnit: string; basicReading: string; fullReading: string;
+  allPeople: string;
   notGenerated: string; genBasic: string; unlockFull: string;
   noReadings: string; noReadingsHint: string;
   fullReportLabel: string; basicReportLabel: string;
@@ -75,7 +76,7 @@ const S: Record<Lang, AccountStrings> = {
     fullDesc: '你可以为任意出生资料生成详细推演。', genFull: '生成完整报告',
     orderPaid: '已支付', orderRefunded: '已退款', orderPending: '处理中',
     savedReadings: '已保存的解读', repOne: '份报告', repOther: '份报告',
-    myReports: '我的报告', personUnit: '位', basicReading: '基础解读', fullReading: '完整解读',
+    myReports: '我的报告', personUnit: '位', basicReading: '基础解读', fullReading: '完整解读', allPeople: '全部',
     notGenerated: '未生成', genBasic: '生成基础解读', unlockFull: '解锁完整报告',
     noReadings: '还没有解读', noReadingsHint: '生成第一份后，它会保存在这里。',
     fullReportLabel: '紫微完整报告', basicReportLabel: '紫微基础解读',
@@ -103,7 +104,7 @@ const S: Record<Lang, AccountStrings> = {
     fullDesc: 'You can generate a detailed reading for any birth profile.', genFull: 'Generate full report',
     orderPaid: 'Paid', orderRefunded: 'Refunded', orderPending: 'Pending',
     savedReadings: 'Saved readings', repOne: 'report', repOther: 'reports',
-    myReports: 'My reports', personUnit: 'people', basicReading: 'Basic reading', fullReading: 'Full report',
+    myReports: 'My reports', personUnit: 'people', basicReading: 'Basic reading', fullReading: 'Full report', allPeople: 'All',
     notGenerated: 'Not generated', genBasic: 'Generate basic reading', unlockFull: 'Unlock full report',
     noReadings: 'No readings yet', noReadingsHint: 'Your first report will appear here after your chart is generated.',
     fullReportLabel: 'Zi Wei full report', basicReportLabel: 'Zi Wei basic reading',
@@ -131,7 +132,7 @@ const S: Record<Lang, AccountStrings> = {
     fullDesc: 'Puedes generar una lectura detallada para cualquier perfil de nacimiento.', genFull: 'Generar informe completo',
     orderPaid: 'Pagado', orderRefunded: 'Reembolsado', orderPending: 'Pendiente',
     savedReadings: 'Lecturas guardadas', repOne: 'informe', repOther: 'informes',
-    myReports: 'Mis informes', personUnit: 'personas', basicReading: 'Lectura básica', fullReading: 'Informe completo',
+    myReports: 'Mis informes', personUnit: 'personas', basicReading: 'Lectura básica', fullReading: 'Informe completo', allPeople: 'Todos',
     notGenerated: 'Sin generar', genBasic: 'Generar lectura básica', unlockFull: 'Desbloquear informe completo',
     noReadings: 'Aún no hay lecturas', noReadingsHint: 'Tu primer informe aparecerá aquí después de generar tu carta.',
     fullReportLabel: 'Informe completo de Zi Wei', basicReportLabel: 'Lectura básica de Zi Wei',
@@ -159,7 +160,7 @@ const S: Record<Lang, AccountStrings> = {
     fullDesc: 'Vous pouvez générer une lecture détaillée pour tout profil de naissance.', genFull: 'Générer le rapport complet',
     orderPaid: 'Payé', orderRefunded: 'Remboursé', orderPending: 'En attente',
     savedReadings: 'Lectures enregistrées', repOne: 'rapport', repOther: 'rapports',
-    myReports: 'Mes rapports', personUnit: 'personnes', basicReading: 'Lecture de base', fullReading: 'Rapport complet',
+    myReports: 'Mes rapports', personUnit: 'personnes', basicReading: 'Lecture de base', fullReading: 'Rapport complet', allPeople: 'Tous',
     notGenerated: 'Non généré', genBasic: 'Générer la lecture de base', unlockFull: 'Débloquer le rapport complet',
     noReadings: 'Aucune lecture pour le moment', noReadingsHint: 'Votre premier rapport apparaîtra ici après la génération de votre thème.',
     fullReportLabel: 'Rapport complet Zi Wei', basicReportLabel: 'Lecture de base Zi Wei',
@@ -187,7 +188,7 @@ const S: Record<Lang, AccountStrings> = {
     fullDesc: 'Du kannst für jedes Geburtsprofil eine detaillierte Deutung erstellen.', genFull: 'Vollbericht erstellen',
     orderPaid: 'Bezahlt', orderRefunded: 'Erstattet', orderPending: 'Ausstehend',
     savedReadings: 'Gespeicherte Deutungen', repOne: 'Bericht', repOther: 'Berichte',
-    myReports: 'Meine Berichte', personUnit: 'Personen', basicReading: 'Basisdeutung', fullReading: 'Vollbericht',
+    myReports: 'Meine Berichte', personUnit: 'Personen', basicReading: 'Basisdeutung', fullReading: 'Vollbericht', allPeople: 'Alle',
     notGenerated: 'Nicht erstellt', genBasic: 'Basisdeutung erstellen', unlockFull: 'Vollbericht freischalten',
     noReadings: 'Noch keine Deutungen', noReadingsHint: 'Dein erster Bericht erscheint hier, nachdem dein Horoskop erstellt wurde.',
     fullReportLabel: 'Zi Wei Vollbericht', basicReportLabel: 'Zi Wei Basisdeutung',
@@ -215,7 +216,7 @@ const S: Record<Lang, AccountStrings> = {
     fullDesc: '任意の出生プロフィールについて詳細な解読を生成できます。', genFull: '完全版レポートを生成',
     orderPaid: '支払い済み', orderRefunded: '返金済み', orderPending: '処理中',
     savedReadings: '保存済みの解読', repOne: '件', repOther: '件',
-    myReports: 'マイレポート', personUnit: '人', basicReading: '基本解読', fullReading: '完全版レポート',
+    myReports: 'マイレポート', personUnit: '人', basicReading: '基本解読', fullReading: '完全版レポート', allPeople: 'すべて',
     notGenerated: '未生成', genBasic: '基本解読を作成', unlockFull: '完全版レポートを解除',
     noReadings: 'まだ解読はありません', noReadingsHint: '最初のレポートは、命盤を生成した後にここに表示されます。',
     fullReportLabel: '紫微完全版レポート', basicReportLabel: '紫微基礎解読',
@@ -274,6 +275,8 @@ export default function AccountPage() {
   const [fullUnlocked, setFullUnlocked] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
   const [persons, setPersons] = useState<Person[]>([]);
+  // 人物栏里选中的人；空串表示「全部」。
+  const [selectedPerson, setSelectedPerson] = useState('');
   const [userProfile, setUserProfile] = useState<DemoUserProfile>({ displayName: '', preferredLanguage: 'zh', memberSince: '' });
   const [displayName, setDisplayName] = useState('');
   const [prefLang, setPrefLang] = useState<Lang>('zh');
@@ -409,6 +412,8 @@ export default function AccountPage() {
   }
 
   const memberSinceText = userProfile.memberSince ? fmtDate(userProfile.memberSince, lang) : '';
+  // 选中某个人时只显示这个人的报告框；未选显示全部。
+  const visiblePersons = selectedPerson ? persons.filter((p) => p.key === selectedPerson) : persons;
 
   return (
     <div className="mx-auto max-w-5xl px-5 pt-28 pb-20">
@@ -472,9 +477,36 @@ export default function AccountPage() {
                 <p className="eyebrow">{t(lang, 'reports')}</p>
                 <h2 className="mt-1 font-serif text-2xl text-ink">{s.myReports}</h2>
               </div>
-              <span className="text-xs text-ink-muted">{persons.length} {s.personUnit}</span>
+              <span className="text-xs text-ink-muted">{visiblePersons.length} {s.personUnit}</span>
             </div>
-            {persons.length === 0 ? (
+            {/* 人物栏：点谁只看谁的报告；末尾可添加新的出生资料 */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedPerson('')}
+                className={`rounded-full border px-3.5 py-1.5 text-xs transition ${selectedPerson === '' ? 'border-gold bg-gold/15 text-ink' : 'border-line text-ink-soft hover:border-gold/60'}`}
+              >
+                {s.allPeople}
+              </button>
+              {persons.map((p) => (
+                <button
+                  key={p.key}
+                  type="button"
+                  onClick={() => setSelectedPerson(p.key)}
+                  className={`rounded-full border px-3.5 py-1.5 text-xs transition ${selectedPerson === p.key ? 'border-gold bg-gold/15 text-ink' : 'border-line text-ink-soft hover:border-gold/60'}`}
+                >
+                  {p.label || s.basicReading}
+                  {p.birthDate ? <span className="ml-1 text-ink-muted">{p.birthDate}</span> : null}
+                </button>
+              ))}
+              <Link
+                href="/chart/new"
+                className="rounded-full border border-dashed border-line-strong px-3.5 py-1.5 text-xs text-ink-soft transition hover:border-gold hover:bg-gold/10 hover:text-ink"
+              >
+                ＋ {s.addBirth}
+              </Link>
+            </div>
+            {visiblePersons.length === 0 ? (
               <div className="py-10 text-center">
                 <p className="text-sm font-medium text-ink">{s.noReadings}</p>
                 <p className="mt-1 text-xs leading-relaxed text-ink-muted">
@@ -484,7 +516,7 @@ export default function AccountPage() {
               </div>
             ) : (
               <div className="mt-4 space-y-4">
-                {persons.map((p) => {
+                {visiblePersons.map((p) => {
                   const basic = p.reports.find((r) => r.report_type === 'basic');
                   const full = p.reports.find((r) => r.report_type === 'full');
                   const rows: { kind: 'basic' | 'full'; title: string; report?: PersonReport }[] = [
