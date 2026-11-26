@@ -7,7 +7,6 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "rm -rf .next/cache",
     "build": "next build",
     "start": "cp -r public .next/standalone/ 2>/dev/null; mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/ && HOSTNAME=0.0.0.0 node .next/standalone/server.js",
     "typecheck": "tsc --noEmit",
