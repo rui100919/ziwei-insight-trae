@@ -280,7 +280,7 @@ export default function NewChartPage() {
         const cached = demoStore.findReportByCacheKey(chartCacheKey(source), lang);
         if (cached) {
           setBusy(false);
-          router.push(`/report/${cached.id}`);
+          router.push(`/report/${cached.id}?v=4`);
           return;
         }
       }
@@ -320,7 +320,7 @@ export default function NewChartPage() {
         demo: String(data.demo ?? false),
         anonymous: String(data.anonymous ?? false),
       });
-      router.push(`/report/${data.reportId}`);
+      router.push(`/report/${data.reportId}?v=4`);
     } catch {
       setError(t(lang, 'errorGeneric'));
     } finally {

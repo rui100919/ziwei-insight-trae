@@ -548,7 +548,7 @@ export default function AccountPage() {
                             <div className="flex items-center gap-3">
                               {row.report ? (
                                 <>
-                                  <Link href={`/report/${row.report.id}`} className="link text-sm">{s.viewReport}</Link>
+                                  <Link href={`/report/${row.report.id}?v=4`} className="link text-sm">{s.viewReport}</Link>
                                   <button className="text-xs text-[#c4685a] underline decoration-[#c4685a]/40 underline-offset-4 hover:decoration-[#c4685a]" onClick={() => row.report && deleteReport(row.report.id)}>
                                     {t(lang, 'del')}
                                   </button>

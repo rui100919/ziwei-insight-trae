@@ -213,7 +213,7 @@ export default function ReportPage() {
       });
       const data = await res.json();
       if (res.ok && data.reportId) {
-        router.push(`/report/${data.reportId}`);
+        router.push(`/report/${data.reportId}?v=4`);
         return;
       }
       setError(data.error === 'PAYMENT_REQUIRED' ? t(lang, 'buyIntro') : t(lang, 'errorGeneric'));
