@@ -13,6 +13,8 @@
 export interface ChartCacheInput {
   /** 出生档案姓名（表单里的「姓名 / 资料名称」）。同一生辰的不同人靠它区分。 */
   name?: string | null;
+  /** 出生地点：只用于「同一个人」判定（姓名 + 日期 + 地点），不参与命盘指纹。 */
+  birthPlace?: string | null;
   birthDate: string;
   birthTime?: string | null;
   timeKnown?: boolean;

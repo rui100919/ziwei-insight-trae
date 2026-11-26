@@ -129,6 +129,19 @@ export async function POST(request: Request) {
       throw error;
     }
 
+    // 一人一份：生成成功即扣掉本次付费权益，第二个人需要再购买。
+    // 只扣 status='available' 的行；同一报告的重放（幂等命中）不会重复扣减。
+    await admin
+      .from('user_entitlements')
+      .update({
+        status: 'consumed',
+        consumed_at: new Date().toISOString(),
+        consumed_report_id: reportId,
+      })
+      .eq('user_id', user.id)
+      .eq('benefit_code', 'full_report')
+      .eq('status', 'available');
+
     return NextResponse.json({ reportId });
   } catch (error) {
     const detail = error instanceof Error ? error.message : 'UNKNOWN';

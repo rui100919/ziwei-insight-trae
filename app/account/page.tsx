@@ -523,8 +523,8 @@ export default function AccountPage() {
                                 </>
                               ) : row.kind === 'basic' ? (
                                 <Link href="/chart/new" className="link text-sm">{s.genBasic} →</Link>
-                              ) : fullUnlocked && basic ? (
-                                <Link href={`/report/${basic.id}`} className="link text-sm">{s.genFull} →</Link>
+                              ) : fullUnlocked ? (
+                                <Link href="/chart/new?full=1" className="link text-sm">{s.genFull} →</Link>
                               ) : (
                                 <Link href="/full-preview" className="link text-sm">{s.unlockFull} →</Link>
                               )}
@@ -539,6 +539,14 @@ export default function AccountPage() {
                   );
                 })}
               </div>
+            )}
+            {fullUnlocked && (
+              <Link
+                href="/chart/new?full=1"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-line-strong px-4 py-3 text-sm font-medium text-ink-soft transition hover:border-gold hover:bg-gold/10 hover:text-ink"
+              >
+                <span className="text-lg leading-none">＋</span> {s.genFull}
+              </Link>
             )}
           </section>
 

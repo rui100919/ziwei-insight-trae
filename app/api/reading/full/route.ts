@@ -85,7 +85,9 @@ export async function POST(request: Request) {
         .select('status')
         .eq('user_id', user.id)
         .eq('benefit_code', 'full_report')
-        .eq('status', 'available')
+        // 已消耗也要放行到下面：同一人的重复请求会命中缓存直接返回；
+        // 不同的人则由 create_full_report 在数据库中拒绝并返回 PAYMENT_REQUIRED。
+        .in('status', ['available', 'consumed'])
         .maybeSingle();
       if (!ent) return NextResponse.json({ error: 'PAYMENT_REQUIRED' }, { status: 402 });
     }
@@ -201,6 +203,19 @@ export async function POST(request: Request) {
       }
       throw saveError;
     }
+
+    // 一人一份：这一份生成成功即扣掉本次付费权益，想给第二个人生成必须再买一次。
+    // 只扣 status='available' 的行，重放同一请求（幂等命中）不会重复扣减。
+    await createAdmin()
+      .from('user_entitlements')
+      .update({
+        status: 'consumed',
+        consumed_at: new Date().toISOString(),
+        consumed_report_id: reportId,
+      })
+      .eq('user_id', userId)
+      .eq('benefit_code', 'full_report')
+      .eq('status', 'available');
 
     return NextResponse.json({ reportId });
   } catch (error) {

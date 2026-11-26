@@ -122,6 +122,8 @@ export default function NewChartPage() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [saveAsProfile, setSaveAsProfile] = useState(true);
+  // /chart/new?full=1：为某位家人直接生成付费完整解读（一人一份，生成即消耗一次权益）。
+  const [fullMode, setFullMode] = useState(false);
 
   // 未登录访客：不跳登录页，直接排盘拿基础解读（报告存本地 localStorage）。
   const [anonymous, setAnonymous] = useState(false);
@@ -143,6 +145,10 @@ export default function NewChartPage() {
 
   // 加载已保存的出生档案（演示/正式）
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('full') === '1') {
+      setFullMode(true);
+      setMode('new');
+    }
     if (isDemoMode()) {
       if (!demoStore.getUser()) demoStore.setUser({ id: 'demo-user', email: 'demo@example.com' });
       const list = demoStore.getBirthProfiles();
@@ -205,6 +211,11 @@ export default function NewChartPage() {
 
   async function submit() {
     setBusy(true); setError('');
+    // 完整解读必须登录后才可购买/生成。
+    if (fullMode && anonymous) {
+      router.replace('/auth?next=%2Fchart%2Fnew%3Ffull%3D1');
+      return;
+    }
     trackEvent(E.CHART_SUBMIT, {
       mode,
       time_known: mode === 'new' ? String(timeKnown) : 'select',
@@ -246,7 +257,7 @@ export default function NewChartPage() {
 
       // 演示模式 / 未登录访客：同一「姓名 + 出生资料」已有解读时直接复用，不重复生成。
       // （正式登录用户由 /api/reading 在服务端做同样的缓存命中；与 IP/网络无关。）
-      if (isDemoMode() || anonymous) {
+      if (!fullMode && (isDemoMode() || anonymous)) {
         const source = mode === 'select' && selectedProfile
           ? {
               name: selectedProfile.label,
@@ -274,7 +285,7 @@ export default function NewChartPage() {
         }
       }
 
-      const res = await fetch('/api/reading', {
+      const res = await fetch(fullMode ? '/api/reading/full' : '/api/reading', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -283,6 +294,7 @@ export default function NewChartPage() {
       if (!res.ok) {
         if (data.error === 'NEED_LOGIN') router.replace('/auth?next=/chart/new');
         else if (data.error === 'FREE_USED') setError(t(lang, 'freeUsed'));
+        else if (data.error === 'PAYMENT_REQUIRED') router.push('/full-preview');
         else if (data.error === 'NEED_VERIFY') setError('__NEED_VERIFY__');
         else if (data.error === 'RATE_LIMITED') setError(t(lang, 'rateLimited'));
         else if (data.error === 'INVALID_TIMEZONE') setError(t(lang, 'invalidTimezone'));

@@ -85,7 +85,9 @@ const INPUT: ChartInput = {
 const PROFILE: Row = {
   id: 'p1',
   user_id: 'u1',
+  label: '',
   birth_date: '1990-01-01',
+  birth_place: '北京',
   timezone: 'Asia/Shanghai',
   birth_time: '14:30:00',
   birth_time_known: true,
@@ -173,11 +175,11 @@ test('基础解读：同命盘 + 同语言命中，且查询带 user_id 限定',
   assert.ok(reportCall?.filters.some((f) => f.column === 'user_id' && f.value === 'u1'));
 });
 
-test('基础解读：只查指纹匹配的档案，不匹配的档案不参与', async () => {
+test('基础解读：只认同姓名 + 同出生日期 + 同地点，地点不同不参与', async () => {
   const otherProfile: Row = {
     ...PROFILE,
     id: 'p2',
-    birth_time: '10:00:00',
+    birth_place: '上海',
   };
   const { client, calls } = fixture(
     [report()],
@@ -189,6 +191,12 @@ test('基础解读：只查指纹匹配的档案，不匹配的档案不参与',
   const chartCall = calls.find((c) => c.table === 'charts');
   const profileFilter = chartCall?.filters.find((f) => f.column === 'birth_profile_id');
   assert.deepEqual(profileFilter?.value, ['p1']);
+});
+
+test('基础解读：时辰 / 性别不同仍视为同一个人（命中）', async () => {
+  const otherTime: Row = { ...PROFILE, birth_time: '08:00:00', chart_preferences: { gender: 'female', longitude: 121.47 } };
+  const { client } = fixture([report()], [otherTime]);
+  assert.equal(await findCachedBasicReportId(client, 'u1', INPUT, 'zh'), 'r1');
 });
 
 test('基础解读：语言不同不命中', async () => {

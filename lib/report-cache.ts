@@ -1,48 +1,46 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { chartCacheKey, type ChartCacheInput } from '@/lib/chart-cache';
+import type { ChartCacheInput } from '@/lib/chart-cache';
 import type { Lang } from '@/lib/i18n';
 
 /**
  * 报告缓存查询（服务端专用）。
  *
- * 基础解读：同命盘 + 同语言即可复用（内容不含年龄）。
- * 完整报告：同命盘 + 同虚岁 + 同语言才复用（内容含「当前大限/当前阶段」，跨年会变）。
+ * 「同一个人」= 姓名 + 出生日期 + 出生地点 三项一致（产品规则：一人一份）。
+ * 基础解读：同人 + 同语言即可复用（内容不含年龄）。
+ * 完整报告：同人 + 同虚岁 + 同语言才复用（内容含「当前大限/当前阶段」，跨年会变）。
  *
  * 全部按 user_id 限定，只复用用户自己的报告，不做跨账号共享。
  */
 
 type AdminClient = SupabaseClient;
 
-/** 找出与本次输入指纹一致的历史出生档案（姓名 + 出生资料一起比对）。 */
+/** 归一化文本：去首尾空白、压缩连续空白、统一小写；缺失按空串处理。 */
+function norm(value: unknown): string {
+  return String(value ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+/**
+ * 找出与本次输入「同一个人」的历史出生档案。
+ *
+ * 口径（产品规则）：姓名 + 出生日期 + 出生地点 三项都一致即视为同一个人，
+ * 不再生成第二份；时辰/时区/性别只影响命盘本身，不参与「是不是同一个人」的判断。
+ */
 async function matchingProfileIds(
   admin: AdminClient,
   userId: string,
   input: ChartCacheInput,
 ): Promise<string[]> {
-  const target = chartCacheKey(input);
-
-  // 先用出生日期 + 时区缩小候选档案，再在内存里比对指纹（姓名/时辰/经度/性别）。
   const { data, error } = await admin
     .from('birth_profiles')
-    .select('id, label, birth_time, birth_time_known, chart_preferences')
+    .select('id, label, birth_place')
     .eq('user_id', userId)
-    .eq('birth_date', input.birthDate)
-    .eq('timezone', input.timezone);
+    .eq('birth_date', input.birthDate);
   if (error || !data?.length) return [];
 
+  const name = norm(input.name);
+  const place = norm(input.birthPlace);
   return data
-    .filter((p) => {
-      const prefs = (p.chart_preferences ?? {}) as { gender?: string; longitude?: number | string | null };
-      return chartCacheKey({
-        name: String(p.label ?? ''),
-        birthDate: input.birthDate,
-        birthTime: String(p.birth_time ?? ''),
-        timeKnown: Boolean(p.birth_time_known),
-        timezone: input.timezone,
-        longitude: prefs.longitude ?? null,
-        gender: prefs.gender === 'female' ? 'female' : 'male',
-      }) === target;
-    })
+    .filter((p) => norm(p.label) === name && norm(p.birth_place) === place)
     .map((p) => String(p.id));
 }
 
