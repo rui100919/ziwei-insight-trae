@@ -40,7 +40,8 @@ export function OrientalNav() {
       const y = window.scrollY;
       el.classList.toggle('scrolled', y > 24);
       let onPaper = false;
-      const papers = document.querySelectorAll('.creed, .report');
+      // 只把真正的浅色纸面段算进来；报告正文已是暗色，导航保持深色。
+      const papers = document.querySelectorAll('.creed');
       papers.forEach((p) => {
         const r = p.getBoundingClientRect();
         if (r.top <= 80 && r.bottom >= 80) onPaper = true;
