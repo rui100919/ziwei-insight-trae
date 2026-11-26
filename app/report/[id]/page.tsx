@@ -610,7 +610,7 @@ export default function ReportPage() {
 
               <article>
                 {sections.map(([anchor, title, value], i) => (
-                  <section className="chapter" id={anchor} key={anchor} data-reveal>
+                  <section className="chapter" id={anchor} key={anchor}>
                     <div className="ch-head">
                       <span className="ch-no">{pad(i + 1)}</span>
                       <h2>{title}</h2>
@@ -622,7 +622,7 @@ export default function ReportPage() {
                 ))}
 
                 {isFull && fullContent?.oneLine && (
-                  <section className="chapter" id="oneline" data-reveal>
+                  <section className="chapter" id="oneline">
                     <div className="ch-head">
                       <span className="ch-no">{chNo.oneline}</span>
                       <h2>{t(lang, 'fullOneLine')}</h2>
@@ -634,7 +634,7 @@ export default function ReportPage() {
                 )}
 
                 {isFull && fullContent?.palaces && fullContent.palaces.length > 0 && (
-                  <section className="chapter" id="palaces" data-reveal>
+                  <section className="chapter" id="palaces">
                     <div className="ch-head">
                       <span className="ch-no">{chNo.palaces}</span>
                       <h2>{t(lang, 'fullPalaces')}</h2>
@@ -645,7 +645,7 @@ export default function ReportPage() {
                           className="palace"
                           key={p.key}
                           id={`palace-${encodeURIComponent(p.key)}`}
-                          open={i === 0}
+                          open
                         >
                           <summary>
                             <span className="pno">{pad(i + 1)}</span>
@@ -662,7 +662,7 @@ export default function ReportPage() {
                 )}
 
                 {isFull && fullContent?.topics && fullContent.topics.length > 0 && (
-                  <section className="chapter" id="topics" data-reveal>
+                  <section className="chapter" id="topics">
                     <div className="ch-head">
                       <span className="ch-no">{chNo.topics}</span>
                       <h2>{t(lang, 'fullTopics')}</h2>
@@ -679,7 +679,7 @@ export default function ReportPage() {
                 )}
 
                 {isFull && fullContent?.daXian && fullContent.daXian.length > 0 && (
-                  <section className="chapter" id="daxian" data-reveal>
+                  <section className="chapter" id="daxian">
                     <div className="ch-head">
                       <span className="ch-no">{chNo.daxian}</span>
                       <h2>{t(lang, 'fullDaXian')}</h2>
@@ -701,7 +701,7 @@ export default function ReportPage() {
                         })}
                       </div>
                       {fullContent.currentPhase && (
-                        <div className="now" id="current" data-reveal>
+                        <div className="now" id="current">
                           <span className="cap">{t(lang, 'fullCurrent')}</span>
                           <p className="whitespace-pre-wrap">{fullContent.currentPhase}</p>
                         </div>
@@ -711,7 +711,7 @@ export default function ReportPage() {
                 )}
 
                 {isFull && fullContent?.patterns && (
-                  <section className="chapter" id="patterns" data-reveal>
+                  <section className="chapter" id="patterns">
                     <div className="ch-head">
                       <span className="ch-no">{chNo.patterns}</span>
                       <h2>{patternsTitle(fullContent.patterns, rl)}</h2>
@@ -723,7 +723,7 @@ export default function ReportPage() {
                 )}
 
                 {isFull && fullContent?.strength?.text && (
-                  <section className="chapter" id="strength" data-reveal>
+                  <section className="chapter" id="strength">
                     <div className="ch-head">
                       <span className="ch-no">{chNo.strength}</span>
                       <h2>{t(lang, 'fullStrength')}</h2>
@@ -735,7 +735,7 @@ export default function ReportPage() {
                 )}
 
                 {isFull && fullContent?.caveats && (
-                  <section className="chapter" id="caveats" data-reveal>
+                  <section className="chapter" id="caveats">
                     <div className="ch-head">
                       <span className="ch-no">{chNo.caveats}</span>
                       <h2>{t(lang, 'caveats')}</h2>
@@ -747,7 +747,7 @@ export default function ReportPage() {
                 )}
 
                 {isFull && (
-                  <section className="colophon" data-reveal>
+                  <section className="colophon">
                     <div className="colo-seal" aria-hidden="true">
                       {t(lang, 'sealChars')
                         .split(/\s+/)
