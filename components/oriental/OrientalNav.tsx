@@ -96,8 +96,8 @@ export function OrientalNav() {
             </button>
           )}
           <LanguageSwitcher className="nav-lang" />
-          <Link href="/chart/new" className="nav-cta">
-            {t(lang, 'navChart')}
+          <Link href={accountLink ? '/chart/new' : authHref} className="nav-cta">
+            {accountLink ? t(lang, 'navChart') : t(lang, 'signUp')}
             <span className="nav-arrow">→</span>
           </Link>
         </div>
