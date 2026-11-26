@@ -3473,9 +3473,28 @@ footer {
 .report .decade.current {
   background: linear-gradient(180deg, rgba(184, 148, 92, 0.18), rgba(184, 148, 92, 0.05));
 }
+/* 这两段不在 .report 内部，拿不到暗色变量；不覆盖的话文字会沿用宣纸的深墨色，在暗底上几乎看不见 */
 .meta-panel,
 .prenote {
   background: #0a0c11;
+  --ink-rgb: 244, 238, 225;
+}
+.meta-cell span {
+  color: rgba(var(--ink-rgb), 0.58);
+}
+.meta-note {
+  color: rgba(var(--ink-rgb), 0.8);
+}
+.meta-note.warn {
+  /* 原本是深红 #8a3b2e，暗底上换成暖赭 */
+  color: #e0a08c;
+}
+.meta-sub {
+  color: rgba(var(--ink-rgb), 0.62);
+}
+.meta-panel .eyebrow,
+.prenote-kicker {
+  color: var(--gold);
 }
 
 @media print {
