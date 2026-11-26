@@ -416,7 +416,7 @@ export default function AccountPage() {
   const visiblePersons = selectedPerson ? persons.filter((p) => p.key === selectedPerson) : persons;
 
   return (
-    <div className="mx-auto max-w-5xl px-5 pt-28 pb-20">
+    <div className="account-page mx-auto max-w-5xl px-5 pt-28 pb-20">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="eyebrow">{t(lang, 'account')}</p>
