@@ -4284,8 +4284,9 @@ footer {
   }
 
   /* ---------------- 首页 ---------------- */
+  /* 首屏整体上移：上方留白 330px → 约 240px，底部留给山海照片 */
   .hero-inner {
-    padding: 104px var(--pad) 48px;
+    padding: 88px var(--pad) 200px;
   }
   .hero-title {
     font-size: 34px;
@@ -4499,6 +4500,10 @@ footer {
   .account-page .mt-4.flex.flex-wrap > * {
     flex: 0 0 auto;
   }
+  /* 胶囊只留姓名：三个人的名字加「添加资料」刚好一行，不必横向滑动 */
+  .account-page .person-dob {
+    display: none;
+  }
   .account-page .mt-4.flex.flex-wrap::-webkit-scrollbar {
     display: none;
   }
@@ -4543,7 +4548,7 @@ footer {
   /* ---------------- 完整报告 ---------------- */
   /* 封面：略矮于整屏，露出正文一角，提示「往下还有内容」 */
   .cover {
-    min-height: 88svh;
+    min-height: 82svh;
   }
   .cover-inner {
     padding: 96px var(--pad) 64px;
@@ -4683,24 +4688,32 @@ footer {
     line-height: 1.95;
   }
 
-  /* 大限：小屏单列，年龄 + 宫位一行，主题换行铺满 */
+  /* 大限：小屏单列 + 紧凑行式，12 张卡不再拉出两千多像素 */
   .report .decades {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 6px;
   }
   .report .decade {
     display: grid;
-    grid-template-columns: 62px minmax(0, 1fr);
-    gap: 4px 10px;
-    padding: 12px 14px;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 2px 8px;
+    padding: 10px 12px;
+  }
+  .report .decade .age {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .report .decade .pal {
+    font-size: 12.5px;
   }
   .report .decade .theme {
     grid-column: 1 / -1;
-    font-size: 12.5px;
-    line-height: 1.85;
+    font-size: 12px;
+    line-height: 1.72;
   }
   .report .decade .mark {
     grid-column: 1 / -1;
+    font-size: 9.5px;
   }
 
   .colophon {

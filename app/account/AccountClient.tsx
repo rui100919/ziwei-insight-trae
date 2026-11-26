@@ -493,10 +493,10 @@ export default function AccountPage() {
                   key={p.key}
                   type="button"
                   onClick={() => setSelectedPerson(p.key)}
-                  className={`rounded-full border px-3.5 py-1.5 text-xs transition ${selectedPerson === p.key ? 'border-gold bg-gold/15 text-ink' : 'border-line text-ink-soft hover:border-gold/60'}`}
+                  className={`person-tab rounded-full border px-3.5 py-1.5 text-xs transition ${selectedPerson === p.key ? 'border-gold bg-gold/15 text-ink' : 'border-line text-ink-soft hover:border-gold/60'}`}
                 >
                   {p.label || s.basicReading}
-                  {p.birthDate ? <span className="ml-1 text-ink-muted">{p.birthDate}</span> : null}
+                  {p.birthDate ? <span className="person-dob ml-1 text-ink-muted">{p.birthDate}</span> : null}
                 </button>
               ))}
               <Link
