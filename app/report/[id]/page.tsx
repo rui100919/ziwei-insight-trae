@@ -120,10 +120,14 @@ export default function ReportPage() {
       const chs = document.querySelectorAll('.chapter');
       const first = chs[0] as HTMLElement | undefined;
       const cs = first ? getComputedStyle(first) : null;
+      const rep = document.querySelector('.report') as HTMLElement | null;
       setDiag([
         `viewport=${window.innerWidth}x${window.innerHeight} dpr=${window.devicePixelRatio}`,
         `chapters=${chs.length}`,
         `firstOpacity=${cs?.opacity} color=${cs?.color} display=${cs?.display}`,
+        `reportBg=${rep ? getComputedStyle(rep).backgroundColor : '-'}`,
+        `paperVar=${getComputedStyle(document.documentElement).getPropertyValue('--paper').trim() || 'undefined'}`,
+        `dark=${window.matchMedia('(prefers-color-scheme: dark)').matches} htmlClass=${document.documentElement.className || '-'}`,
         `textLen=${(document.body.innerText || '').length}`,
         `type=${report?.report_type ?? '-'}`,
         `palaces=${Array.isArray((report?.content as { palaces?: unknown[] })?.palaces) ? (report!.content as { palaces: unknown[] }).palaces.length : '-'}`,
