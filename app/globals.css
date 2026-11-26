@@ -275,6 +275,16 @@ button {
   color: var(--cream);
   background: rgba(184, 148, 92, 0.08);
 }
+/* 账户页人物栏：电脑版换行、显示姓名+生日；手机版（≤600px）在 mobile.css 里切换 */
+.person-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.person-tabs-mobile {
+  display: none;
+}
 /* 语言切换：金色胶囊，替代浏览器原生 select 外观 */
 .nav-lang {
   appearance: none;

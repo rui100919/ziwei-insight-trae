@@ -273,21 +273,24 @@
     font-size: 12.5px;
     white-space: nowrap;
   }
-  .account-page .mt-4.flex.flex-wrap {
+  /* 人物栏：电脑版整块隐藏，换成手机版的横滑一行（结构见 components/account/） */
+  .person-tabs {
+    display: none;
+  }
+  .person-tabs-mobile {
+    display: flex;
     flex-wrap: nowrap;
-    overflow-x: auto;
+    gap: 8px;
+    margin-top: 16px;
     padding-bottom: 2px;
+    overflow-x: auto;
     scrollbar-width: none;
   }
-  .account-page .mt-4.flex.flex-wrap > * {
+  .person-tabs-mobile::-webkit-scrollbar {
+    display: none;
+  }
+  .person-tabs-mobile > * {
     flex: 0 0 auto;
-  }
-  /* 胶囊只留姓名：三个人的名字加「添加资料」刚好一行，不必横向滑动 */
-  .account-page .person-dob {
-    display: none;
-  }
-  .account-page .mt-4.flex.flex-wrap::-webkit-scrollbar {
-    display: none;
   }
   .account-page .card article {
     padding: 2px 0;

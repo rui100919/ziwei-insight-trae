@@ -8,6 +8,8 @@ import { demoStore, isDemoMode, type DemoUserProfile } from '@/lib/demo';
 import { t, normalizeLang, LANG_META, SUPPORTED_LANGS, type Lang } from '@/lib/i18n';
 import { useLang } from '@/components/LangProvider';
 import { StatusBadge } from '@/components/StatusBadge';
+import { PersonTabsDesktop } from '@/components/account/PersonTabsDesktop';
+import { PersonTabsMobile } from '@/components/account/PersonTabsMobile';
 
 type Report = {
   id: string;
@@ -479,33 +481,23 @@ export default function AccountPage() {
               </div>
               <span className="text-xs text-ink-muted">{visiblePersons.length} {s.personUnit}</span>
             </div>
-            {/* 人物栏：点谁只看谁的报告；末尾可添加新的出生资料 */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => setSelectedPerson('')}
-                className={`rounded-full border px-3.5 py-1.5 text-xs transition ${selectedPerson === '' ? 'border-gold bg-gold/15 text-ink' : 'border-line text-ink-soft hover:border-gold/60'}`}
-              >
-                {s.allPeople}
-              </button>
-              {persons.map((p) => (
-                <button
-                  key={p.key}
-                  type="button"
-                  onClick={() => setSelectedPerson(p.key)}
-                  className={`person-tab rounded-full border px-3.5 py-1.5 text-xs transition ${selectedPerson === p.key ? 'border-gold bg-gold/15 text-ink' : 'border-line text-ink-soft hover:border-gold/60'}`}
-                >
-                  {p.label || s.basicReading}
-                  {p.birthDate ? <span className="person-dob ml-1 text-ink-muted">{p.birthDate}</span> : null}
-                </button>
-              ))}
-              <Link
-                href="/chart/new?v=3"
-                className="rounded-full border border-dashed border-line-strong px-3.5 py-1.5 text-xs text-ink-soft transition hover:border-gold hover:bg-gold/10 hover:text-ink"
-              >
-                ＋ {s.addBirth}
-              </Link>
-            </div>
+            {/* 人物栏：点谁只看谁的报告；末尾可添加新的出生资料。电脑/手机各一套结构 */}
+            <PersonTabsDesktop
+              persons={persons}
+              selected={selectedPerson}
+              onSelect={setSelectedPerson}
+              allLabel={s.allPeople}
+              addLabel={s.addBirth}
+              emptyLabel={s.basicReading}
+            />
+            <PersonTabsMobile
+              persons={persons}
+              selected={selectedPerson}
+              onSelect={setSelectedPerson}
+              allLabel={s.allPeople}
+              addLabel={s.addBirth}
+              emptyLabel={s.basicReading}
+            />
             {visiblePersons.length === 0 ? (
               <div className="py-10 text-center">
                 <p className="text-sm font-medium text-ink">{s.noReadings}</p>
