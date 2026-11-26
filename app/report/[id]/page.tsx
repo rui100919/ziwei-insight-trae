@@ -101,12 +101,37 @@ export default function ReportPage() {
   /** 报告因订单退款被关闭（区别于普通加载失败）。 */
   const [locked, setLocked] = useState(false);
   const [pay, setPay] = useState<{ isDemo: boolean; paymentsEnabled: boolean; provider?: string; loggedIn: boolean; unlocked: boolean } | null>(null);
+  // 排障用：地址带 ?diag=1 时在页面底部显示渲染自检信息（默认不显示）。
+  const [diag, setDiag] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
 
   // 内容语言以报告生成时的 report.language 为准——UI 切语言只换界面文案，不重建已付费报告。
   const rl: Lang = report && isLang(report.language) ? report.language : 'zh';
   const L = (k: keyof ReportStrings) => S[lang][k];
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!new URLSearchParams(window.location.search).has('diag')) return;
+    const errs: string[] = [];
+    const onErr = (e: ErrorEvent) => errs.push(String(e.message).slice(0, 80));
+    window.addEventListener('error', onErr);
+    const timer = window.setTimeout(() => {
+      const chs = document.querySelectorAll('.chapter');
+      const first = chs[0] as HTMLElement | undefined;
+      const cs = first ? getComputedStyle(first) : null;
+      setDiag([
+        `viewport=${window.innerWidth}x${window.innerHeight} dpr=${window.devicePixelRatio}`,
+        `chapters=${chs.length}`,
+        `firstOpacity=${cs?.opacity} color=${cs?.color} display=${cs?.display}`,
+        `textLen=${(document.body.innerText || '').length}`,
+        `type=${report?.report_type ?? '-'}`,
+        `palaces=${Array.isArray((report?.content as { palaces?: unknown[] })?.palaces) ? (report!.content as { palaces: unknown[] }).palaces.length : '-'}`,
+        `errs=${errs.length ? errs.join(';') : 'none'}`,
+      ].join(' | '));
+    }, 3000);
+    return () => { clearTimeout(timer); window.removeEventListener('error', onErr); };
+  }, [report]);
 
   useEffect(() => {
     // 未登录访客的基础解读只存在浏览器本地：优先读本地，命中就不再请求服务端。
@@ -361,6 +386,17 @@ export default function ReportPage() {
 
   return (
     <>
+      {diag && (
+        <div
+          style={{
+            position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 9999,
+            background: '#fffbe8', color: '#111', font: '12px/1.5 monospace',
+            padding: '8px 12px', borderTop: '2px solid #f0c040', whiteSpace: 'pre-wrap',
+          }}
+        >
+          {diag}
+        </div>
+      )}
       {/* 加载中 */}
       {!report && !error && (
         <section className="cover" data-reveal>
