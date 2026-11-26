@@ -1703,7 +1703,8 @@ footer {
 }
 .report .palace .pt b {
   font-weight: 400;
-  color: rgba(var(--ink-rgb), 0.5);
+  /* 宫名：盘上点过来时，一眼能确认落在哪一宫 */
+  color: var(--gold);
   font-size: 12px;
   letter-spacing: 0.14em;
   margin-right: 12px;
@@ -3237,6 +3238,12 @@ footer {
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(255, 253, 247, 0.92), rgba(252, 248, 239, 0.7));
   overflow: hidden;
+}
+/* 从盘上点过来的那一宫：留一圈金边，标明落点 */
+.report .palace:target {
+  border-color: rgba(184, 148, 92, 0.85);
+  border-left-color: var(--gold);
+  box-shadow: 0 0 0 1px rgba(184, 148, 92, 0.35), 0 22px 52px -32px rgba(184, 148, 92, 0.65);
 }
 .report .palace summary {
   padding: 16px 18px;

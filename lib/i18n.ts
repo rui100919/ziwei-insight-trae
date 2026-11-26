@@ -370,6 +370,16 @@ export const PALACE_LABELS: Record<Lang, readonly string[]> = {
   ja: ['命宮', '兄弟宮', '夫妻宮', '子女宮', '財帛宮', '疾厄宮', '遷移宮', '交友宮', '官禄宮', '田宅宮', '福德宮', '父母宮'],
 };
 
+/**
+ * 宫位名按语言译出，用于在逐宫卡片上标出「这是哪一宫」。
+ * 报告里的 key 与标签表有一处叫法不同（key 用「仆役」，表里是「交友」），先归一。
+ */
+export function palaceName(key: string, lang: Lang): string {
+  const k = key === '仆役' ? '交友' : key;
+  const i = PALACE_LABELS.zh.indexOf(k);
+  return i < 0 ? key : (PALACE_LABELS[lang][i] ?? key);
+}
+
 export const HOME_SAMPLE_LABELS: Record<Lang, readonly string[]> = {
   zh: ['性格轮廓', '关系模式', '事业倾向'],
   en: ['Personality', 'Relationships', 'Career'],

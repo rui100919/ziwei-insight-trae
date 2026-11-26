@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { demoStore, isDemoMode } from '@/lib/demo';
-import { t, LANG_META, PALACE_LABELS, isLang, type Lang } from '@/lib/i18n';
+import { t, LANG_META, PALACE_LABELS, palaceName, isLang, type Lang } from '@/lib/i18n';
 import { useLang } from '@/components/LangProvider';
 import { StatusBadge } from '@/components/StatusBadge';
 import { ChartBoard } from '@/components/ChartBoard';
@@ -662,7 +662,7 @@ export default function ReportPage() {
                         >
                           <summary>
                             <span className="pno">{pad(i + 1)}</span>
-                            <span className="pt">{palaceTitle(p, rl)}</span>
+                            <span className="pt"><b>{palaceName(p.key, rl)}</b>{palaceTitle(p, rl)}</span>
                             <span className="pm" aria-hidden="true" />
                           </summary>
                           <div className="body">
