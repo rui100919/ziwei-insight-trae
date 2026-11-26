@@ -587,8 +587,9 @@ export default function ReportPage() {
             </section>
           )}
 
-          {/* 浅色宣纸报告正文 */}
-          <section className="report" data-reveal>
+          {/* 浅色宣纸报告正文：整段不要 data-reveal——区块极高，12% 阈值永远达不到，
+              会一直停在 opacity:0，深色底上看起来就是整页没有文字。 */}
+          <section className="report">
             <div className="report-wrap">
               <div className="birth">
                 <div>

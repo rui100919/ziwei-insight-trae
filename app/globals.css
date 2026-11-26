@@ -1252,6 +1252,7 @@ footer {
   transition-delay: var(--d, 0s);
 }
 /* 报告页兜底：正文永不因动画未触发而不可见。 */
+.report,
 .report [data-reveal] {
   opacity: 1 !important;
   transform: none !important;
