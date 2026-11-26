@@ -550,20 +550,20 @@ export default function ReportPage() {
               </div>
 
               {error && (
-                <div className="rounded-lg border border-[rgba(27,23,16,.18)] bg-[rgba(27,23,16,.04)] px-4 py-3 text-sm print:hidden">{error}</div>
+                <div className="rounded-lg border border-[rgba(244,238,225,.18)] bg-[rgba(244,238,225,.04)] px-4 py-3 text-sm print:hidden">{error}</div>
               )}
 
-              <div className="flex flex-wrap items-center justify-between gap-3 border-y border-[rgba(27,23,16,.18)] py-3 print:hidden">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-y border-[rgba(244,238,225,.18)] py-3 print:hidden">
                 <p className="fineprint">{localOnly ? L('savedLocally') : L('savedToAccount')}</p>
                 <div className="flex items-center gap-4">
                   <button
-                    className="text-sm text-[rgba(27,23,16,.72)] underline underline-offset-4 decoration-[rgba(27,23,16,.3)] hover:text-gold hover:decoration-gold"
+                    className="text-sm text-[rgba(244,238,225,.72)] underline underline-offset-4 decoration-[rgba(244,238,225,.3)] hover:text-gold hover:decoration-gold"
                     onClick={() => window.print()}
                   >
                     {L('savePdf')}
                   </button>
                   <button
-                    className="text-sm text-[rgba(27,23,16,.72)] underline underline-offset-4 decoration-[rgba(27,23,16,.3)] hover:text-gold hover:decoration-gold"
+                    className="text-sm text-[rgba(244,238,225,.72)] underline underline-offset-4 decoration-[rgba(244,238,225,.3)] hover:text-gold hover:decoration-gold"
                     onClick={deleteReport}
                   >
                     {L('deleteReport')}

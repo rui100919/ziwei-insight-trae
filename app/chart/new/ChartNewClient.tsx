@@ -411,14 +411,14 @@ export default function NewChartPage() {
 
               {/* 数据来源切换（select / new，逻辑不动） */}
               {(profiles.length > 0 || mode === 'select') && (
-                <div className="flex gap-7 border-b border-[rgba(27,23,16,.14)] pb-3">
+                <div className="flex gap-7 border-b border-[rgba(244,238,225,.14)] pb-3">
                   <button
                     type="button"
                     onClick={() => setMode('select')}
                     className={`-mb-[13px] border-b-2 pb-2 text-sm tracking-wide transition-colors ${
                       mode === 'select'
-                        ? 'border-[var(--cinnabar)] text-[#1B1710]'
-                        : 'border-transparent text-[rgba(27,23,16,.45)] hover:text-[#1B1710]'
+                        ? 'border-[var(--cinnabar)] text-[#F4EEE1]'
+                        : 'border-transparent text-[rgba(244,238,225,.45)] hover:text-[#F4EEE1]'
                     }`}
                   >
                     {s.tabSaved}
@@ -428,8 +428,8 @@ export default function NewChartPage() {
                     onClick={() => setMode('new')}
                     className={`-mb-[13px] border-b-2 pb-2 text-sm tracking-wide transition-colors ${
                       mode === 'new'
-                        ? 'border-[var(--cinnabar)] text-[#1B1710]'
-                        : 'border-transparent text-[rgba(27,23,16,.45)] hover:text-[#1B1710]'
+                        ? 'border-[var(--cinnabar)] text-[#F4EEE1]'
+                        : 'border-transparent text-[rgba(244,238,225,.45)] hover:text-[#F4EEE1]'
                     }`}
                   >
                     {s.tabNew}
@@ -439,16 +439,16 @@ export default function NewChartPage() {
 
               {mode === 'select' ? (
                 selectedProfile ? (
-                  <div className="mt-6 border border-[rgba(27,23,16,.16)] bg-[rgba(27,23,16,.03)] px-5 py-4">
-                    <p className="text-base tracking-wider text-[#1B1710]">{selectedProfile.label}</p>
-                    <p className="mt-1.5 text-xs leading-relaxed text-[rgba(27,23,16,.6)]">{profileSummary(selectedProfile)}</p>
-                    <p className="mt-1 text-[11px] tracking-wide text-[rgba(27,23,16,.45)]">{selectedProfile.timezone}</p>
+                  <div className="mt-6 border border-[rgba(244,238,225,.16)] bg-[rgba(244,238,225,.03)] px-5 py-4">
+                    <p className="text-base tracking-wider text-[#F4EEE1]">{selectedProfile.label}</p>
+                    <p className="mt-1.5 text-xs leading-relaxed text-[rgba(244,238,225,.6)]">{profileSummary(selectedProfile)}</p>
+                    <p className="mt-1 text-[11px] tracking-wide text-[rgba(244,238,225,.45)]">{selectedProfile.timezone}</p>
                     {!selectedProfile.timeKnown && (
-                      <p className="mt-1.5 text-[11px] leading-relaxed text-[rgba(27,23,16,.5)]">{s.timeUnknownNote}</p>
+                      <p className="mt-1.5 text-[11px] leading-relaxed text-[rgba(244,238,225,.5)]">{s.timeUnknownNote}</p>
                     )}
                   </div>
                 ) : (
-                  <p className="mt-6 text-xs leading-relaxed text-[rgba(27,23,16,.55)]">{s.errChooseProfile}</p>
+                  <p className="mt-6 text-xs leading-relaxed text-[rgba(244,238,225,.55)]">{s.errChooseProfile}</p>
                 )
               ) : (
                 <>
@@ -532,7 +532,7 @@ export default function NewChartPage() {
                         />
                         <span
                           className="sep"
-                          style={{ fontSize: '12px', letterSpacing: '.1em', color: 'rgba(27,23,16,.36)' }}
+                          style={{ fontSize: '12px', letterSpacing: '.1em', color: 'rgba(244,238,225,.36)' }}
                         >
                           24H
                         </span>
@@ -568,15 +568,15 @@ export default function NewChartPage() {
                             <path d="M4 12.5l5 5L20 6.5" />
                           </svg>
                           <span>{t(lang, 'autoResolved')}</span>
-                          <span className="rounded-full border border-[rgba(27,23,16,.18)] bg-[rgba(27,23,16,.04)] px-2 py-0.5 text-[11px] text-[rgba(27,23,16,.6)]">
+                          <span className="rounded-full border border-[rgba(244,238,225,.18)] bg-[rgba(244,238,225,.04)] px-2 py-0.5 text-[11px] text-[rgba(244,238,225,.6)]">
                             {t(lang, 'longitude')} {Number(longitude).toFixed(2)}°
                           </span>
-                          <span className="rounded-full border border-[rgba(27,23,16,.18)] bg-[rgba(27,23,16,.04)] px-2 py-0.5 text-[11px] text-[rgba(27,23,16,.6)]">
+                          <span className="rounded-full border border-[rgba(244,238,225,.18)] bg-[rgba(244,238,225,.04)] px-2 py-0.5 text-[11px] text-[rgba(244,238,225,.6)]">
                             {timezone}
                           </span>
                         </p>
                       ) : (
-                        <p className="mt-1.5 text-xs leading-relaxed text-[rgba(27,23,16,.5)]">
+                        <p className="mt-1.5 text-xs leading-relaxed text-[rgba(244,238,225,.5)]">
                           {birthPlace.trim() ? t(lang, 'pickCityRequired') : t(lang, 'cityNote')}
                         </p>
                       )}
@@ -624,8 +624,8 @@ export default function NewChartPage() {
                     </span>
                     <div>
                       {showAdvanced && (
-                        <div className="border border-[rgba(27,23,16,.14)] bg-[rgba(27,23,16,.03)] p-4">
-                          <p className="text-xs leading-relaxed text-[rgba(27,23,16,.6)]">{t(lang, 'autoFilled')}</p>
+                        <div className="border border-[rgba(244,238,225,.14)] bg-[rgba(244,238,225,.03)] p-4">
+                          <p className="text-xs leading-relaxed text-[rgba(244,238,225,.6)]">{t(lang, 'autoFilled')}</p>
                           <div className="mt-3 grid gap-4 md:grid-cols-2">
                             <div className="field">
                               <span className="fl">{t(lang, 'longitude')}</span>
@@ -661,7 +661,7 @@ export default function NewChartPage() {
                     </div>
                   </div>
 
-                  <div style={{ borderTop: '1px solid rgba(27,23,16,.14)', marginTop: '6px', paddingTop: '18px' }}>
+                  <div style={{ borderTop: '1px solid rgba(244,238,225,.14)', marginTop: '6px', paddingTop: '18px' }}>
                     <label className="check" style={{ margin: 0 }}>
                       <input
                         type="checkbox"
@@ -685,15 +685,15 @@ export default function NewChartPage() {
                 </button>
 
                 {busy && (
-                  <div className="mt-4 border border-[rgba(27,23,16,.12)] bg-[rgba(27,23,16,.03)] px-4 py-4">
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-[rgba(27,23,16,.12)]">
+                  <div className="mt-4 border border-[rgba(244,238,225,.12)] bg-[rgba(244,238,225,.03)] px-4 py-4">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-[rgba(244,238,225,.12)]">
                       <div
                         className="h-full rounded-full bg-[var(--gold-deep)] transition-[width] duration-700 ease-out"
                         style={{ width: `${[0, 18, 42, 68, 88][stage] ?? 88}%` }}
                       />
                     </div>
-                    <p className="mt-3 text-sm text-[rgba(27,23,16,.8)]">{t(lang, `genStage${Math.max(1, stage)}`)}</p>
-                    <p className="mt-1 text-[11px] leading-relaxed text-[rgba(27,23,16,.5)]">{t(lang, 'genKeepOpen')}</p>
+                    <p className="mt-3 text-sm text-[rgba(244,238,225,.8)]">{t(lang, `genStage${Math.max(1, stage)}`)}</p>
+                    <p className="mt-1 text-[11px] leading-relaxed text-[rgba(244,238,225,.5)]">{t(lang, 'genKeepOpen')}</p>
                   </div>
                 )}
 

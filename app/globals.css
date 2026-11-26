@@ -3271,12 +3271,15 @@ footer {
   color: rgba(var(--ink-rgb), 0.82);
   counter-increment: toc;
 }
+/* 序号由 JSX 里的 <span class="n"> 输出；这里原来再生成一遍，导致「01 01」 */
 .toc a::before {
-  content: counter(toc, decimal-leading-zero);
+  content: none;
+}
+.toc a .n {
   font-family: var(--latin);
   font-size: 10px;
   letter-spacing: 0.12em;
-  color: var(--gold-deep);
+  color: var(--gold);
 }
 .toc a::after {
   display: none;

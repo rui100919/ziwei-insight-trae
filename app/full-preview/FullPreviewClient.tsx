@@ -293,7 +293,7 @@ export default function FullPreviewPage() {
                       <div key={i} className={`decade${i === curDaXian ? ' current' : ''}`}>
                         <span className="age">{agePart}</span>
                         <span className="pal">{palPart}</span>
-                        <span style={{ fontSize: 13.5, lineHeight: 1.95, color: 'rgba(27,23,16,.72)' }}>{d.text}</span>
+                        <span className="theme">{d.text}</span>
                         <span className="mark">{i === curDaXian ? t(lang, 'decadeMarkCurrent') : ''}</span>
                       </div>
                     );
