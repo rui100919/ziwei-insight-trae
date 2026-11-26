@@ -10,6 +10,15 @@ import { RevealController } from '@/components/oriental/RevealController';
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
+/**
+ * 全站禁用静态预渲染缓存。
+ *
+ * 这些页面都是客户端组件（数据在浏览器里取），预渲染出来的只是一层壳；
+ * 一旦被 ISR/边缘缓存长期命中（s-maxage=31536000），部署新版本后用户仍会拿到
+ * 旧壳和旧 chunk，表现为「改了页面但线上没变」。改为按请求渲染即可根治。
+ */
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
