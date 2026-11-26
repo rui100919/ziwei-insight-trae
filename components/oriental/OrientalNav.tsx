@@ -1,16 +1,19 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { demoStore, isDemoMode } from '@/lib/demo';
 import { t } from '@/lib/i18n';
 import { useLang } from '@/components/LangProvider';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { LogoMark } from '@/components/Logo';
+import { DesktopNav } from '@/components/nav/DesktopNav';
+import { MobileNav } from '@/components/nav/MobileNav';
 
-/** 全站深色东方导航（替代旧 Header）。集成 LanguageSwitcher 与登录/账户状态。 */
+/**
+ * 全站深色东方导航外壳。
+ * 登录态、滚动状态、登出等副作用集中在这里；电脑与手机两套结构分别在
+ * components/nav/DesktopNav.tsx 与 MobileNav.tsx，靠 CSS 断点切换显示。
+ */
 export function OrientalNav() {
   const { lang } = useLang();
   const pathname = usePathname() ?? '/';
@@ -66,42 +69,8 @@ export function OrientalNav() {
   return (
     <nav ref={navRef} className="nav" aria-label={t(lang, 'navMainAria')}>
       <div className="nav-inner">
-        <Link href="/" className="brand" aria-label={t(lang, 'navBrandHomeAria')}>
-          <span className="brand-mark">
-            <LogoMark />
-          </span>
-          <span>
-            <span className="brand-name">{t(lang, 'brand')}</span>
-            {lang === 'zh' && <span className="brand-sub">Zi Wei · Guang Nian</span>}
-          </span>
-        </Link>
-        <div className="nav-right">
-          <Link href="/" className="nav-link">
-            {t(lang, 'navHome')}
-          </Link>
-          <Link href="/full-preview?v=3" className="nav-link">
-            {t(lang, 'navSample')}
-          </Link>
-          {accountLink ? (
-            <Link href="/account?v=3" className="nav-link">
-              {t(lang, 'account')}
-            </Link>
-          ) : (
-            <Link href={authHref} className="nav-link">
-              {t(lang, 'signIn')}
-            </Link>
-          )}
-          {accountLink && (
-            <button type="button" onClick={handleSignOut} className="nav-link nav-signout">
-              {t(lang, 'signOut')}
-            </button>
-          )}
-          <LanguageSwitcher className="nav-lang" />
-          <Link href={accountLink ? '/chart/new' : authHref} className="nav-cta">
-            {accountLink ? t(lang, 'navChart') : t(lang, 'signUp')}
-            <span className="nav-arrow">→</span>
-          </Link>
-        </div>
+        <DesktopNav lang={lang} accountLink={accountLink} authHref={authHref} onSignOut={handleSignOut} />
+        <MobileNav lang={lang} accountLink={accountLink} authHref={authHref} />
       </div>
     </nav>
   );

@@ -233,6 +233,22 @@ button {
 .nav-right .nav-cta {
   white-space: nowrap;
 }
+/* 电脑 / 手机两套导航结构（components/nav/ 下各一个文件），靠这里切换：
+   默认显示电脑版，≤1080px 换成手机版。两套都渲染，用 display 隐藏，避免水合闪烁。 */
+.nav-desktop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+}
+.nav-mobile {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
 /* 语言切换：金色胶囊，替代浏览器原生 select 外观 */
 .nav-lang {
   appearance: none;
@@ -3851,9 +3867,12 @@ footer {
   .hero-edge {
     display: none;
   }
-  .nav-links .nav-link,
-  .nav-right .nav-link {
+  /* ≤1080px 换用手机导航结构（两套都在 DOM 里，只切换显示） */
+  .nav-desktop {
     display: none;
+  }
+  .nav-mobile {
+    display: flex;
   }
   .creed-inner {
     grid-template-columns: 1fr;
@@ -4208,10 +4227,6 @@ footer {
   }
   .brand-name {
     font-size: 17px;
-  }
-  .nav-links .nav-link,
-  .nav-right .nav-link {
-    display: none;
   }
   .page {
     padding-top: 110px;
