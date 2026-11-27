@@ -24,7 +24,7 @@ export function MobileNav({ lang, accountLink, authHref }: Props) {
           <LogoMark />
         </span>
         <span>
-          <span className="brand-name">{t(lang, 'brand')}</span>
+          <span className="brand-name">{t(lang, 'brandShort')}</span>
           {lang === 'zh' && <span className="brand-sub">Zi Wei · Guang Nian</span>}
         </span>
       </Link>

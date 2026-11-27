@@ -43,6 +43,8 @@
   .brand-name {
     font-size: 16px;
     letter-spacing: 0.12em;
+    /* 品牌名一行放不下时不要折成两行（非中文语言曾是「Zi Wei / Insight」） */
+    white-space: nowrap;
   }
   .nav-right {
     gap: 8px;
@@ -574,10 +576,8 @@
 
 /* =====================================================================
    极窄屏（≤400px，多数安卓与小屏 iPhone）
-   导航一行里要放下：品牌 + 我的 + 语言 + CTA，把控件再收一档。
-   非中文的品牌名「Zi Wei Insight」比「紫微光年」宽一倍，西/法/德文的
-   CTA 也长（Registrieren / Registrarse / S’inscrire），375px 就会挤出屏幕，
-   所以这里收字距、去掉 CTA 箭头。
+   导航一行里要放下：品牌 + 我的 + 语言 + CTA。品牌名在手机档已用短名
+   （见 MobileNav 的 brandShort），这里只再收一点内边距。
    ===================================================================== */
 @media (max-width: 400px) {
   .nav-inner {
@@ -585,8 +585,8 @@
     gap: 8px;
   }
   .brand-name {
-    font-size: 13px;
-    letter-spacing: 0.02em;
+    font-size: 15px;
+    letter-spacing: 0.1em;
   }
   .brand-mark {
     width: 24px;
@@ -602,7 +602,7 @@
   }
   .nav-lang {
     min-height: 34px;
-    padding: 0 14px 0 7px;
+    padding: 0 16px 0 8px;
     font-size: 11px;
     background-position: right 6px center;
   }
@@ -610,12 +610,7 @@
     min-height: 34px;
     padding: 0 10px;
     font-size: 11px;
-    letter-spacing: 0.04em;
-    gap: 0;
-  }
-  /* 箭头是装饰，窄屏让位给文字 */
-  .nav-cta .nav-arrow {
-    display: none;
+    letter-spacing: 0.08em;
   }
 }
 
