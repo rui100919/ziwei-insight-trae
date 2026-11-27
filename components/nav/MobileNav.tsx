@@ -24,7 +24,7 @@ export function MobileNav({ lang, accountLink, authHref }: Props) {
           <LogoMark />
         </span>
         <span>
-          <span className="brand-name">{t(lang, 'brandShort')}</span>
+          <span className="brand-name">{t(lang, 'brand')}</span>
           {lang === 'zh' && <span className="brand-sub">Zi Wei · Guang Nian</span>}
         </span>
       </Link>
@@ -41,7 +41,7 @@ export function MobileNav({ lang, accountLink, authHref }: Props) {
             <path d="M4.6 20c0-3.9 3.3-6.6 7.4-6.6s7.4 2.7 7.4 6.6" />
           </svg>
         </Link>
-        <LanguageSwitcher className="nav-lang" />
+        <LanguageSwitcher className="nav-lang" compact />
         <Link href={accountLink ? '/chart/new' : authHref} className="nav-cta">
           {accountLink ? t(lang, 'navChart') : t(lang, 'signUp')}
           <span className="nav-arrow">→</span>

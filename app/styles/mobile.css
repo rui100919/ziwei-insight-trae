@@ -41,8 +41,8 @@
     height: 28px;
   }
   .brand-name {
-    font-size: 16px;
-    letter-spacing: 0.12em;
+    font-size: 15px;
+    letter-spacing: 0.08em;
     /* 品牌名一行放不下时不要折成两行（非中文语言曾是「Zi Wei / Insight」） */
     white-space: nowrap;
   }
@@ -575,9 +575,33 @@
 }
 
 /* =====================================================================
+   ≤430px（含 iPhone 15/16 Pro Max 的 430/440）
+   语言胶囊已改用短代码（DE / ESPañol → DE），再收一档字号与内边距，
+   并去掉 CTA 的装饰箭头，给西/法/德文的长 CTA 让出空间。
+   ===================================================================== */
+@media (max-width: 430px) {
+  .brand-name {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+  .nav-lang {
+    padding: 0 18px 0 8px;
+    font-size: 11px;
+    background-position: right 6px center;
+  }
+  .nav-cta {
+    padding: 0 10px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .nav-cta .nav-arrow {
+    display: none;
+  }
+}
+
+/* =====================================================================
    极窄屏（≤400px，多数安卓与小屏 iPhone）
-   导航一行里要放下：品牌 + 我的 + 语言 + CTA。品牌名在手机档已用短名
-   （见 MobileNav 的 brandShort），这里只再收一点内边距。
+   品牌名再收一档，印章与「我的」图标同步缩小。
    ===================================================================== */
 @media (max-width: 400px) {
   .nav-inner {
@@ -585,8 +609,8 @@
     gap: 8px;
   }
   .brand-name {
-    font-size: 15px;
-    letter-spacing: 0.1em;
+    font-size: 13px;
+    letter-spacing: 0.02em;
   }
   .brand-mark {
     width: 24px;
@@ -610,7 +634,7 @@
     min-height: 34px;
     padding: 0 10px;
     font-size: 11px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
   }
 }
 

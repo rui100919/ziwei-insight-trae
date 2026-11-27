@@ -1,13 +1,13 @@
 export const SUPPORTED_LANGS = ['zh', 'en', 'es', 'fr', 'de', 'ja'] as const;
 export type Lang = (typeof SUPPORTED_LANGS)[number];
 
-export const LANG_META: Record<Lang, { name: string; htmlLang: string; locale: string; aiName: string }> = {
-  zh: { name: '中文', htmlLang: 'zh-CN', locale: 'zh-CN', aiName: 'Simplified Chinese' },
-  en: { name: 'English', htmlLang: 'en', locale: 'en-US', aiName: 'English' },
-  es: { name: 'Español', htmlLang: 'es', locale: 'es-ES', aiName: 'Spanish' },
-  fr: { name: 'Français', htmlLang: 'fr', locale: 'fr-FR', aiName: 'French' },
-  de: { name: 'Deutsch', htmlLang: 'de', locale: 'de-DE', aiName: 'German' },
-  ja: { name: '日本語', htmlLang: 'ja', locale: 'ja-JP', aiName: 'Japanese' },
+export const LANG_META: Record<Lang, { name: string; short: string; htmlLang: string; locale: string; aiName: string }> = {
+  zh: { name: '中文', short: '中文', htmlLang: 'zh-CN', locale: 'zh-CN', aiName: 'Simplified Chinese' },
+  en: { name: 'English', short: 'EN', htmlLang: 'en', locale: 'en-US', aiName: 'English' },
+  es: { name: 'Español', short: 'ES', htmlLang: 'es', locale: 'es-ES', aiName: 'Spanish' },
+  fr: { name: 'Français', short: 'FR', htmlLang: 'fr', locale: 'fr-FR', aiName: 'French' },
+  de: { name: 'Deutsch', short: 'DE', htmlLang: 'de', locale: 'de-DE', aiName: 'German' },
+  ja: { name: '日本語', short: 'JA', htmlLang: 'ja', locale: 'ja-JP', aiName: 'Japanese' },
 };
 
 export function isLang(value: unknown): value is Lang {
@@ -27,8 +27,6 @@ function m(zh: string, en: string, es: string, fr: string, de: string, ja: strin
 
 const dict = {
   brand: m('紫微光年', 'Zi Wei Insight', 'Zi Wei Insight', 'Zi Wei Insight', 'Zi Wei Insight', 'Zi Wei Insight'),
-  // 手机导航用的短品牌名：拉丁全名在 440px 一行里放不下，会被挤成两行
-  brandShort: m('紫微光年', 'Zi Wei', 'Zi Wei', 'Zi Wei', 'Zi Wei', '紫微'),
   tagline: m('一张准确的命盘，一段克制的解读。', 'An accurate chart. A measured reading.', 'Una carta precisa. Una interpretación mesurada.', 'Un thème précis. Une interprétation mesurée.', 'Ein präzises Horoskop. Eine besonnene Deutung.', '正確な命盤。簡潔で慎み深い解読。'),
   hero: m('从出生的时间与地点，看见你的性格轮廓。', 'See the outline of your character from the time and place you were born.', 'Descubre el perfil de tu carácter a partir de la hora y el lugar de tu nacimiento.', 'Découvrez les contours de votre caractère à partir de votre heure et de votre lieu de naissance.', 'Entdecke die Konturen deines Charakters anhand deiner Geburtszeit und deines Geburtsortes.', '生まれた時刻と場所から、あなたの性格の輪郭を読み解きます。'),
   subtitle: m('注册即享一次免费基础解读。排盘由开源引擎精确计算，解读只基于命盘事实，不夸大、不预言。', 'One free basic reading on sign-up. Charts are calculated by an open-source engine; readings stay within the facts of your chart.', 'Recibe una lectura básica gratis al registrarte. Un motor de código abierto calcula la carta; la interpretación se limita a sus datos, sin exageraciones ni predicciones.', 'Une lecture de base offerte à l’inscription. Un moteur open source calcule le thème ; l’interprétation s’en tient à ses données, sans exagération ni prédiction.', 'Bei der Registrierung erhältst du eine kostenlose Basisdeutung. Ein Open-Source-Modul berechnet das Horoskop; die Deutung bleibt bei seinen Fakten, ohne Übertreibungen oder Vorhersagen.', '登録すると基礎解読を1回無料で利用できます。命盤はオープンソースエンジンで精密に計算し、解読は命盤の事実に基づきます。誇張や予言はしません。'),
