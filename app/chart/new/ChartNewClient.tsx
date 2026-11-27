@@ -415,7 +415,7 @@ export default function NewChartPage() {
                   <button
                     type="button"
                     onClick={() => setMode('select')}
-                    className={`-mb-[13px] border-b-2 pb-2 text-sm tracking-wide transition-colors ${
+                    className={`form-tab -mb-[13px] border-b-2 pb-2 text-sm tracking-wide transition-colors ${
                       mode === 'select'
                         ? 'border-[var(--cinnabar)] text-[#1B1710]'
                         : 'border-transparent text-[rgba(27,23,16,.45)] hover:text-[#1B1710]'
@@ -426,7 +426,7 @@ export default function NewChartPage() {
                   <button
                     type="button"
                     onClick={() => setMode('new')}
-                    className={`-mb-[13px] border-b-2 pb-2 text-sm tracking-wide transition-colors ${
+                    className={`form-tab -mb-[13px] border-b-2 pb-2 text-sm tracking-wide transition-colors ${
                       mode === 'new'
                         ? 'border-[var(--cinnabar)] text-[#1B1710]'
                         : 'border-transparent text-[rgba(27,23,16,.45)] hover:text-[#1B1710]'

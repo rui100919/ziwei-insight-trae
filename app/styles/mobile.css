@@ -308,6 +308,13 @@
   .sheet {
     padding: 24px 20px 26px;
   }
+  /* 「用已保存的资料 / 填新资料」切换：文字只有 30px 高，手指不好点。
+     加高到 36px 但保持文字贴底，下划线仍压在分隔线上。 */
+  .form-tab {
+    min-height: 36px;
+    display: flex;
+    align-items: flex-end;
+  }
   .auth-inner {
     padding-top: 84px;
     padding-bottom: 48px;
@@ -373,6 +380,8 @@
   .cover-actions {
     margin-top: 24px;
   }
+  /* 主次按钮同一档字号：此前 .btn 走 14px、.btn-ghost 走 12.5px，并排时明显不齐 */
+  .cover-actions .btn,
   .cover-actions .btn-ghost {
     min-height: 42px;
     padding: 0 18px;
@@ -423,6 +432,28 @@
     padding-top: 16px;
     font-size: 10.5px;
     line-height: 1.9;
+  }
+  /* 报告页次级操作（保存为 PDF / 删除报告 / 改一下重新推演）：
+     原本只有 17–20px 高，触摸很难点中，统一抬到 36px。 */
+  .report-tool {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+  }
+  .report .birth .edit {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding-bottom: 0;
+  }
+  /* 十二宫盘：手机上格子只有约 95px 宽，9px 的岁数与星曜亮度太小，
+     按主次各抬一档（盘面本身尺寸不变）。 */
+  .chart-board .chart-age {
+    font-size: 10.5px;
+  }
+  .chart-board .chart-bright,
+  .chart-board .chart-more {
+    font-size: 10px;
   }
 
   .meta-panel {

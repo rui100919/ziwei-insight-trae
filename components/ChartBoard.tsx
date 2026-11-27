@@ -93,7 +93,7 @@ export function ChartBoard({ chart, lang, linkedPalaces }: Props) {
   const lunar = chart.lunarInfo;
 
   return (
-    <div className="mx-auto w-full max-w-[560px]">
+    <div className="chart-board mx-auto w-full max-w-[560px]">
       <div className="grid aspect-square grid-cols-4 grid-rows-4 gap-1.5">
         {chart.palaces.map((palace) => {
           const pos = CELL_POS[palace.branch];
@@ -129,7 +129,7 @@ export function ChartBoard({ chart, lang, linkedPalaces }: Props) {
                   majors.slice(0, 3).map((star) => (
                     <span key={star.name} className="inline-flex items-baseline gap-0.5 text-[10px] text-ink">
                       <span className="font-medium">{star.name}</span>
-                      {star.brightnessRaw && <span className="text-[9px] text-ink-muted">{star.brightnessRaw}</span>}
+                      {star.brightnessRaw && <span className="chart-bright text-[9px] text-ink-muted">{star.brightnessRaw}</span>}
                       {star.siHua && (
                         <span className={`rounded border px-0.5 text-[8px] leading-tight ${SIHUA_STYLE[star.siHua] ?? ''}`}>
                           {star.siHua}
@@ -138,9 +138,9 @@ export function ChartBoard({ chart, lang, linkedPalaces }: Props) {
                     </span>
                   ))
                 )}
-                {minors.length > 0 && <span className="text-[9px] text-ink-muted">+{minors.length}</span>}
+                {minors.length > 0 && <span className="chart-more text-[9px] text-ink-muted">+{minors.length}</span>}
               </div>
-              <div className="mt-auto flex items-center justify-between gap-1 text-[9px] text-ink-muted">
+              <div className="chart-age mt-auto flex items-center justify-between gap-1 text-[9px] text-ink-muted">
                 <span>{palace.daXianAge ? `${palace.daXianAge[0]}–${palace.daXianAge[1]}` : ''}</span>
                 <span className="flex gap-1">
                   {palace.isMingGong && <span className="text-gold">{label.ming}</span>}

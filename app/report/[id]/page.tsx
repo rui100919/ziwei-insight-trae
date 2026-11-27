@@ -557,13 +557,13 @@ export default function ReportPage() {
                 <p className="fineprint">{localOnly ? L('savedLocally') : L('savedToAccount')}</p>
                 <div className="flex items-center gap-4">
                   <button
-                    className="text-sm text-[rgba(244,238,225,.72)] underline underline-offset-4 decoration-[rgba(244,238,225,.3)] hover:text-gold hover:decoration-gold"
+                    className="report-tool text-sm text-[rgba(244,238,225,.72)] underline underline-offset-4 decoration-[rgba(244,238,225,.3)] hover:text-gold hover:decoration-gold"
                     onClick={() => window.print()}
                   >
                     {L('savePdf')}
                   </button>
                   <button
-                    className="text-sm text-[rgba(244,238,225,.72)] underline underline-offset-4 decoration-[rgba(244,238,225,.3)] hover:text-gold hover:decoration-gold"
+                    className="report-tool text-sm text-[rgba(244,238,225,.72)] underline underline-offset-4 decoration-[rgba(244,238,225,.3)] hover:text-gold hover:decoration-gold"
                     onClick={deleteReport}
                   >
                     {L('deleteReport')}
