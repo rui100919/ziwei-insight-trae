@@ -340,12 +340,22 @@
   .auth-submit {
     min-height: 50px;
   }
+  /* 表单输入框统一 16px：小于 16px 时 iOS Safari 聚焦会自动放大页面。
+     账户页、忘记密码页此前沿用电脑端的 15px。 */
+  .input {
+    min-height: 48px;
+    font-size: 16px;
+  }
 
   /* ---------------- 法务页 ---------------- */
   /* 标题与首页、报告页同档 34px；此前只有这一页是 36px */
   .legal-page h1 {
     font-size: 34px;
     line-height: 1.2;
+  }
+  /* 二级标题与内容页章节标题同档 22px（此前 24px 是全站唯一例外） */
+  .legal-page h2 {
+    font-size: 22px;
   }
 
   /* ---------------- 完整报告 ---------------- */

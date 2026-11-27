@@ -444,7 +444,7 @@ export default function AccountPage() {
           {!isDemoMode() && (fullUnlocked || orders.length > 0) && (
             <section className="card p-7">
               <p className="eyebrow">{s.fullReport}</p>
-              <h2 className="mt-2 font-serif text-2xl text-ink">
+              <h2 className="mt-2 font-serif text-2xl font-normal text-ink">
                 {fullUnlocked ? s.fullUnlocked : s.orders}
               </h2>
               {fullUnlocked && (
@@ -477,7 +477,7 @@ export default function AccountPage() {
             <div className="flex items-center justify-between border-b border-line pb-4">
               <div>
                 <p className="eyebrow">{t(lang, 'reports')}</p>
-                <h2 className="mt-1 font-serif text-2xl text-ink">{s.myReports}</h2>
+                <h2 className="mt-1 font-serif text-2xl font-normal text-ink">{s.myReports}</h2>
               </div>
               <span className="text-xs text-ink-muted">{visiblePersons.length} {s.personUnit}</span>
             </div>
@@ -577,7 +577,7 @@ export default function AccountPage() {
           {/* 删除账户 */}
           <section className="card border-plum/50 p-7">
             <p className="eyebrow text-[#c4685a]">{s.yourData}</p>
-            <h2 className="mt-2 font-serif text-xl text-ink">{s.deleteAccount}</h2>
+            <h2 className="mt-2 font-serif text-xl font-normal text-ink">{s.deleteAccount}</h2>
             {!confirmDelete ? (
               <button className="btn-ghost mt-4 px-4 py-2 text-sm text-[#c4685a]" onClick={() => setConfirmDelete(true)}>
                 {s.requestDelete}
@@ -599,7 +599,7 @@ export default function AccountPage() {
           {/* 账户信息（可编辑） */}
           <section className="card p-7">
             <p className="eyebrow">{s.profileEyebrow}</p>
-            <h2 className="mt-2 font-serif text-2xl text-ink">{s.yourDetails}</h2>
+            <h2 className="mt-2 font-serif text-2xl font-normal text-ink">{s.yourDetails}</h2>
             <div className="mt-5 space-y-4 border-t border-line pt-5">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">{t(lang, 'emailTab')}</p>
@@ -634,7 +634,7 @@ export default function AccountPage() {
           {/* 隐私说明 */}
           <section className="card p-7">
             <p className="eyebrow">{s.privacy}</p>
-            <h2 className="mt-2 font-serif text-2xl text-ink">{s.privateByDesign}</h2>
+            <h2 className="mt-2 font-serif text-2xl font-normal text-ink">{s.privateByDesign}</h2>
             <div className="mt-4 space-y-3 text-sm leading-relaxed text-ink-soft">
               <p>{s.priv1}</p>
               <p>{s.priv2}</p>
