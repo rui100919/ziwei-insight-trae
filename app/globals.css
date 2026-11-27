@@ -3611,6 +3611,36 @@ footer {
   color: var(--gold);
 }
 
+/* ---------------- 小字号分层 ----------------
+   可读小字只留两档，避免同类信息在 10 / 10.5 / 11 之间来回跳：
+     11px   元信息、脚注、编号（日期、编号、配额、免责说明、宫位序号）
+     10.5px 装饰性拉丁副标（全大写英文、眉标的英文行）
+   十二宫盘内部（星曜 10、岁数 10.5、四化徽标 8）受格子尺寸约束，
+   是独立的一档，不参与上面的层级。 */
+.fine,
+.unlock .fine,
+.locked .fine,
+.fineprint,
+.saved-item .meta,
+.row .fl small,
+.includes li small,
+.lock-row .d,
+.birth .v span,
+.report .palace .kw,
+.toc a .n,
+.excerpt-item .tag,
+.palace .idx {
+  font-size: 11px;
+}
+
+.scroll-cue,
+.scroll-strip .cap,
+.sheet-sub,
+.prenote-kicker,
+.meta-cell span {
+  font-size: 10.5px;
+}
+
 @media print {
   body {
     background: #fff !important;
