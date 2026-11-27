@@ -638,9 +638,19 @@
   }
 }
 
-/* 320px 级别（iPhone SE 一代 / 早期安卓）：品牌只留印章，别处一律不再收 */
+/* 320px 级别（iPhone SE 一代 / 早期安卓）：品牌名再收一档，别只留个印章空出一大块 */
 @media (max-width: 340px) {
+  .nav-mobile .brand {
+    gap: 8px;
+  }
   .nav-mobile .brand-name {
-    display: none;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .nav-lang {
+    padding: 0 12px 0 6px;
+  }
+  .nav-cta {
+    padding: 0 8px;
   }
 }
