@@ -106,7 +106,7 @@
     padding: 64px 0 60px;
   }
   .creed h2 {
-    font-size: 28px;
+    font-size: 27px;
     line-height: 1.5;
   }
   .creed-body {
@@ -250,7 +250,8 @@
     line-height: 1.2;
     letter-spacing: 0;
   }
-  .account-page header > div > p {
+  /* 只放大副标题；眉标（.eyebrow）在整站都是 12px，别被这条一起带大 */
+  .account-page header > div > p:not(.eyebrow) {
     font-size: 13.5px;
     line-height: 1.9;
   }
@@ -264,7 +265,7 @@
     min-width: 0;
   }
   .account-page .card h2 {
-    font-size: 21px;
+    font-size: 22px;
   }
   /* 人物切换 / 添加资料：胶囊按钮做成 36px 可点区域，横向可滚动不换行 */
   .account-page .rounded-full {
@@ -338,6 +339,13 @@
   }
   .auth-submit {
     min-height: 50px;
+  }
+
+  /* ---------------- 法务页 ---------------- */
+  /* 标题与首页、报告页同档 34px；此前只有这一页是 36px */
+  .legal-page h1 {
+    font-size: 34px;
+    line-height: 1.2;
   }
 
   /* ---------------- 完整报告 ---------------- */
@@ -420,6 +428,9 @@
   .ch-body {
     padding-top: 18px;
   }
+  /* 报告页是 .ch-body > p，完整预览是 <p class="ch-body"> 本身，
+     两者都收在这一档，正文不会一页 15px、一页 16px。 */
+  .ch-body,
   .ch-body p {
     margin-bottom: 1.15em;
     font-size: 15px;

@@ -471,7 +471,9 @@ section {
   align-items: center;
   gap: 16px;
   margin: 0 0 26px;
-  font-size: 11.5px;
+  /* 与内容页的 .eyebrow 同一档：12px / 400，两个眉标组件不能各写一种 */
+  font-size: 12px;
+  font-weight: 400;
   letter-spacing: 0.34em;
   color: var(--gold);
 }
@@ -1203,6 +1205,15 @@ section {
   line-height: 2.05;
   color: var(--muted);
 }
+/* .palaces-head p / .final p 按段落匹配正文，会顺带命中同一区块里的
+   .label（小节眉标）。眉标在整站都是 12px，这里显式抬回来，
+   别让同一个组件在一页里出现 12 / 13.5 / 14.5 三种字号。 */
+.palaces-head .label,
+.final .label {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+}
 .final-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1706,6 +1717,10 @@ footer {
   max-width: var(--read);
   margin: 0 auto;
   padding: 26px 0 0;
+  /* 完整预览把正文直接写成 <p class="ch-body">，报告页则用 .ch-body > p。
+     两类结构共用同一档字号，避免同一段正文在两页差 1px。 */
+  font-size: 15.5px;
+  line-height: 2.15;
 }
 .ch-body p {
   margin: 0 0 1.35em;

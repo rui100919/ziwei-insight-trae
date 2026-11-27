@@ -422,7 +422,7 @@ export default function AccountPage() {
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="eyebrow">{t(lang, 'account')}</p>
-          <h1 className="mt-2 font-serif text-[40px] leading-[1.04] tracking-tight text-ink">
+          <h1 className="mt-2 font-serif text-[40px] font-normal leading-[1.04] tracking-tight text-ink">
             {s.welcomeBack}{displayName ? `, ${displayName}` : ''}.
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
