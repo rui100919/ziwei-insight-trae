@@ -123,7 +123,7 @@ function PaymentSuccessContent() {
       {status === 'unlocked' ? (
         <>
           <div className="mt-6 flex justify-center"><StatusBadge label={s.paid} tone="completed" /></div>
-          <h1 className="mt-5 font-serif text-[38px] leading-tight text-ink">{s.unlocked}</h1>
+          <h1 className="mt-5 font-serif text-[30px] leading-tight text-ink sm:text-[38px]">{s.unlocked}</h1>
           <p className="mt-4 text-sm leading-relaxed text-ink-soft">
             {s.unlockedDesc}
           </p>
@@ -136,7 +136,7 @@ function PaymentSuccessContent() {
         </>
       ) : status === 'failed' ? (
         <>
-          <h1 className="mt-6 font-serif text-[34px] leading-tight text-ink">{s.failed}</h1>
+          <h1 className="mt-6 font-serif text-[30px] leading-tight text-ink sm:text-[34px]">{s.failed}</h1>
           <p className="mt-4 text-sm leading-relaxed text-ink-soft">
             {s.failedDesc}
           </p>
@@ -144,7 +144,7 @@ function PaymentSuccessContent() {
         </>
       ) : (
         <>
-          <h1 className="mt-6 font-serif text-[34px] leading-tight text-ink">{s.checking}</h1>
+          <h1 className="mt-6 font-serif text-[30px] leading-tight text-ink sm:text-[34px]">{s.checking}</h1>
           <p className="mt-4 text-sm leading-relaxed text-ink-soft">
             {s.checkingDesc}
           </p>

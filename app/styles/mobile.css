@@ -140,7 +140,7 @@
   }
   .palaces-head p {
     max-width: none;
-    font-size: 13.5px;
+    font-size: 14px;
     line-height: 1.9;
   }
   /* 十二宫 2 列：格子更矮，手指扫读更快 */
@@ -252,7 +252,7 @@
   }
   /* 只放大副标题；眉标（.eyebrow）在整站都是 12px，别被这条一起带大 */
   .account-page header > div > p:not(.eyebrow) {
-    font-size: 13.5px;
+    font-size: 14px;
     line-height: 1.9;
   }
   .account-page .card {
