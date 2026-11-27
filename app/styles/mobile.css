@@ -41,7 +41,8 @@
     height: 28px;
   }
   .brand-name {
-    font-size: 15px;
+    font-size: 16px;
+    /* 字距比电脑端略收：「Zi Wei Insight」在 440px 一行里要挤得下 */
     letter-spacing: 0.08em;
     /* 品牌名一行放不下时不要折成两行（非中文语言曾是「Zi Wei / Insight」） */
     white-space: nowrap;
@@ -51,14 +52,14 @@
   }
   .nav-lang {
     min-height: 38px;
-    padding: 0 22px 0 10px;
+    padding: 0 18px 0 8px;
     font-size: 11.5px;
     letter-spacing: 0.08em;
-    background-position: right 9px center;
+    background-position: right 8px center;
   }
   .nav-cta {
     min-height: 38px;
-    padding: 0 14px;
+    padding: 0 13px;
     font-size: 11.5px;
     letter-spacing: 0.12em;
     gap: 6px;
