@@ -164,7 +164,8 @@ button {
   display: block;
   margin-top: 5px;
   font-family: var(--latin);
-  font-size: 9.5px;
+  /* 品牌副标也是装饰性拉丁小字，跟 .cover-archive 等同一档 10.5px */
+  font-size: 10.5px;
   letter-spacing: 0.32em;
   color: var(--muted-2);
   text-transform: uppercase;
