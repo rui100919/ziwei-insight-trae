@@ -21,7 +21,7 @@ export default function NotFound() {
     <div className="mx-auto max-w-lg px-5 pt-28 pb-20 text-center">
       <div className="flex justify-center"><LogoMark className="h-12 w-12 text-gold" /></div>
       <p className="mt-8 font-serif text-[72px] leading-none tracking-tight text-ink-muted">404</p>
-      <h1 className="mt-4 font-serif text-[30px] font-normal leading-tight text-ink sm:font-light">{s.title}</h1>
+      <h1 className="mt-4 font-serif text-[30px] font-normal leading-tight text-ink">{s.title}</h1>
       <p className="mt-5 text-sm leading-relaxed text-ink-soft">{s.subtitle}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link href="/" className="btn px-6 py-3">{s.home} <span aria-hidden="true">→</span></Link>
