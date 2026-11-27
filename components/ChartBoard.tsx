@@ -114,11 +114,11 @@ export function ChartBoard({ chart, lang, linkedPalaces }: Props) {
 
           const inner = (
             <>
-              <div className="flex items-baseline justify-between gap-1">
-                <span className={`truncate text-[11px] ${framed ? 'font-semibold text-ink' : 'font-medium text-ink-soft'}`}>
+              <div className="chart-phead flex items-baseline justify-between gap-1">
+                <span className={`chart-pname truncate text-[11px] ${framed ? 'font-semibold text-ink' : 'font-medium text-ink-soft'}`}>
                   {palaceName}
                 </span>
-                <span className="shrink-0 text-[10px] text-ink-muted">{branch}</span>
+                <span className="chart-branch shrink-0 text-[10px] text-ink-muted">{branch}</span>
               </div>
               <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5">
                 {majors.length === 0 ? (
