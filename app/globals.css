@@ -240,6 +240,13 @@ button {
 .nav-desktop .nav-right .nav-lang {
   font-size: 12.5px;
 }
+/* 平板档（601–1080px）用的是手机导航结构，语言胶囊别留在 .nav-lang 的 12px，
+   否则和旁边的 CTA 差半档。≤600px 的字号在 mobile.css 里另行定义。 */
+@media (min-width: 601px) {
+  .nav-mobile .nav-lang {
+    font-size: 12.5px;
+  }
+}
 /* 电脑 / 手机两套导航结构（components/nav/ 下各一个文件），靠这里切换：
    默认显示电脑版，≤1080px 换成手机版。两套都渲染，用 display 隐藏，避免水合闪烁。 */
 .nav-desktop {
@@ -1619,6 +1626,10 @@ footer {
 }
 .birth .edit:hover {
   color: var(--cinnabar);
+}
+/* 十二宫盘里的大限岁数：默认 9px 在格子边缘几乎读不出来，统一抬到 10.5px */
+.chart-board .chart-age {
+  font-size: 10.5px;
 }
 
 /* ---------------- toc ---------------- */

@@ -21,7 +21,7 @@ export default function LegalPage() {
   const effective = LEGAL_EFFECTIVE_DATE[lang];
 
   return (
-    <div className="mx-auto max-w-3xl px-5 pt-28 pb-20">
+    <div className="legal-page mx-auto max-w-3xl px-5 pt-28 pb-20">
       <p className="eyebrow">{s.eyebrow}</p>
       <h1 className="serif mt-3 text-4xl font-normal tracking-tight text-ink sm:text-5xl">{c.title}</h1>
       <p className="mt-4 text-sm leading-relaxed text-ink-soft">{c.intro}</p>

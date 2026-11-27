@@ -446,11 +446,8 @@
     min-height: 36px;
     padding-bottom: 0;
   }
-  /* 十二宫盘：手机上格子只有约 95px 宽，9px 的岁数与星曜亮度太小，
-     按主次各抬一档（盘面本身尺寸不变）。 */
-  .chart-board .chart-age {
-    font-size: 10.5px;
-  }
+  /* 十二宫盘：手机上格子只有约 95px 宽，星曜亮度与 +n 的 9px 太小，抬到 10px。
+     岁数（.chart-age）在 globals.css 里全局统一到 10.5px。 */
   .chart-board .chart-bright,
   .chart-board .chart-more {
     font-size: 10px;
@@ -545,6 +542,33 @@
   .colo-line {
     font-size: 14px;
     line-height: 1.95;
+  }
+
+  /* ---------------- 触控目标 ----------------
+     文字型链接原本只有 15–20px 高，手指很难点中。行内元素加垂直内边距
+     可以扩大可点区域而不改变行高与排版。 */
+  .brand {
+    min-height: 38px;
+  }
+  .link {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+  .excerpt-item .tag {
+    min-height: 36px;
+  }
+  footer a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .legal-page a {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+  /* 报告行里的「删除」只有 24×16，用负外边距撑开可点区但不挤动排版 */
+  .account-page article button {
+    padding: 10px 6px;
+    margin: -10px -6px;
   }
 }
 
