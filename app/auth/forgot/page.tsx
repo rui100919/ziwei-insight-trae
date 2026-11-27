@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
         <span aria-hidden="true">←</span> {t(lang, 'backToSignIn')}
       </Link>
 
-      <h1 className="mt-8 text-[30px] leading-tight tracking-tight text-ink sm:text-[34px]">{t(lang, 'forgotTitle')}</h1>
+      <h1 className="mt-8 text-[30px] font-normal leading-tight tracking-tight text-ink sm:text-[34px] sm:font-light">{t(lang, 'forgotTitle')}</h1>
       <p className="mt-3 text-sm leading-relaxed text-ink-soft">{t(lang, 'forgotIntro')}</p>
 
       {sent ? (

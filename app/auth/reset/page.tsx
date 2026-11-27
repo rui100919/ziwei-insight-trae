@@ -47,7 +47,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="mx-auto max-w-md px-5 pt-28 pb-20">
-      <h1 className="text-[30px] leading-tight tracking-tight text-ink sm:text-[34px]">{t(lang, 'resetTitle')}</h1>
+      <h1 className="text-[30px] font-normal leading-tight tracking-tight text-ink sm:text-[34px] sm:font-light">{t(lang, 'resetTitle')}</h1>
 
       {status === 'checking' && (
         <p className="mt-6 text-sm text-ink-muted">{t(lang, 'generating')}</p>
