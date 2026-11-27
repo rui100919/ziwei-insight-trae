@@ -452,14 +452,13 @@
   /* 十二宫盘：手机上一格只剩约 40px 宽，外语宫名比中文长得多
      （Geschwister / Déplacement / Hermanos），会被省略号吃掉。
      宫名与地支放不下时让地支换到下一行右对齐，宫名单独占满整格；
-     字号降到 10px，也不允许把单词拆成两截。 */
+     也不允许把单词拆成两截。字号在 ≤430px 时再降一档（见下）。 */
   .chart-board .chart-phead {
     flex-wrap: wrap;
     row-gap: 2px;
   }
   .chart-board .chart-pname {
     flex: 1 1 auto;
-    font-size: 10px;
     line-height: 1.25;
     white-space: normal;
     overflow: visible;
@@ -467,7 +466,6 @@
   }
   .chart-board .chart-branch {
     margin-left: auto;
-    font-size: 9.5px;
   }
   /* 十二宫盘：手机上格子只有约 95px 宽，星曜亮度与 +n 的 9px 太小，抬到 10px。
      岁数（.chart-age）在 globals.css 里全局统一到 10.5px。 */
@@ -625,6 +623,14 @@
   }
   .nav-cta .nav-arrow {
     display: none;
+  }
+  /* 十二宫盘：小屏一格只有 60 多像素，宫名字号再降一档才放得下
+     「Geschwister」这类最长译名（440 上仍是 11px，不受影响）。 */
+  .chart-board .chart-pname {
+    font-size: 10px;
+  }
+  .chart-board .chart-branch {
+    font-size: 9.5px;
   }
 }
 
