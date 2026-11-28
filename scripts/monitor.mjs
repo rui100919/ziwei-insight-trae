@@ -208,10 +208,45 @@ async function gscToken() {
   return (await res.json()).access_token;
 }
 
-async function gscQuery(token, site, body) {
+/** gcloud 用户授权（ADC）文件：不需要服务账号密钥，适合组织禁用了密钥创建的情况。 */
+const ADC_FILE =
+  env.GOOGLE_APPLICATION_CREDENTIALS || `${process.env.HOME}/.config/gcloud/application_default_credentials.json`;
+
+function readAdc() {
+  if (!fs.existsSync(ADC_FILE)) return null;
+  const j = JSON.parse(fs.readFileSync(ADC_FILE, 'utf8'));
+  if (j.type !== 'authorized_user' || !j.refresh_token) return null;
+  return {
+    client_id: j.client_id,
+    client_secret: j.client_secret,
+    refresh_token: j.refresh_token,
+    // GSC API 要求带上配额项目；用 gcloud 设置过的那个。
+    quotaProject: env.GSC_QUOTA_PROJECT || j.quota_project_id || '',
+  };
+}
+
+/** 用 ADC 的 refresh token 换一个新的 access token（有效期一小时，每次运行现取）。 */
+async function adcToken(adc) {
+  const res = await fetch(TOKEN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      client_id: adc.client_id,
+      client_secret: adc.client_secret,
+      refresh_token: adc.refresh_token,
+    }),
+  });
+  if (!res.ok) throw new Error(`刷新 ADC token 失败 ${res.status}：${(await res.text()).slice(0, 160)}（可能需要重新执行 gcloud auth application-default login）`);
+  return (await res.json()).access_token;
+}
+
+async function gscQuery(token, site, body, quotaProject) {
+  const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  if (quotaProject) headers['x-goog-user-project'] = quotaProject;
   const res = await fetch(`${GSC_API}/sites/${encodeURIComponent(site)}/searchAnalytics/query`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`GSC 查询失败 ${res.status}：${(await res.text()).slice(0, 160)}`);
@@ -221,14 +256,20 @@ async function gscQuery(token, site, body) {
 async function checkGsc() {
   say('### 搜索表现（GSC，近 7 个完整数据日）');
   say('');
-  if (!GSC_SA_FILE && !env.GSC_SERVICE_ACCOUNT_JSON) {
-    flag('WARN', '未配置 GSC 服务账号，本节跳过（其余检查照常）');
-    say('_未配置服务账号，跳过。_');
+  const adc = readAdc();
+  let token;
+  let quotaProject = '';
+  if (GSC_SA_FILE || env.GSC_SERVICE_ACCOUNT_JSON) {
+    token = await gscToken();
+  } else if (adc) {
+    token = await adcToken(adc);
+    quotaProject = adc.quotaProject;
+  } else {
+    flag('WARN', '未配置 GSC 凭据，本节跳过（可执行 gcloud auth application-default login 获取用户授权）');
+    say('_未配置 GSC 凭据，跳过。_');
     say('');
     return;
   }
-
-  const token = await gscToken();
   // GSC 数据有 2–3 天延迟，取最近 7 个可用日。
   const end = daysAgo(3);
   const start = daysAgo(9);
@@ -246,8 +287,8 @@ async function checkGsc() {
       { clicks: 0, impressions: 0, ctr: 0, position: 0, n: 0 },
     );
 
-  const cur = sum((await gscQuery(token, GSC_SITE, { startDate: start, endDate: end, dimensions: ['date'] })).rows || []);
-  const prev = sum((await gscQuery(token, GSC_SITE, { startDate: prevStart, endDate: prevEnd, dimensions: ['date'] })).rows || []);
+  const cur = sum((await gscQuery(token, GSC_SITE, { startDate: start, endDate: end, dimensions: ['date'] }, quotaProject)).rows || []);
+  const prev = sum((await gscQuery(token, GSC_SITE, { startDate: prevStart, endDate: prevEnd, dimensions: ['date'] }, quotaProject)).rows || []);
   const ctr = (s) => (s.impressions ? (s.clicks / s.impressions) * 100 : 0);
   const pos = (s) => (s.n ? s.position / s.n : 0);
 
@@ -260,7 +301,7 @@ async function checkGsc() {
   say('');
   if (cur.impressions === 0) flag('ALERT', `GSC 近 7 天 0 曝光（${start}~${end}）：页面可能尚未被索引`);
 
-  const queries = (await gscQuery(token, GSC_SITE, { startDate: start, endDate: end, dimensions: ['query'], rowLimit: 15 })).rows || [];
+  const queries = (await gscQuery(token, GSC_SITE, { startDate: start, endDate: end, dimensions: ['query'], rowLimit: 15 }, quotaProject)).rows || [];
   if (queries.length) {
     say('搜索词 Top 15（本期）：');
     say('');
@@ -270,7 +311,7 @@ async function checkGsc() {
     say('');
   }
 
-  const pages = (await gscQuery(token, GSC_SITE, { startDate: start, endDate: end, dimensions: ['page'], rowLimit: 15 })).rows || [];
+  const pages = (await gscQuery(token, GSC_SITE, { startDate: start, endDate: end, dimensions: ['page'], rowLimit: 15 }, quotaProject)).rows || [];
   const forecast = pages.filter((p) => String(p.keys[0]).includes('/liunian/'));
   const guides = pages.filter((p) => String(p.keys[0]).includes('/guides'));
   say('内容簇表现（本期曝光）：');
