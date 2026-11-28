@@ -68,7 +68,7 @@ function buildToc(content: FullContent | null, lang: Lang): TocItem[] {
   return items;
 }
 
-export default function FullPreviewPage() {
+export default function FullPreviewPage({ digest }: { digest?: React.ReactNode }) {
   const { lang } = useLang();
   const [content, setContent] = useState<FullContent | null>(null);
   const [meta, setMeta] = useState<Meta | null>(null);
@@ -198,6 +198,9 @@ export default function FullPreviewPage() {
           <p className="cover-note" data-reveal>{t(lang, 'fullSampleHint')}</p>
         </div>
       </section>
+
+      {/* 服务端渲染的静态样例：保证爬虫能拿到实质内容，同时给访客一个稳定可读的版本 */}
+      {digest}
 
       {/* 样例说明：本页只用固定的虚构样本，不接收访客出生资料，避免与真实用户数据混淆。 */}
       <section id="sample" style={{ background: 'var(--ink)' }}>

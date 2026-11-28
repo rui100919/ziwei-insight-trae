@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Client from './FullPreviewClient';
+import SampleDigest from '@/components/sample/SampleDigest';
 
 /** 样品页是唯一有实质内容的公开页，必须自指 canonical，否则会被当成首页副本。 */
 export const metadata: Metadata = {
@@ -24,5 +25,5 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default function Page() {
-  return <Client />;
+  return <Client digest={<SampleDigest />} />;
 }

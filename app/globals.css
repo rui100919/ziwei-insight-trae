@@ -3671,6 +3671,58 @@ footer {
   font-size: 12px;
 }
 
+/* ---------------- 样品静态解读（/full-preview 服务端渲染段落） ---------------- */
+.digest {
+  padding: clamp(56px, 7vw, 88px) 0;
+  border-top: 1px solid var(--line);
+  background: var(--ink);
+}
+.digest-inner {
+  max-width: var(--read);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+.digest .eyebrow {
+  color: var(--gold);
+}
+.digest h2 {
+  margin: 12px 0 0;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+}
+.digest .lead {
+  margin: 18px 0 0;
+  font-size: 15px;
+  line-height: 1.95;
+  color: rgba(244, 238, 225, 0.72);
+}
+.digest-item {
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.digest-item h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--gold-lit);
+}
+.digest-item p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.95;
+  color: rgba(244, 238, 225, 0.82);
+}
+.digest-note {
+  margin: 32px 0 0;
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted-2);
+}
+
 @media print {
   body {
     background: #fff !important;
