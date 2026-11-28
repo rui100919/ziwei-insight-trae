@@ -31,7 +31,6 @@ export const metadata: Metadata = {
     '精准紫微斗数排盘，克制的白话解读。注册即享一次免费基础解读，保存在你的私人账户。',
   applicationName: 'Zi Wei Insight',
   keywords: ['紫微斗数', '命盘', '排盘', 'Zi Wei Dou Shu', 'astrology', 'birth chart'],
-  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: 'Zi Wei Insight',
@@ -46,6 +45,11 @@ export const metadata: Metadata = {
     description: '精准紫微斗数排盘，克制的白话解读。',
   },
   robots: { index: true, follow: true },
+  // 在 Railway 配好 NEXT_PUBLIC_GOOGLE_VERIFICATION 后自动输出 GSC 验证 meta，
+  // 无需改代码即可在 Search Console 完成域名验证。
+  verification: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION }
+    : undefined,
 };
 
 export const viewport: Viewport = {
@@ -67,6 +71,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             strategy="afterInteractive"
           />
         )}
+        {/* 结构化数据：告诉搜索引擎这是一个站点与一个品牌实体，而不是无名新域。 */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'WebSite',
+                  '@id': `${siteUrl}/#website`,
+                  url: siteUrl,
+                  name: '紫微光年',
+                  alternateName: 'Zi Wei Insight',
+                  inLanguage: 'zh-CN',
+                },
+                {
+                  '@type': 'Organization',
+                  '@id': `${siteUrl}/#org`,
+                  name: 'Zi Wei Insight',
+                  alternateName: '紫微光年',
+                  url: siteUrl,
+                  logo: `${siteUrl}/icon.svg`,
+                },
+              ],
+            }),
+          }}
+        />
         <LangProvider>
           <div className="grain" aria-hidden="true" />
           <div className="vignette" aria-hidden="true" />

@@ -23,6 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: t(lang, 'pageIndexTitle'),
     description: t(lang, 'pageIndexDesc'),
+    alternates: { canonical: '/' },
   };
 }
 
