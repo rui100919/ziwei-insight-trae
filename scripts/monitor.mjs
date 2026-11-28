@@ -159,9 +159,13 @@ async function checkPlausible() {
 
   // 漏斗：排盘 → 付费墙 → 发起支付 → 成功
   const generated = counts.chart_generated ?? 0;
+  const submitAttempts = counts.chart_submit_attempt ?? 0;
   const paywall = counts.paywall_seen ?? 0;
   const started = counts.payment_start ?? 0;
   const success = counts.payment_success ?? 0;
+  if (submitAttempts > 0 && generated === 0) {
+    flag('WARN', `排盘提交 ${submitAttempts} 次但 0 次生成：多数会落在登录/注册环节，先看 /auth 的到达与完成`);
+  }
   if (generated > 0 && paywall === 0) flag('WARN', '有排盘生成但无 paywall_seen，检查付费墙事件是否漏埋');
   if (paywall > 0 && started === 0) flag('WARN', `付费墙 ${paywall} 次曝光但 0 次发起支付，付费页说服力需要复核`);
   if (success > 0) say(`**已出现 ${success} 笔 payment_success（7 天内）—— 首单信号，值得回看来源页与文案。**`);
