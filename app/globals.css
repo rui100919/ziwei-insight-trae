@@ -2156,7 +2156,7 @@ footer {
   align-items: center;
   gap: 10px;
   margin: 26px 0 0;
-  font-size: 11.5px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   color: var(--muted-2);
 }
@@ -3640,6 +3640,33 @@ footer {
 .prenote-kicker,
 .meta-cell span {
   font-size: 10.5px;
+}
+
+/* ---------------- 正文与小注档位 ----------------
+   界面正文统一 14px（此前 13 / 13.5 / 14 三种并存）；
+   11.5px 这个夹档并入 12px 小注档（表单标签、页脚末行、封面小注等）。 */
+.unlock p,
+.locked > p,
+.done p,
+.summary .intro,
+.prenote-body,
+.colo-note,
+.auth-subtitle,
+.auth-status-body,
+.auth-note,
+.auth-switch,
+.meta-note {
+  font-size: 14px;
+}
+
+.foot-bottom,
+.birth .edit,
+.row .fl,
+.price-tag,
+.cover-note,
+.quota,
+.prenote .eyebrow {
+  font-size: 12px;
 }
 
 @media print {

@@ -204,7 +204,7 @@ export default function FullPreviewPage() {
         <div className="wrap" style={{ paddingTop: 'clamp(48px, 6vw, 76px)', paddingBottom: 'clamp(48px, 6vw, 76px)' }}>
           <div data-reveal>
             <p className="eyebrow">{L('sampleChart')}</p>
-            <p style={{ marginTop: 10, fontSize: 13, lineHeight: 1.8, color: 'var(--muted)' }}>
+            <p style={{ marginTop: 10, fontSize: 14, lineHeight: 1.8, color: 'var(--muted)' }}>
               {t(lang, 'fullSampleHint')}
             </p>
           </div>
