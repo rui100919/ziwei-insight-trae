@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/full-preview`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/guides`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/liunian/2027`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/liunian/2028`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     ...ALL_GUIDES.map((guide) => ({
       url: `${base}${guidePath(guide)}`,
       lastModified: now,

@@ -77,6 +77,13 @@ export default function GuidesPage() {
                 <span className="tt">这一年适合做什么，别硬扛什么</span>
               </span>
             </Link>
+            <Link className="guide-card" href="/liunian/2028">
+              <span className="idx">2028</span>
+              <span className="body">
+                <span className="nm">戊申年</span>
+                <span className="tt">机会变多，怎么选才不白忙</span>
+              </span>
+            </Link>
           </div>
         </section>
 

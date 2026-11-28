@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import ForecastArticle, { type ForecastFaq, type ForecastRelated, type ForecastSection } from '@/components/liunian/ForecastArticle';
 
-const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ziwei-insight.com').replace(/\/$/, '');
 const PATH = '/liunian/2027';
 const TITLE = '2027 丁未年流年简看：这一年适合做什么，别硬扛什么';
 const DESC =
@@ -20,10 +19,8 @@ export const metadata: Metadata = {
   },
 };
 
-type Section = { heading: string; paragraphs: string[] };
-
-/** 正文按「一年气候 → 四个牵引 → 宫位对照 → 误读 → 可做的事 → 问答」排列。 */
-const SECTIONS: Section[] = [
+/** 正文按「一年气候 → 四个牵引 → 宫位对照 → 误读 → 可做的事」排列。 */
+const SECTIONS: ForecastSection[] = [
   {
     heading: '先说清楚：流年不是一份剧本',
     paragraphs: [
@@ -100,7 +97,7 @@ const SECTIONS: Section[] = [
   },
 ];
 
-const FAQ = [
+const FAQ: ForecastFaq[] = [
   {
     question: '2027 丁未年一定不好吗？',
     answer:
@@ -118,7 +115,7 @@ const FAQ = [
   },
 ];
 
-const RELATED = [
+const RELATED: ForecastRelated[] = [
   { href: '/guides/palace/ming', name: '命宫', title: '命宫在看什么，怎么读' },
   { href: '/guides/palace/guanlu', name: '官禄宫', title: '工作与角色怎么读' },
   { href: '/guides/palace/caibo', name: '财帛宫', title: '钱怎么来、怎么花' },
@@ -126,113 +123,22 @@ const RELATED = [
 ];
 
 export default function Liunian2027Page() {
-  const url = `${SITE}${PATH}`;
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Article',
-        headline: TITLE,
-        description: DESC,
-        inLanguage: 'zh-CN',
-        mainEntityOfPage: url,
-        url,
-        articleSection: '流年',
-        author: { '@type': 'Organization', name: 'Zi Wei Insight', url: SITE },
-        publisher: { '@type': 'Organization', name: 'Zi Wei Insight', url: SITE },
-      },
-      {
-        '@type': 'FAQPage',
-        mainEntity: FAQ.map((item) => ({
-          '@type': 'Question',
-          name: item.question,
-          acceptedAnswer: { '@type': 'Answer', text: item.answer },
-        })),
-      },
-    ],
-  };
-
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <article className="guide">
-        <div className="guide-inner">
-          <nav className="guide-crumb" aria-label="面包屑导航">
-            <Link href="/">首页</Link>
-            <span aria-hidden="true">/</span>
-            <Link href="/guides">命理笔记</Link>
-            <span aria-hidden="true">/</span>
-            <span className="current">2027 丁未年</span>
-          </nav>
-
-          <p className="eyebrow">流年 · 2027 丁未</p>
-          <h1>{TITLE}</h1>
-          <div className="guide-meta">
-            <span>8 分钟阅读</span>
-            <span>只描述倾向，不做预言</span>
-          </div>
-
-          <p className="guide-lead">
-            每年都有人问「我这一年怎么样」。这个问题没法直接回答，但可以换个问法：这一年的大环境会往哪边推，我在哪件事上最容易用力过猛。
-          </p>
-          <p className="guide-lead">
-            这篇只做一件事——把 2027 丁未年的四个牵引讲清楚，再落到十二宫，给你一份可以对照的清单。它不替你判断，也不承诺结果。
-          </p>
-
-          {SECTIONS.map((section) => (
-            <section className="guide-section" key={section.heading}>
-              <h2>{section.heading}</h2>
-              {section.paragraphs.map((text) => (
-                <p key={text.slice(0, 12)}>{text}</p>
-              ))}
-            </section>
-          ))}
-
-          <section className="guide-faq" aria-labelledby="liunian-faq-title">
-            <h2 id="liunian-faq-title">常见问题</h2>
-            <dl>
-              {FAQ.map((item) => (
-                <div className="guide-faq-item" key={item.question}>
-                  <dt>{item.question}</dt>
-                  <dd>{item.answer}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-
-          <p className="digest-note">
-            以上内容基于传统紫微斗数，只描述倾向，不构成任何预测、诊断或决策建议。命盘是观察自己的一个角度，不是结论。
-          </p>
-
-          <div className="guide-cta">
-            <div>
-              <p className="eyebrow">下一步</p>
-              <h2>对照完清单，不如看自己的盘</h2>
-              <p>输入出生时间，排盘由开源引擎计算，解读只引用命盘里实际存在的星曜与四化。</p>
-            </div>
-            <Link href="/chart/new" className="btn">
-              开始排盘
-              <span className="arw" aria-hidden="true">
-                →
-              </span>
-            </Link>
-          </div>
-
-          <nav className="guide-related" aria-label="相关条目">
-            <p className="eyebrow">继续读</p>
-            <ul>
-              {RELATED.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href}>
-                    <span className="nm">{item.name}</span>
-                    <span className="tt">{item.title}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </article>
-    </>
+    <ForecastArticle
+      path={PATH}
+      eyebrow="流年 · 2027 丁未"
+      crumb="2027 丁未年"
+      title={TITLE}
+      description={DESC}
+      minutes={8}
+      lead={[
+        '每年都有人问「我这一年怎么样」。这个问题没法直接回答，但可以换个问法：这一年的大环境会往哪边推，我在哪件事上最容易用力过猛。',
+        '这篇只做一件事——把 2027 丁未年的四个牵引讲清楚，再落到十二宫，给你一份可以对照的清单。它不替你判断，也不承诺结果。',
+      ]}
+      sections={SECTIONS}
+      faq={FAQ}
+      related={RELATED}
+      nextYear={{ href: '/liunian/2028', name: '2028 戊申年' }}
+    />
   );
 }
