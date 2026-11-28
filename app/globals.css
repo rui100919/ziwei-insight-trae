@@ -1990,6 +1990,41 @@ footer {
 .unlock-actions .btn-ghost {
   min-width: 200px;
 }
+/* 解锁前的「包含什么」清单：把付费内容说成具体条目，减少猜测成本。 */
+.unlock-includes {
+  max-width: 560px;
+  margin: 24px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+.unlock-includes .label {
+  justify-content: flex-start;
+  margin: 0 0 12px;
+}
+.unlock-includes ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.unlock-includes li {
+  position: relative;
+  padding-left: 15px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: rgba(244, 238, 225, 0.78);
+}
+.unlock-includes li::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 0;
+  width: 5px;
+  height: 1px;
+  background: var(--gold);
+}
 .unlock .fine,
 .locked .fine {
   margin: 22px 0 0;

@@ -344,6 +344,17 @@ export default function FullPreviewPage({ digest }: { digest?: React.ReactNode }
           <p className="label"><span className="cn">{t(lang, 'previewUnlock')}</span></p>
           <h2>{pay.unlocked ? t(lang, 'buyOwned') : t(lang, 'endTitle')}</h2>
           <p>{t(lang, 'buyIntro')}</p>
+          <div className="unlock-includes">
+            <p className="label">
+              <span className="cn">{t(lang, 'buyIncHead')}</span>
+            </p>
+            <ul>
+              <li>{t(lang, 'buyInc1')}</li>
+              <li>{t(lang, 'buyInc2')}</li>
+              <li>{t(lang, 'buyInc3')}</li>
+              <li>{t(lang, 'buyInc4')}</li>
+            </ul>
+          </div>
           <p style={{ color: 'var(--gold-lit)', letterSpacing: '.06em' }}>{t(lang, 'buyPrice')}</p>
           <p className="fine">{t(lang, 'buyTrust')}</p>
           <div className="unlock-actions">
