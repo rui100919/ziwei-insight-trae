@@ -3647,6 +3647,7 @@ footer {
    11.5px 这个夹档并入 12px 小注档（表单标签、页脚末行、封面小注等）。 */
 .unlock p,
 .locked > p,
+.lock-header p,
 .done p,
 .summary .intro,
 .prenote-body,
@@ -3665,6 +3666,7 @@ footer {
 .price-tag,
 .cover-note,
 .quota,
+.lock-list,
 .prenote .eyebrow {
   font-size: 12px;
 }
