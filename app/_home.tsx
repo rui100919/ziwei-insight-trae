@@ -71,14 +71,17 @@ export function Home() {
               {t(lang, 'heroSub')}
             </p>
             <div className="hero-actions" data-reveal style={revealDelay('.34s')}>
-              <Link href={signedIn ? '/account?v=3' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'hero_account' : 'hero_signup' })}>
-                {signedIn ? t(lang, 'account') : t(lang, 'signUp')}
+              <Link href={signedIn ? '/account?v=3' : '/auth?next=%2Fchart%2Fnew'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'hero_account' : 'hero_free_chart' })}>
+                {signedIn ? t(lang, 'account') : t(lang, 'ctaFreeChart')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
               <Link href="/full-preview?v=3" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'hero_full_sample' })}>
                 {t(lang, 'heroCtaFullSample')}
               </Link>
             </div>
+            <p className="mt-5 text-[12px] tracking-[0.06em] text-[rgba(244,238,225,0.42)]" data-reveal style={revealDelay('.52s')}>
+              {t(lang, 'heroReassure')}
+            </p>
             <p className="hero-note" data-reveal style={revealDelay('.46s')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true">
                 <path d="M12 2.6l2.2 6.1 6.1 2.2-6.1 2.2L12 19.2l-2.2-6.1L3.7 10.9l6.1-2.2z" />
@@ -245,8 +248,8 @@ export function Home() {
             <h2>{t(lang, 'finalTitle')}</h2>
             <p>{t(lang, 'finalBody')}</p>
             <div className="final-actions">
-              <Link href={signedIn ? '/account?v=3' : '/auth'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'final_account' : 'final_signup' })}>
-                {signedIn ? t(lang, 'account') : t(lang, 'signUp')}
+              <Link href={signedIn ? '/account?v=3' : '/auth?next=%2Fchart%2Fnew'} className="btn" onClick={() => trackEvent(E.CTA_CLICK, { button: signedIn ? 'final_account' : 'final_free_chart' })}>
+                {signedIn ? t(lang, 'account') : t(lang, 'ctaFreeChart')}
                 <span className="arw" aria-hidden="true">→</span>
               </Link>
               <Link href="/full-preview?v=3" className="btn-ghost" onClick={() => trackEvent(E.CTA_CLICK, { button: 'final_sample' })}>

@@ -345,6 +345,7 @@ export default function FullPreviewPage({ digest }: { digest?: React.ReactNode }
           <h2>{pay.unlocked ? t(lang, 'buyOwned') : t(lang, 'endTitle')}</h2>
           <p>{t(lang, 'buyIntro')}</p>
           <p style={{ color: 'var(--gold-lit)', letterSpacing: '.06em' }}>{t(lang, 'buyPrice')}</p>
+          <p className="fine">{t(lang, 'buyTrust')}</p>
           <div className="unlock-actions">
             {!pay.unlocked && pay.paymentsEnabled && pay.provider === 'paypal' && (
               <PayPalButton onError={handlePayPalError} />

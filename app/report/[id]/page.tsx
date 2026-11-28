@@ -783,6 +783,7 @@ export default function ReportPage() {
                         <Link className="btn-ghost" href="/full-preview?v=3">{t(lang, 'lockedCtaSample')}</Link>
                       </div>
                       <p className="fine">{t(lang, 'buyPrice')}</p>
+                      <p className="fine">{t(lang, 'buyTrust')}</p>
                     </div>
                   ))}
 
