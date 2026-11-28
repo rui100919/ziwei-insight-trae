@@ -23,6 +23,16 @@ const GUIDES_LINK: Record<Lang, string> = {
   ja: '十二宮と主星を一つずつ',
 };
 
+/** 流年页内链：给「今年怎么样」这类搜索一个落点。 */
+const LIUNIAN_LINK: Record<Lang, string> = {
+  zh: '2027 丁未年流年简看',
+  en: '2027, the year ahead at a glance',
+  es: '2027, el año que viene de un vistazo',
+  fr: '2027, l’année à venir en bref',
+  de: '2027, das kommende Jahr im Überblick',
+  ja: '2027年（丁未）の流年をざっと見る',
+};
+
 /** data-reveal 交错延迟的内联自定义属性。 */
 function revealDelay(ms: string): CSSProperties {
   return { '--d': ms } as CSSProperties;
@@ -169,9 +179,13 @@ export function Home() {
             </div>
           </div>
 
-          <div className="mt-8 flex justify-center" data-reveal>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3" data-reveal>
             <Link href="/guides" className="btn-ghost">
               {GUIDES_LINK[lang]}
+              <span aria-hidden="true">→</span>
+            </Link>
+            <Link href="/liunian/2027" className="btn-ghost">
+              {LIUNIAN_LINK[lang]}
               <span aria-hidden="true">→</span>
             </Link>
           </div>

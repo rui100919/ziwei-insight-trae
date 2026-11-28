@@ -67,6 +67,19 @@ export default function GuidesPage() {
           </div>
         </section>
 
+        <section className="guide-section">
+          <h2>流年</h2>
+          <div className="guide-grid">
+            <Link className="guide-card" href="/liunian/2027">
+              <span className="idx">2027</span>
+              <span className="body">
+                <span className="nm">丁未年</span>
+                <span className="tt">这一年适合做什么，别硬扛什么</span>
+              </span>
+            </Link>
+          </div>
+        </section>
+
         <p className="digest-note">
           以上内容只描述倾向，不构成任何决策建议。命盘是观察自己的一个角度，不是结论。
         </p>

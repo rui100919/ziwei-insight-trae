@@ -1,0 +1,238 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || 'https://ziwei-insight.com').replace(/\/$/, '');
+const PATH = '/liunian/2027';
+const TITLE = '2027 丁未年流年简看：这一年适合做什么，别硬扛什么';
+const DESC =
+  '2027 是丁未年，传统紫微斗数里丁年四化为太阴化禄、天同化权、天机化科、巨门化忌。这一年的底色是「把话说清楚」：适合做深已有的事、主动减项、把方法写成文字；不适合押注新方向、含糊分工。附十二宫各一句与常见误读。';
+
+export const metadata: Metadata = {
+  title: '2027 丁未年流年简看',
+  description: DESC,
+  alternates: { canonical: PATH },
+  openGraph: {
+    type: 'article',
+    url: PATH,
+    siteName: 'Zi Wei Insight',
+    title: TITLE,
+    description: DESC,
+  },
+};
+
+type Section = { heading: string; paragraphs: string[] };
+
+/** 正文按「一年气候 → 四个牵引 → 宫位对照 → 误读 → 可做的事 → 问答」排列。 */
+const SECTIONS: Section[] = [
+  {
+    heading: '先说清楚：流年不是一份剧本',
+    paragraphs: [
+      '2027 年是丁未年。在紫微斗数的流年看法里，第一步不是找吉凶，而是先认这一年天干带来的四个变化——丁年四化是太阴化禄、天同化权、天机化科、巨门化忌。',
+      '四化不是四件注定要发生的事，而是四种容易被带动的心态与资源流向：钱和情绪会往「太阴」这一侧走，节奏与主导权往「天同」走，表达与名分往「天机」走，而摩擦集中在「巨门」。',
+      '把这四条放在一起看，丁未年的底色可以概括成一句：这一年由「说清楚」定输赢。说得明白的人省力，含糊过去的地方迟早要回头补。',
+    ],
+  },
+  {
+    heading: '太阴化禄：钱和情绪都流向慢而稳的地方',
+    paragraphs: [
+      '太阴是柔的、积累的、在暗处生长的部分。化禄之后，这一年真正能拿到手的收益，多半来自把已有的东西做深，而不是再开一条新线。存款、续单、稳定客户、长期服务的收入，比新项目更容易落到实处。',
+      '情绪上也有同样的倾向：这一年人更需要「有地方可回」。一个人待一会儿、把屋子收拾干净、认真做一顿饭，这类看起来没产出的事，对回血的作用比社交更明显。',
+      '需要提防的是「囤」。太阴化禄容易变成囤资源、囤资料、囤一堆没开始的计划。留一个检查标准：三个月内没被用上的东西，不该继续占着你的注意力。',
+    ],
+  },
+  {
+    heading: '天同化权：把节奏拿回来，比抢机会更要紧',
+    paragraphs: [
+      '天同是福星，主安逸。化权意味着「让日子过顺」这件事，需要主张，也需要主动争取，不会自动发生。',
+      '所以这一年有一件反直觉但很划算的事：主动给自己减项。砍掉不必要的承诺，把作息定下来，把纯粹出于不好意思才答应的场合拒掉。这不是躺平，是把主导权从别人手里拿回来。',
+      '落到工作上，能决定流程顺序、能排期的人，这一年会过得明显舒服；只能被动接活的人，容易被别人的节奏推着走，越忙越乱。',
+    ],
+  },
+  {
+    heading: '天机化科：能被讲清楚的方法才值钱',
+    paragraphs: [
+      '天机主机变、方法、工具，化科给的是名分与被承认。这一年你手里的经验，如果整理成可以复述的方法，会比多做两件事更值钱。',
+      '所谓整理，不需要写成长文：写下来、当面讲一次、做成一张清单，都算。反过来，做完不说、做完不记录，这一年很容易出现「明明做了很多，却没人知道」的落差。',
+      '一个具体做法：每月留半天，把当月做过的事写成一页纸，写清背景、动作、结果。到年底会攒出一份别人拿不走的材料。',
+    ],
+  },
+  {
+    heading: '巨门化忌：是非多从「话没说明白」开始',
+    paragraphs: [
+      '巨门主口舌。化忌不是一定会吵架，而是沟通里的歧义被放大：同一句话被听成两个意思，合同里一句含糊的条款，群里一次转述。',
+      '应对方法很朴素：重要的事落到文字，重要的话当面讲，重要的人别隔着第三方传。凡是心里冒出「他应该知道吧」的地方，都是这一年的坑。',
+      '这一条同样适用于家里。和父母、伴侣解释一件事时多花两句把前提说全，往往能省掉一次冷战，而冷战比解释贵得多。',
+    ],
+  },
+  {
+    heading: '十二宫各一句：先看流年落在哪一宫',
+    paragraphs: [
+      '命宫：这一年你的状态比运气重要，先把作息和身体稳住，其他事会跟着顺一点。',
+      '兄弟宫：与同辈、同事、搭档之间，把分工说清比讲义气有用。',
+      '夫妻宫：关系里的分歧多半来自节奏不同，不必急着上升到「合不合适」。',
+      '子女宫：和教育、创作、带人有关的事，这一年适合慢一点、稳一点。',
+      '财帛宫：收入偏稳，适合把结构理清——固定支出多少、应急钱够几个月；不适合押注单一机会。',
+      '疾厄宫：注意久坐、熬夜、情绪积压带来的疲劳，规律作息比任何调理都有效。',
+      '迁移宫：往外走的机会不少，但签字之前读两遍，口头承诺记得补成文字。',
+      '交友宫：人脉里容易出现传话的人，重要判断自己去核实。',
+      '官禄宫：适合把手上业务做扎实、把方法沉淀下来，而不是同时开三个新方向。',
+      '田宅宫：与住处、与家有关的决定，这一年适合定下来，不适合反复改。',
+      '福德宫：情绪账户需要主动充值，别等空了才找办法。',
+      '父母宫：与长辈、上级的沟通容易卡在表达方式上，多数不是立场问题。',
+    ],
+  },
+  {
+    heading: '三个常见误读',
+    paragraphs: [
+      '误读一：把化忌当成「要倒霉」。化忌描述的是注意力被卡住的位置，不是结果。知道哪里容易堵，就提前把话说清、把条款写细。',
+      '误读二：拿流年盘直接下结论，不看本命盘。流年说的是这一年天气怎么样，本命盘说的是你穿什么衣服出门。同一场雨，有人淋透，有人没事。',
+      '误读三：把「适合做什么」读成「必须做什么」。任何一年的建议，都只是告诉你注意力放在哪里更省力，不是指令。',
+    ],
+  },
+  {
+    heading: '可以立刻做的四件事',
+    paragraphs: [
+      '一、列出这一年必须说清的三件事——一份合同、一项分工、一件和家人的心结，本周找时间讲明白。',
+      '二、给收入做一次体检：固定支出占收入多少，应急钱够撑几个月。数字写出来才知道压力在哪。',
+      '三、砍掉两项不必要的承诺，把省下的时间固定成一段不被打扰的时间，用来做深手上的事。',
+      '四、每月写一页「我做了什么」，到年底回看，你会看见自己真正进步的地方。',
+    ],
+  },
+];
+
+const FAQ = [
+  {
+    question: '2027 丁未年一定不好吗？',
+    answer:
+      '没有哪一年是「一定」的。四化说的是这一年哪些心态和资源容易被牵动，结果取决于它落在你命盘的哪一宫，以及你怎么回应。',
+  },
+  {
+    question: '不看本命盘，只看流年有用吗？',
+    answer:
+      '作用有限。流年只说明这一年的气候，本命盘才说明你带着什么条件出门。两者一起看，才有可参考的意义。',
+  },
+  {
+    question: '这篇内容应该怎么用？',
+    answer:
+      '当成一份检查清单，而不是结论。看完可以排一张自己的盘，对照十二宫那十二条，看哪一条最像你今年的处境。',
+  },
+];
+
+const RELATED = [
+  { href: '/guides/palace/ming', name: '命宫', title: '命宫在看什么，怎么读' },
+  { href: '/guides/palace/guanlu', name: '官禄宫', title: '工作与角色怎么读' },
+  { href: '/guides/palace/caibo', name: '财帛宫', title: '钱怎么来、怎么花' },
+  { href: '/guides/star/taiyin', name: '太阴', title: '柔性与积累的主星' },
+];
+
+export default function Liunian2027Page() {
+  const url = `${SITE}${PATH}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: TITLE,
+        description: DESC,
+        inLanguage: 'zh-CN',
+        mainEntityOfPage: url,
+        url,
+        articleSection: '流年',
+        author: { '@type': 'Organization', name: 'Zi Wei Insight', url: SITE },
+        publisher: { '@type': 'Organization', name: 'Zi Wei Insight', url: SITE },
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: FAQ.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <article className="guide">
+        <div className="guide-inner">
+          <nav className="guide-crumb" aria-label="面包屑导航">
+            <Link href="/">首页</Link>
+            <span aria-hidden="true">/</span>
+            <Link href="/guides">命理笔记</Link>
+            <span aria-hidden="true">/</span>
+            <span className="current">2027 丁未年</span>
+          </nav>
+
+          <p className="eyebrow">流年 · 2027 丁未</p>
+          <h1>{TITLE}</h1>
+          <div className="guide-meta">
+            <span>8 分钟阅读</span>
+            <span>只描述倾向，不做预言</span>
+          </div>
+
+          <p className="guide-lead">
+            每年都有人问「我这一年怎么样」。这个问题没法直接回答，但可以换个问法：这一年的大环境会往哪边推，我在哪件事上最容易用力过猛。
+          </p>
+          <p className="guide-lead">
+            这篇只做一件事——把 2027 丁未年的四个牵引讲清楚，再落到十二宫，给你一份可以对照的清单。它不替你判断，也不承诺结果。
+          </p>
+
+          {SECTIONS.map((section) => (
+            <section className="guide-section" key={section.heading}>
+              <h2>{section.heading}</h2>
+              {section.paragraphs.map((text) => (
+                <p key={text.slice(0, 12)}>{text}</p>
+              ))}
+            </section>
+          ))}
+
+          <section className="guide-faq" aria-labelledby="liunian-faq-title">
+            <h2 id="liunian-faq-title">常见问题</h2>
+            <dl>
+              {FAQ.map((item) => (
+                <div className="guide-faq-item" key={item.question}>
+                  <dt>{item.question}</dt>
+                  <dd>{item.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <p className="digest-note">
+            以上内容基于传统紫微斗数，只描述倾向，不构成任何预测、诊断或决策建议。命盘是观察自己的一个角度，不是结论。
+          </p>
+
+          <div className="guide-cta">
+            <div>
+              <p className="eyebrow">下一步</p>
+              <h2>对照完清单，不如看自己的盘</h2>
+              <p>输入出生时间，排盘由开源引擎计算，解读只引用命盘里实际存在的星曜与四化。</p>
+            </div>
+            <Link href="/chart/new" className="btn">
+              开始排盘
+              <span className="arw" aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </div>
+
+          <nav className="guide-related" aria-label="相关条目">
+            <p className="eyebrow">继续读</p>
+            <ul>
+              {RELATED.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href}>
+                    <span className="nm">{item.name}</span>
+                    <span className="tt">{item.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </article>
+    </>
+  );
+}
