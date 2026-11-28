@@ -3723,6 +3723,207 @@ footer {
   color: var(--muted-2);
 }
 
+/* ---------------- 内容页（/guides：十二宫 · 十四主星） ---------------- */
+.guide {
+  padding: clamp(112px, 14vw, 148px) 0 clamp(56px, 7vw, 88px);
+  background: var(--ink);
+}
+.guide-inner {
+  max-width: var(--read);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+.guide-crumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--muted-2);
+}
+.guide-crumb a:hover {
+  color: var(--gold-lit);
+}
+.guide-crumb .current {
+  color: var(--muted);
+}
+.guide h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 34px);
+  font-weight: 400;
+  line-height: 1.42;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+}
+.guide-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 16px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--muted-2);
+}
+.guide-lead {
+  margin: 22px 0 0;
+  font-size: 15px;
+  line-height: 1.95;
+  color: rgba(244, 238, 225, 0.72);
+}
+.guide-section {
+  margin-top: 36px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+}
+.guide-section h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--gold-lit);
+}
+.guide-section p {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.95;
+  color: rgba(244, 238, 225, 0.82);
+}
+.guide-faq {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.guide-faq > h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--gold-lit);
+}
+.guide-faq dl {
+  margin: 0;
+}
+.guide-faq-item {
+  margin-top: 20px;
+}
+.guide-faq dt {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--cream);
+}
+.guide-faq dd {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.9;
+  color: rgba(244, 238, 225, 0.72);
+}
+.guide-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 44px;
+  padding: 28px 26px;
+  border: 1px solid var(--line);
+  background: rgba(184, 148, 92, 0.05);
+}
+.guide-cta .eyebrow {
+  margin-bottom: 14px;
+}
+.guide-cta h2 {
+  margin: 8px 0 0;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--cream);
+}
+.guide-cta p {
+  margin: 10px 0 0;
+  max-width: 40ch;
+  font-size: 14px;
+  line-height: 1.85;
+  color: rgba(244, 238, 225, 0.68);
+}
+.guide-related {
+  margin-top: 48px;
+}
+.guide-related .eyebrow {
+  margin-bottom: 16px;
+}
+.guide-related ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.guide-related li {
+  background: var(--ink);
+}
+.guide-related a {
+  display: block;
+  padding: 16px 18px;
+  transition: background 0.35s ease;
+}
+.guide-related a:hover {
+  background: rgba(184, 148, 92, 0.07);
+}
+.guide-related .nm {
+  display: block;
+  font-size: 15px;
+  color: var(--gold-lit);
+}
+.guide-related .tt {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1px;
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.guide-card {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  padding: 18px;
+  background: var(--ink);
+  transition: background 0.35s ease;
+}
+.guide-card:hover {
+  background: rgba(184, 148, 92, 0.07);
+}
+.guide-card .idx {
+  font-family: var(--latin);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: var(--muted-2);
+}
+.guide-card .nm {
+  display: block;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  color: var(--gold-lit);
+}
+.guide-card .tt {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
 @media print {
   body {
     background: #fff !important;

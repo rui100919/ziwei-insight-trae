@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { HOME_SAMPLE_LABELS, PALACE_LABELS, t } from '@/lib/i18n';
+import { HOME_SAMPLE_LABELS, PALACE_LABELS, t, type Lang } from '@/lib/i18n';
 import { useLang } from '@/components/LangProvider';
 import { Starfield } from '@/components/oriental/Starfield';
 import { trackEvent, E } from '@/lib/analytics';
@@ -12,6 +12,16 @@ import { demoStore, isDemoMode } from '@/lib/demo';
 
 /** 三步段的中文序号（艺术类标签，跨语言保留中文）。 */
 const STEP_NUMS = ['壹', '贰', '叁'] as const;
+
+/** 十二宫段落底部的内链：把首页权重导给内容页。 */
+const GUIDES_LINK: Record<Lang, string> = {
+  zh: '十二宫与主星，逐条读法',
+  en: 'Palaces and stars, explained one by one',
+  es: 'Palacios y estrellas, uno por uno',
+  fr: 'Palais et étoiles, un par un',
+  de: 'Paläste und Sterne, einzeln erklärt',
+  ja: '十二宮と主星を一つずつ',
+};
 
 /** data-reveal 交错延迟的内联自定义属性。 */
 function revealDelay(ms: string): CSSProperties {
@@ -154,6 +164,13 @@ export function Home() {
                 <div className="mid-line" aria-hidden="true" />
               </div>
             </div>
+          </div>
+
+          <div className="mt-8 flex justify-center" data-reveal>
+            <Link href="/guides" className="btn-ghost">
+              {GUIDES_LINK[lang]}
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>

@@ -14,13 +14,13 @@ const DEMO_BANNER: Record<Lang, string> = {
   ja: 'デモモード · 命盤は実際のエンジンで計算され、解読はサンプル文案です。データはご利用のブラウザにのみ保存されます',
 };
 
-const FOOTER: Record<Lang, { legal: string; cultural: string }> = {
-  zh: { legal: '隐私政策 · 服务条款 · 免责声明', cultural: '仅供文化研究与自我探索 · 18+' },
-  en: { legal: 'Privacy · Terms · Disclaimer', cultural: 'For cultural reflection and self-exploration · 18+' },
-  es: { legal: 'Privacidad · Términos · Aviso legal', cultural: 'Solo para investigación cultural y autoexploración · 18+' },
-  fr: { legal: 'Confidentialité · Conditions · Avertissement', cultural: 'Réservé à la réflexion culturelle et à l’exploration personnelle · 18+' },
-  de: { legal: 'Datenschutz · Bedingungen · Haftungsausschluss', cultural: 'Nur für kulturelle Reflexion und Selbsterkundung · 18+' },
-  ja: { legal: 'プライバシー · 利用規約 · 免責事項', cultural: '文化研究と自己探求のみを目的とします · 18歳以上' },
+const FOOTER: Record<Lang, { guides: string; legal: string; cultural: string }> = {
+  zh: { guides: '十二宫与主星', legal: '隐私政策 · 服务条款 · 免责声明', cultural: '仅供文化研究与自我探索 · 18+' },
+  en: { guides: 'Palaces & stars', legal: 'Privacy · Terms · Disclaimer', cultural: 'For cultural reflection and self-exploration · 18+' },
+  es: { guides: 'Palacios y estrellas', legal: 'Privacidad · Términos · Aviso legal', cultural: 'Solo para investigación cultural y autoexploración · 18+' },
+  fr: { guides: 'Palais et étoiles', legal: 'Confidentialité · Conditions · Avertissement', cultural: 'Réservé à la réflexion culturelle et à l’exploration personnelle · 18+' },
+  de: { guides: 'Paläste & Sterne', legal: 'Datenschutz · Bedingungen · Haftungsausschluss', cultural: 'Nur für kulturelle Reflexion und Selbsterkundung · 18+' },
+  ja: { guides: '十二宮と主星', legal: 'プライバシー · 利用規約 · 免責事項', cultural: '文化研究と自己探求のみを目的とします · 18歳以上' },
 };
 
 /** 顶部演示模式提示条（仅演示模式渲染）。 */
@@ -41,6 +41,10 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-line/80 px-5 py-5 text-center text-[11px] leading-relaxed text-ink-muted print:hidden">
       <p>
+        <Link href="/guides" className="underline decoration-line hover:text-gold">
+          {f.guides}
+        </Link>
+        <span className="mx-2 text-line-strong">|</span>
         <Link href="/legal" className="underline decoration-line hover:text-gold">
           {f.legal}
         </Link>
